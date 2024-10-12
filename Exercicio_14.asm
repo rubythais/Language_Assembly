@@ -1,13 +1,10 @@
 .text
-#Faça um programa que leia 1 inteiro entre 100 e 999 e o imprima escrito de trás para
-#frente. Exemplo: 384 gera uma saída 483
+
+# Faça um programa que leia um número inteiro e imprima 1 se o valor for ímpar e 0 se
+# o valor for par.
 
 main:
-	addi $10 $0 100
-	addi $11 $0 10
-	
-	# INÍCIO
-	# IMPRESSÃO NÚMERO
+	# IMPRESSÃO NUMERO
 	
 	add $4 $0 'N'
 	addi $2 $0 11
@@ -40,34 +37,21 @@ main:
 	add $4 $0 ' '
 	addi $2 $0 11
 	syscall
-
-	# IMPRESSÃO NÚMERO
-	# FIM
-	
 	
 	# INPUT
 	addi $2 $0 5
 	syscall
-	add $15 $0 $2
+	add $10 $0 $2
 	
-	# FIM INPUT
+	addi $12 $0 2
 	
-	div $15 $10
-	mflo $15
-	mfhi $16
+	div $10 $12
 	
-	div $16 $11
-	mflo $16
-	mfhi $17
+	mfhi $10
 	
-	# INICIO
-	# IMPRESSÃO NUM_INVER.
+	# IMPRESSÃO NUMERO
 	
-	add $4 $0 'N'
-	addi $2 $0 11
-	syscall
-	
-	add $4 $0 'U'
+	add $4 $0 'I'
 	addi $2 $0 11
 	syscall
 	
@@ -79,27 +63,15 @@ main:
 	addi $2 $0 11
 	syscall
 	
-	add $4 $0 'I'
+	add $4 $0 'P'
 	addi $2 $0 11
 	syscall
 	
-	add $4 $0 'N'
-	addi $2 $0 11
-	syscall
-	
-	add $4 $0 'V'
-	addi $2 $0 11
-	syscall
-	
-	add $4 $0 'E'
+	add $4 $0 'A'
 	addi $2 $0 11
 	syscall
 	
 	add $4 $0 'R'
-	addi $2 $0 11
-	syscall
-	
-	add $4 $0 '.'
 	addi $2 $0 11
 	syscall
 	
@@ -111,18 +83,8 @@ main:
 	addi $2 $0 11
 	syscall
 	
-	# IMPRESSÃO NUM_INVER.
-	# FIM
-	
-	add $4 $0 $17
+	add $4 $0 $10
 	addi $2 $0 1
 	syscall
 	
-	add $4 $0 $16
-	addi $2 $0 1
-	syscall
-	
-	add $4 $0 $15
-	addi $2 $0 1
-	syscall
 	
