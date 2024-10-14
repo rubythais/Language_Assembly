@@ -1,13 +1,9 @@
 .text
-#* Faça um programa que leia dois números inteiros e calcule e imprima a média
-#aritmética simples desses dois números apresentando o resultado com um algarismo
-#na casa fracionária.
-#Ex.: 13 e 6 gera uma saída 9,5
-
+# * Faça um programa que leia 
+# dois números e informe o menor deles 
+# (use apenas
+# operações aritméticas e lógicas.
 main:
-	addi $14 $0 10
-	addi $15 $0 2
-	# INÍCIO
 	# IMPRESSÃO NÚMERO
 	
 	add $4 $0 'N'
@@ -52,12 +48,10 @@ main:
 
 	# IMPRESSÃO NÚMERO_1
 	# FIM
-	
+
 	addi $2 $0 5
 	syscall
 	add $20 $0 $2
-	
-	
 	
 	# INÍCIO
 	# IMPRESSÃO NÚMERO
@@ -109,23 +103,16 @@ main:
 	syscall
 	add $21 $0 $2
 	
+	sub $15 $21 $20
 	
-	add $20 $21 $20
+	srl $16 $15 31
 	
-	div $20 $15
+	mul $17 $16 $15
 	
-	mflo $20
-	mfhi $21
-	
-	mul $21 $21 $14
-	
-	div $21 $15
-	mflo $21
-	mfhi $22
-	
+	add $17 $17 $20
 	
 	# INÍCIO
-	# IMPRESSÃO MÉDIA
+	# IMPRESSÃO NÚMERO
 	
 	add $4 $0 'M'
 	addi $2 $0 11
@@ -135,15 +122,15 @@ main:
 	addi $2 $0 11
 	syscall
 	
-	add $4 $0 'D'
+	add $4 $0 'N'
 	addi $2 $0 11
 	syscall
 	
-	add $4 $0 'I'
+	add $4 $0 'O'
 	addi $2 $0 11
 	syscall
 	
-	add $4 $0 'A'
+	add $4 $0 'R'
 	addi $2 $0 11
 	syscall
 		
@@ -155,21 +142,11 @@ main:
 	addi $2 $0 11
 	syscall
 
-	# IMPRESSÃO MÉDIA
+	# IMPRESSÃO NÚMERO_2
 	# FIM
 	
-	add $4 $0 $20
+	add $4 $0 $17
 	addi $2 $0 1
 	syscall
-	
-	add $4 $0 ','
-	addi $2 $0 11
-	syscall
-	
-	add $4 $0 $21
-	addi $2 $0 1
-	syscall
-	
-	
 	
 	
