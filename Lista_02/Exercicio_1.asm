@@ -26,6 +26,10 @@ print:
 	add $4 $0 $20
 	addi $2 $0 1
 	syscall
+
+	addi $2 $0 10
+	syscall
+	
 	
 	
 	
