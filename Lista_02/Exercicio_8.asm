@@ -93,6 +93,10 @@ input:
 #  fIM LEITURA Anos
 
 main:
+	add $4 $0 '\n'
+	addi $2 $0 11
+	syscall
+	beq $11 $16 fevereiro
 	beq $11 $15 meses31
 	beq $11 $17 meses31
 	beq $11 $19 meses31
@@ -100,3 +104,45 @@ main:
 	beq $11 $22 meses31
 	beq $11 $24 meses31
 	beq $11 $26 meses31
+	beq $11 $18 meses30
+	beq $11 $20 meses30
+	beq $11 $23 meses30
+	beq $11 $25 meses30
+	j invalido
+	
+fevereiro:
+	addi $8 $0 28
+	beq $10 $8 valido
+	slt $9 $8 $10
+	beq $9 $0 valido
+	j invalido
+	
+	
+meses31:
+	addi $8 $0 31
+	beq $10 $8 valido
+	slt $9 $8 $10
+	beq $9 $0 valido
+	j invalido
+
+meses30:
+	addi $8 $0 30
+	beq $10 $8 valido
+	slt $9 $8 $10
+	beq $9 $0 valido
+	j invalido
+
+valido:
+	add $4 $0 'V'
+	addi $2 $0 11
+	syscall
+	
+	addi $2 $0 10
+	syscall
+invalido:
+	add $4 $0 'I'
+	addi $2 $0 11
+	syscall
+	
+	addi $2 $0 10
+	syscall

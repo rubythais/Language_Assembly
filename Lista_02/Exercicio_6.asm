@@ -133,9 +133,7 @@ main:
 	# if idade == idade_min2; -> 0
 	beq $17 $0 cond2
 	# if idade > idade_min;2 -> 0
-	add $4 $0 $17
-	addi $2 $0 1
-	syscall
+
 else:
 	add $4 $0 'N'
 	j print
