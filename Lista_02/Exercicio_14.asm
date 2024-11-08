@@ -122,6 +122,70 @@ sep4:
 	syscall
 	j main2
 main2:
+	addi $20 $0 0
+	addi $21 $0 0
+	addi $22 $0 0
+	addi $23 $0 0
+	addi $24 $0 0
+	add $9 $0 $11
+	
+	
+	div $11 $7
+	mfhi $24
+	mflo $20
+	
+	div $20 $7
+	mfhi $23
+	mflo $20
+	
+	div $20 $7
+	mfhi $22
+	mflo $21
+	
+	beq $21 $0 _sep1
+	add $4 $0 $9
+	addi $2 $0 1
+	syscall
+	j fim
+_sep1:
+	add $4 $0 ' '
+	addi $2 $0 11
+	syscall
+	
+	beq $22 $0 _sep2
+	add $4 $0 $9
+	addi $2 $0 1
+	syscall
+	j fim
+_sep2:
+	add $4 $0 ' '
+	addi $2 $0 11
+	syscall
+	
+	beq $23 $0 _sep3
+	add $4 $0 $9
+	addi $2 $0 1
+	syscall
+	j fim
+_sep3:
+	add $4 $0 ' '
+	addi $2 $0 11
+	syscall
+	
+	beq $24 $0 _sep3
+	add $4 $0 $9
+	addi $2 $0 1
+	syscall
+	j fim
+_sep4:
+	add $4 $0 ' '
+	addi $2 $0 11
+	syscall
+	j fim
+
+fim:
+	addi $2 $0 10
+	syscall
 	
 	
 
