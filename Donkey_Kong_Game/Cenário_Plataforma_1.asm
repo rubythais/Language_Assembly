@@ -4,6 +4,8 @@ base:
 	lui $8 0x1001
 cenario1:
 	 
+	 
+	 	
 	 addi $2 $0 3
 	 addi $3 $0 180
 	 addi $4 $0 214
@@ -402,6 +404,13 @@ Platform_Draw:
 	add $8 $8 $4 
 	addi $5 $0 0 # CONTADOR
 	addi $10 $0 3 # Contador Triangle
+	
+ciru:
+	lui $8 0x1001
+	addi $8 $8 262144
+	sw $9 0($8)
+	sw $9 4($8)
+	
 	
 	
 
