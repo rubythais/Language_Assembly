@@ -6,7 +6,14 @@ main:
     jal Sunset 
     jal Jungle_Draw
     jal Sand_Draw
-          
+     
+    
+    addi $2 $0 180
+    addi $3 $0 190
+    jal Monkey
+   
+   addi $20 $0 40
+   jal Monkey_Walk
     
     
     addi $2 $0 10
@@ -41,14 +48,698 @@ main:
 fim_Cenário_Praia:
     addi $2 $0 10
     syscall
+
+# ~~~~~~~~~~~~~~~ PERSONAGENS GLOBAIS ~~~~~~~~~~~~~~~
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ================================================================
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# addi $2 $0 50  -> $2  Posição do Eixo X na tela
+# addi $3 $0 190 -> $3  Posição do Eixo Y na tela
+# jal	Mokey -> Desenha o Macaco NPC
+
+
+	
+
+
+# ========================================================
+# **** Macaco ****
+
+# INPUT_Reg: $2 -> Posição X
+	#    $3 -> Posição Y	
+# OUTPUT_Reg: None
+# Reg_Usados:
+Monkey:
+    # EMPILHAR
+	sw $31 0($29)
+    addi $29 $29 -4
+    
+	add $15 $2 $0
+	add $16 $3 $0
+	
+	addi $2 $0 2	
+	addi $3 $0 1
+	addi $4 $15 5
+	addi $5 $16 -5
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 11	
+	addi $3 $0 1
+	addi $4 $15 1
+	addi $5 $16 -4
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 14	
+	addi $3 $0 1
+	addi $4 $15 0
+	addi $5 $16 -3
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 17	
+	addi $3 $0 1
+	addi $4 $15 -2
+	addi $5 $16 -2
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 19	
+	addi $3 $0 1
+	addi $4 $15 -3
+	addi $5 $16 -1
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 20	
+	addi $3 $0 1
+	addi $4 $15 -3
+	addi $5 $16 0
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	
+	
+	addi $2 $0 21	
+	addi $3 $0 1
+	addi $4 $15 -4
+	addi $5 $16 1
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 22	
+	addi $3 $0 2
+	addi $4 $15 -4
+	addi $5 $16 2
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 21	
+	addi $3 $0 4
+	addi $4 $15 -4
+	addi $5 $16 4
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 22	
+	addi $3 $0 1
+	addi $4 $15 -4
+	addi $5 $16 8
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 12	
+	addi $3 $0 1
+	addi $4 $15 7
+	addi $5 $16 9
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 13	
+	addi $3 $0 1
+	addi $4 $15 7
+	addi $5 $16 10
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 14	
+	addi $3 $0 1
+	addi $4 $15 7
+	addi $5 $16 11
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 21	
+	addi $3 $0 2
+	addi $4 $15 1
+	addi $5 $16 12
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 22	
+	addi $3 $0 1
+	addi $4 $15 1
+	addi $5 $16 14
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 15	
+	addi $3 $0 1
+	addi $4 $15 8
+	addi $5 $16 15
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 15	
+	addi $3 $0 1
+	addi $4 $15 9
+	addi $5 $16 16
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 16	
+	addi $3 $0 1
+	addi $4 $15 9
+	addi $5 $16 17
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 18	
+	addi $3 $0 1
+	addi $4 $15 8
+	addi $5 $16 18
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	# =============================
+	# PERNA ESQUERDA
+	addi $2 $0 20	
+	addi $3 $0 1
+	addi $4 $15 7
+	addi $5 $16 19
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 20	
+	addi $3 $0 1
+	addi $4 $15 6
+	addi $5 $16 20
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 22	
+	addi $3 $0 1
+	addi $4 $15 6
+	addi $5 $16 20
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 8	
+	addi $3 $0 1
+	addi $4 $15 5
+	addi $5 $16 21
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 7	
+	addi $3 $0 1
+	addi $4 $15 5
+	addi $5 $16 22
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 6	
+	addi $3 $0 1
+	addi $4 $15 5
+	addi $5 $16 23
+	addi $9 $0 0
+	ori $9 0xFBC680
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 7	
+	addi $3 $0 1
+	addi $4 $15 4
+	addi $5 $16 24
+	addi $9 $0 0
+	ori $9 0xE1A068
+	jal Monkey_Draw_Pixel
+	# =============================
+	# PERNA ESQUERDA
+	addi $2 $0 8	
+	addi $3 $0 1
+	addi $4 $15 20 
+	addi $5 $16 21
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 8	
+	addi $3 $0 1
+	addi $4 $15 21 
+	addi $5 $16 22
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 8	
+	addi $3 $0 1
+	addi $4 $15 22 
+	addi $5 $16 23
+	addi $9 $0 0
+	ori $9 0xB4461B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 8	
+	addi $3 $0 1
+	addi $4 $15 22 
+	addi $5 $16 24
+	addi $9 $0 0
+	ori $9 0xFBC680
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 10	
+	addi $3 $0 1
+	addi $4 $15 21 
+	addi $5 $16 25
+	addi $9 $0 0
+	ori $9 0xE1A068
+	jal Monkey_Draw_Pixel
+	
+	
+	
+	addi $2 $0 2	
+	addi $3 $0 2
+	addi $4 $15 24
+	addi $5 $16 15
+	addi $9 $0 0
+	ori $9 0x912703
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 2	
+	addi $3 $0 2
+	addi $4 $15 26
+	addi $5 $16 13
+	addi $9 $0 0
+	ori $9 0x912703
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 2	
+	addi $3 $0 5
+	addi $4 $15 28
+	addi $5 $16 8
+	addi $9 $0 0
+	ori $9 0xB6451B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 2	
+	addi $3 $0 2
+	addi $4 $15 26
+	addi $5 $16 6
+	addi $9 $0 0
+	ori $9 0xB6451B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 2	
+	addi $3 $0 4
+	addi $4 $15 24
+	addi $5 $16 2
+	addi $9 $0 0
+	ori $9 0xB6451B
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 2	
+	addi $3 $0 2
+	addi $4 $15 26
+	addi $5 $16 0
+	addi $9 $0 0
+	ori $9 0xB6451B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 6	
+	addi $3 $0 2
+	addi $4 $15 28
+	addi $5 $16 -2
+	addi $9 $0 0
+	ori $9 0xB6451B
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 2	
+	addi $3 $0 2
+	addi $4 $15 34
+	addi $5 $16 0
+	addi $9 $0 0
+	ori $9 0x8C2C0B
+	jal Monkey_Draw_Pixel
+	
+	
+	
+	
+	# =======================
+	# ROSTO
+	addi $2 $0 4	
+	addi $3 $0 1
+	add  $4 $0 $15
+	add  $5 $0 $16
+	addi $9 $0 0
+	ori $9 0xFEC482
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 4	
+	addi $3 $0 1
+	addi $4 $15 7
+	addi $5 $16 0
+	addi $9 $0 0
+	ori $9 0xFEC482
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 6	
+	addi $3 $0 1
+	addi $4 $15 -1
+	addi $5 $16 1
+	addi $9 $0 0
+	ori $9 0xFEC482
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 6	
+	addi $3 $0 1
+	addi $4 $15 6
+	addi $5 $16 1
+	addi $9 $0 0
+	ori $9 0xFEC482
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 14	
+	addi $3 $0 3
+	addi $4 $15 -1
+	addi $5 $16 2
+	addi $9 $0 0
+	ori $9 0xFEC482
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 13	
+	addi $3 $0 1
+	addi $4 $15 -1
+	addi $5 $16 5
+	addi $9 $0 0
+	ori $9 0xFEC482
+	jal Monkey_Draw_Pixel
+	# =======================
+	# OLHOS
+	addi $2 $0 1	
+	addi $3 $0 3
+	addi $4 $15 3
+	addi $5 $16 3
+	addi $9 $0 0
+	ori $9 0x030004
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 1	
+	addi $3 $0 3
+	addi $4 $15 8
+	addi $5 $16 3
+	addi $9 $0 0
+	ori $9 0x030004
+	jal Monkey_Draw_Pixel
+	# ===========================
+	# ROSTO 2
+	addi $2 $0 11	
+	addi $3 $0 1
+	addi $4 $15 0
+	addi $5 $16 6
+	addi $9 $0 0
+	ori $9 0xFEC482
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 13	
+	addi $3 $0 1
+	addi $4 $15 -1
+	addi $5 $16 7
+	addi $9 $0 0
+	ori $9 0xFEC482
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 14	
+	addi $3 $0 2
+	addi $4 $15 -1
+	addi $5 $16 8
+	addi $9 $0 0
+	ori $9 0xFEC482
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 13	
+	addi $3 $0 1
+	addi $4 $15 -1
+	addi $5 $16 10
+	addi $9 $0 0
+	ori $9 0xFEC482
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 11	
+	addi $3 $0 1
+	addi $4 $15 0
+	addi $5 $16 11
+	addi $9 $0 0
+	ori $9 0xFEC482
+	jal Monkey_Draw_Pixel
+
+	addi $2 $0 9	
+	addi $3 $0 1
+	addi $4 $15 1
+	addi $5 $16 12
+	addi $9 $0 0
+	ori $9 0xE2A162
+	jal Monkey_Draw_Pixel
+	# ===================== 
+	# NARIZ
+	addi $2 $0 4
+	addi $3 $0 3
+	addi $4 $15 4
+	addi $5 $16 9
+	addi $9 $0 0
+	ori $9 0x000000
+	jal Monkey_Draw_Pixel
+	
+	# ====================
+	
+	# ===================== 
+	# BRAÇo ESQUERDO
+	addi $2 $0 5	
+	addi $3 $0 1
+	addi $4 $15 1
+	addi $5 $16 15
+	addi $9 $0 0
+	ori $9 0xB6451B
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 4	
+	addi $3 $0 1
+	addi $4 $15 1
+	addi $5 $16 16
+	addi $9 $0 0
+	ori $9 0xB6451B
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 4	
+	addi $3 $0 2
+	addi $4 $15 0
+	addi $5 $16 17
+	addi $9 $0 0
+	ori $9 0xB6451B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 1	
+	addi $3 $0 2
+	addi $4 $15 3
+	addi $5 $16 17
+	addi $9 $0 0
+	ori $9 0x7C2A04
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 3	
+	addi $3 $0 2
+	addi $4 $15 0
+	addi $5 $16 19
+	addi $9 $0 0
+	ori $9 0xB6451B
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 1	
+	addi $3 $0 2
+	addi $4 $15 2
+	addi $5 $16 19
+	addi $9 $0 0
+	ori $9 0x7C2A04
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 5	
+	addi $3 $0 1
+	addi $4 $15 0
+	addi $5 $16 21
+	addi $9 $0 0
+	ori $9 0xFBC680
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 5	
+	addi $3 $0 1
+	addi $4 $15 0
+	addi $5 $16 22
+	addi $9 $0 0
+	ori $9 0xE1A068
+	jal Monkey_Draw_Pixel
+	
+	# ====================
+	
+	# ===================== 
+	# BRAÇo DIREITO
+	addi $2 $0 1	
+	addi $3 $0 5
+	addi $4 $15 12
+	addi $5 $16 12
+	addi $9 $0 0
+	ori $9 0x000000
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 1	
+	addi $3 $0 5
+	addi $4 $15 16
+	addi $5 $16 12
+	addi $9 $0 0
+	ori $9 0x000000
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 1	
+	addi $3 $0 5
+	addi $4 $15 13
+	addi $5 $16 17
+	addi $9 $0 0
+	ori $9 0x000000
+	jal Monkey_Draw_Pixel
+	
+	
+	addi $2 $0 1	
+	addi $3 $0 5
+	addi $4 $15 17
+	addi $5 $16 17
+	addi $9 $0 0
+	ori $9 0x000000
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 5	
+	addi $3 $0 1
+	addi $4 $15 13
+	addi $5 $16 21
+	addi $9 $0 0
+	ori $9 0xFBC680
+	jal Monkey_Draw_Pixel
+	
+	addi $2 $0 6	
+	addi $3 $0 1
+	addi $4 $15 13
+	addi $5 $16 22
+	addi $9 $0 0
+	ori $9 0xE1A068
+	jal Monkey_Draw_Pixel
+	
+	
+	# ====================
+	
+
+    # DESEMPILHAR    
+    addi $29 $29 4
+	lw $31 0($29)
+	jr $31
+
+
+	
+
+
+
+# ========================================================
+# **** Desenhar Macaco ****
+
+# INPUT_Reg: None	
+# OUTPUT_Reg: None
+# Reg_Usados:
+
+Monkey_Draw_Pixel:
+    # EMPILHAR
+	sw $31 0($29)
+    addi $29 $29 -4
+
+	lui $8 0x1001 # Memoria
+	addi $6 $0 1024
+	mul $6 $6 $5 #Posição Y
+	mul $7 $4 4 # Posição X
+	add $8 $8 $6
+	add $8 $8 $7
+	addi $5 $0 0 # Contador 1
+	addi $6 $0 0 # Contador 2
+	add $7 $8 $0
+
+Monkey_Draw_Pixel_For:
+	beq $6 $3 End_Monkey_Draw_Pixel
+	beq $5 $2 Monkey_Draw_Pixel_Mext_Line
+	sw $9 0($8)
+	addi $5 $5 1
+	addi $8 $8 4
+	j Monkey_Draw_Pixel_For
+	
+Monkey_Draw_Pixel_Mext_Line:
+	addi $5 $0 0 # Zerar Contador X
+	addi $6 $6 1
+	add $8 $7 $0
+	addi $8 $8 1024
+	addi $7 $7 1024
+	j Monkey_Draw_Pixel_For
+
+End_Monkey_Draw_Pixel:
+    # DESEMPILHAR
+    addi $29 $29 4
+	lw $31 0($29)
+	jr $31
+
+
+# ~~~~~~~~~~~~~~~ PERSONAGENS GLOBAIS ~~~~~~~~~~~~~~~
+
+
+
+# ~~~~~~~~~~~~~~~ Cenário De Praia ~~~~~~~~~~~~~~~
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ================================================================
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ~~~~~~~~~~~~~~~ Cenário De Praia ~~~~~~~~~~~~~~~
+
+
 # **** Desenhar Céu ****
 
 # INPUT_Reg: None	
 # OUTPUT_Reg: None
 # Reg_Usados:  
 Sky_Draw:
+    # EMPILHAR
     sw $31 0($29)
+    addi $29 $29 -4
+
     lui $8 0x1001
     addi $9 $0 0
     ori $9 0x158CC6 # Cor -> #158CC6
@@ -449,8 +1140,10 @@ Skye_20th_For:
 
 end_Skye_20th_For:
 end_Skye_For:
-    lw $31 0($29)
-    jr $31
+    # DESEMPILHAR
+    addi $29 $29 4
+	lw $31 0($29)
+	jr $31
 
     
 # ================================================================
@@ -460,7 +1153,10 @@ end_Skye_For:
 # OUTPUT_Reg: None
 # Reg_Usados: 
 Sand_Draw:
+    #EMPILHAR
     sw $31 0($29)
+    addi $29 $29 -4
+
     addi $7 $0 1024
     mul $7 $7 170
     lui $8 0x1001
@@ -474,6 +1170,7 @@ Sand_Draw_For:
     beq $11 86 end_Sand_Draw
     beq $10 256 end_Sand_Draw_For
     sw $9 0($8)
+    sw $9 262144($8)
     
     addi $10 $10 1
     addi $8 $8 4
@@ -485,8 +1182,10 @@ end_Sand_Draw_For:
     j Sand_Draw_For
     
 end_Sand_Draw:
-    lw $31 0($29)
-    jr $31
+    # DESEMPILHAR
+    addi $29 $29 4
+	lw $31 0($29)
+	jr $31
 
 # ================================================================
 # **** Desenhar Mato ****
@@ -495,7 +1194,10 @@ end_Sand_Draw:
 # OUTPUT_Reg: None
 # Reg_Usados:
 Jungle_Draw:
+    # EMPILHAR
     sw $31 0($29)
+    addi $29 $29 -4
+
     addi $7 $0 1024
     mul $7 $7 154 # -> Altura
     lui $8 0x1001
@@ -520,8 +1222,10 @@ end_Jungle_Draw_For:
     j Jungle_Draw_For
 
 end_Jungle_Draw:
-    lw $31 0($29)
-    jr $31
+    # DESEMPILHAR
+    addi $29 $29 4
+	lw $31 0($29)
+	jr $31
 
 # ================================================================
 # **** Desenhar Detalhes ****
@@ -534,7 +1238,10 @@ end_Jungle_Draw:
 # Reg_Usados:
 
 Details_Draw:
+    # EMPILHAR
     sw $31 0($29)
+    addi $29 $29 -4
+
     lui $8 0x1001 # Endereço de Memória 
     addi $5 $0 256 # Largura da tela
     mul $4 $5 $4 # Posicao desejada * Largura (Linha)
@@ -556,8 +1263,10 @@ Details_Draw_For:
     j Details_Draw_For
 
 end_Details_Draw_For:
-    lw $31 0($29)
-    jr $31
+    # DESEMPILHAR
+    addi $29 $29 4
+	lw $31 0($29)
+	jr $31
 
 
 # ================================================================
@@ -569,8 +1278,10 @@ end_Details_Draw_For:
 
     
 Sunset_Draw:
+    # EMPILHAR
+    sw $31 0($29)
+    addi $29 $29 -4
 
-    sw $31 -4($29)
     lui $8 0x1001
     addi $6 $0 1024 
     mul $6 $6 $5
@@ -600,9 +1311,10 @@ end_Sunset_Draw_For:
     
 
 end_Sunset_Draw:
-
-    lw $31 -4($29)
-    jr $31
+    # DESEMPILHAR
+    addi $29 $29 4
+	lw $31 0($29)
+	jr $31
 
 # ================================================================
 # **** Por do Sol ****
@@ -620,7 +1332,9 @@ end_Sunset_Draw:
     
 
 Sunset:
+    # EMPILHAR
     sw $31 0($29)
+    addi $29 $29 -4
 
 
 
@@ -1234,5 +1948,69 @@ Sunset:
     addi $5 $0 136 # -> Posicao Y
     jal Sunset_Draw
 
-    lw $31 0($29)
-    jr $31
+    # DESEMPILHAR
+    addi $29 $29 4
+	lw $31 0($29)
+	jr $31
+
+
+Monkey_Walk:
+	lui $8 0x1001
+	addi $4 $0 1024
+	mul $4 $4 $16
+	addi $5 $0 4
+	mul $5 $5 $15
+	add $8 $8 $4
+	add $8 $8 $5
+	addi $8 $8 -5200
+	
+	add $4 $8 $0
+	addi $5 $0 0
+	addi $6 $0 0
+	addi $7 $0 0
+Monkey_Walk_For:
+	beq $5 $20 fim_Monkey_Walk
+	beq $7 32 New_Mokey_Walk
+	beq $6 60 end_Monkey_Walk_For
+	lw $10 262144($8)
+	sw $10 0($8)
+	
+	addi $8 $8 4
+	addi $6 $6 1
+	j Monkey_Walk_For
+end_Monkey_Walk_For:
+	addi $6 $0 0
+	addi $7 $7 1
+	addi $8 $4 1024
+	addi $4 $4 1024
+	j Monkey_Walk_For
+
+New_Mokey_Walk:
+	addi $15 $15 5
+	addi $2 $15 0
+    	addi $3 $16 0
+    	jal Monkey
+    	jal timer
+    	addi $6 $0 0
+	addi $7 $7 0
+	addi $5 $5 1
+	j Monkey_Walk_For
+fim_Monkey_Walk:
+	# DESEMPILHAR
+    	addi $29 $29 4
+	lw $31 0($29)
+	jr $31
+
+
+timer: 
+	sw $16, 0($29)
+       addi $29, $29, -4
+       addi $16, $0, 100000
+forT:  beq $16, $0, fimT
+       nop
+       nop
+       addi $16, $16, -1      
+       j forT                  
+fimT:  addi $29, $29, 4                                                    
+       lw $16, 0($29)          
+       jr $31

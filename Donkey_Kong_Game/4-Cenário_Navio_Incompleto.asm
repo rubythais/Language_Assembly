@@ -220,6 +220,31 @@ End_Details_Ship_Draw_Floor_For:
 	j Details_Ship_Draw_Floor_For
 
 Details_Ship_Draw_End:
+	lui $8 0x1001 # Memória
+	addi $9 $0 0
+	ori $9 0x352C0D # Cor #352C0D
+ 	addi $4 $0 4
+	mul $4 $4 154
+	add $8 $8 $4 
+	addi $4 $0 0 # Contador 1
+	addi $5 $0 0 # Contador 2
+	add $6 $8 $0
+Details_Ship_Draw_Mast_For:
+	beq $4 256 end_Details_Ship_Draw_Mast
+	beq $5 15 end_Details_Ship_Draw_Mast_For
+	sw $9 0($8)
+	addi $8 $8 4
+	addi $5 $5 1
+	j Details_Ship_Draw_Mast_For
+
+end_Details_Ship_Draw_Mast_For:
+	addi $5 $0 0
+	addi $4 $4 1
+	addi $8 $6 1024
+	addi $6 $6 1024
+	j Details_Ship_Draw_Mast_For
+
+end_Details_Ship_Draw_Mast:
 	lw $31 -4($29)
 	jr $31
 	
