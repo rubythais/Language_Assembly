@@ -3,9 +3,22 @@
 main:
 
 	jal Mario_Dark_Sky
+	jal Mario_Dark_Floor_Draw
 	#jal andar
 	
-	jal Mario_Dark_Floor_Draw
+	
+	
+	addi $2 $0 20 # Posição X
+	addi $3 $0 250 # Posição Y
+	jal Skull_Draw
+	
+	addi $2 $0 68 # Posição X
+	addi $3 $0 222 # Posição Y
+	jal Skull_Draw
+	
+	addi $2 $0 160 # Posição X
+	addi $3 $0 196 # Posição Y
+	jal Skull_Draw
 
 
 
@@ -25,7 +38,12 @@ fim:
 Mario_Dark_Sky:
 	sw $31 0($29)
 	
-	        addi $3 $0 0 
+	addi $3 $0 0 
+        addi $9 $0 0 
+        ori $9 0x100E0E 
+        jal Mario_Dark_Sky_Draw
+        
+        addi $3 $0 2 
         addi $9 $0 0 
         ori $9 0x100E0E 
         jal Mario_Dark_Sky_Draw
@@ -773,7 +791,368 @@ end_Mario_Dark_Floor_Draw_For:
 	addi $5 $0 0
 	addi $6 $6 1
 	j Mario_Dark_Floor_Draw_For
+	
+	
 
 end_Mario_Dark_Floor_Draw:
+	jal Floor_Dark_Draw
 	lw $31 -4($29)
 	jr $31
+
+Floor_Dark_Draw:
+	lui $8 0x1001 #Endereço de Memória
+	addi $5 $0 1024 # Posição Y
+	mul $5 $5 167
+	add $8 $8 $5
+	addi $9 $0 0
+	ori $9 0x40433D # COR -> #40433D
+	addi $5 $0 0 # Contador 1
+	addi $6 $0 0 # Contador 2
+	addi $7 $0 17 # Contador 3
+	addi $10 $0 0 # Contador Final
+	
+Floor_Dark_Draw_For_1:
+	beq $6 $7 end_end_Floor_Dark_Draw_For_1
+	beq $5 256 end_Floor_Dark_Draw_For_1
+	sw $9  0($8)
+	addi $8 $8 4
+	addi $5 $5 1
+	j Floor_Dark_Draw_For_1
+
+end_Floor_Dark_Draw_For_1:
+	addi $6 $6 1
+	addi $5 $0 0
+	j Floor_Dark_Draw_For_1
+	
+end_end_Floor_Dark_Draw_For_1:
+	lui $8 0x1001 #Endereço de Memória
+	addi $5 $0 1024 # Posição Y
+	mul $5 $5 185
+	add $8 $8 $5
+	addi $9 $0 0
+	ori $9 0x402207 # COR -> #9D6634
+	addi $5 $0 0 # Contador 1
+	addi $6 $0 0 # Contador 2
+	addi $7 $0 0 # Contador 3
+	addi $10 $0 0 # Contador Final
+
+
+	
+Floor_Dark_Draw_For:
+	beq $7 127 end_Floor_Dark_Draw
+	beq $5 1 Floor_Dark_1th_Draw
+	beq $6 1 Floor_Dark_2th_Draw
+	
+	j Floor_Dark_init_Draw
+Floor_Dark_init_Draw:
+	addi $8 $8 -1024
+	sw $9 8($8)
+	sw $9 12($8)
+	sw $9 1032($8)
+	sw $9 1036($8)
+	
+	addi $8 $8 1024
+	sw $9 1024($8)
+	sw $9 1028($8)
+	sw $9 2048($8)
+	sw $9 2052($8)
+	addi $5 $5 1
+	addi $7 $7 2
+	addi $8 $8 -3072
+	addi $8 $8 16
+	j Floor_Dark_Draw_For
+Floor_Dark_1th_Draw:
+	# BASE SUPERIOR 1
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 1024($8)
+	sw $9 1028($8)
+	# BASE SUPERIOR 2
+	sw $9 16($8)
+	sw $9 20($8)
+	sw $9 1040($8)
+	sw $9 1044($8)
+	# BASE INFERIOR 
+	sw $9 2056($8)
+	sw $9 2060($8)
+	sw $9 3080($8)
+	sw $9 3084($8)
+	
+	addi $5 $0 0
+	addi $6 $6 1
+	addi $8 $8 20
+	addi $7 $7 3
+	j Floor_Dark_Draw_For
+Floor_Dark_2th_Draw:
+	addi $8 $8 2052
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 8($8)
+	sw $9 12($8)
+	sw $9 1024($8)
+	sw $9 1028($8)
+	sw $9 1032($8)
+	sw $9 1036($8)
+	addi $8 $8 -2052
+	addi $8 $8 20
+	addi $7 $7 2
+	addi $6 $0 0 # Zerar o Contador 2
+	addi $5 $5 1
+	j Floor_Dark_Draw_For
+	
+end_Floor_Dark_Draw:
+	# BASE SUPERIOR 1
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 1024($8)
+	sw $9 1028($8)
+	jr $31
+
+# ================================================================
+# **** Desenhar Caveira ****
+
+# INPUT_Reg: $2 -> Posição X
+#            $3 -> Posição Y 
+# OUTPUT_Reg: None
+# Reg_Usados:
+Skull_Draw:
+	sw $31 -4($29)
+	lui $8 0x1001
+	addi $4 $0 1024
+	mul $4 $4 $3 # Posição Y
+	mul $2 $2 4
+	add $4 $4 $2	
+	add $8 $8 $4
+	addi $9 $0 0
+	ori $9 0xFFFFFF
+	addi $10 $0 1 # Contador
+Skull_Draw_For:
+	beq $10 1 Skull_Draw_1th_For
+	beq $10 2 Skull_Draw_2th_For
+	beq $10 3 Skull_Draw_3th_For
+	#beq $10 4 Skull_Draw_4th_For
+	beq $10 5 Skull_Draw_5th_For
+	beq $10 6 Skull_Draw_6th_For
+	beq $10 7 Skull_Draw_7th_For
+	beq $10 8 Skull_Draw_8th_For
+	beq $10 9 Skull_Draw_9th_For
+	beq $10 10 Skull_Draw_10th_For
+	beq $10 11 Skull_Draw_11th_For
+	beq $10 12 Skull_Draw_12th_For
+	
+	j end_Skull_Draw_For
+Skull_Draw_1th_For:
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 8($8)
+	sw $9 12($8)
+	sw $9 16($8)
+	sw $9 20($8)
+	sw $9 24($8)
+	
+	
+	
+	addi $8 $8 1020
+    	addi $10 $10 1
+    	j Skull_Draw_For
+    
+Skull_Draw_2th_For:
+	# Parte 1
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 8($8)
+	sw $9 12($8)
+	sw $9 16($8)
+	
+	# Parte 2
+	sw $9 20($8)
+	sw $9 24($8)
+	sw $9 28($8)
+	sw $9 32($8)
+	
+	addi $8 $8 1020
+	addi $10 $10 1
+    	j Skull_Draw_For
+    	
+  
+Skull_Draw_3th_For:
+	# Parte 1
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 8($8)
+	sw $9 12($8)
+	sw $9 16($8)
+	
+	# Parte 2
+	sw $9 20($8)
+	sw $9 24($8)
+	sw $9 28($8)
+	sw $9 32($8)
+	sw $9 36($8)
+	sw $9 40($8)
+
+	addi $8 $8 1020	
+	addi $10 $10 2
+    	j Skull_Draw_For
+
+
+
+Skull_Draw_5th_For:
+	# Parte 1
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 8($8)
+	
+	# Parte 2
+	sw $9 20($8)
+	sw $9 24($8)
+	sw $9 28($8)
+	sw $9 40($8)
+	sw $9 44($8)
+	sw $9 48($8)
+	
+	addi $8 $8 1024	
+	addi $10 $10 1
+    	j Skull_Draw_For
+    	
+Skull_Draw_6th_For:
+	# Parte 1
+	sw $9 0($8)
+	sw $9 4($8)
+	
+	
+	# Parte 2
+	sw $9 20($8)
+	sw $9 24($8)
+	sw $9 28($8)
+	sw $9 44($8)
+	sw $9 48($8)
+	
+	addi $8 $8 1024	
+	addi $10 $10 1
+    	j Skull_Draw_For
+    	
+Skull_Draw_7th_For:
+	# Parte 1
+	sw $9 0($8)
+	sw $9 4($8)
+	
+	
+	# Parte 2
+	sw $9 20($8)
+	sw $9 24($8)
+	sw $9 28($8)
+	sw $9 44($8)
+	sw $9 48($8)
+	
+	addi $8 $8 1028	
+	addi $10 $10 1
+    	j Skull_Draw_For
+    	
+Skull_Draw_8th_For:
+	# Parte 1
+	sw $9 0($8)
+	sw $9 4($8)
+	
+	
+	sw $9 16($8)
+	
+	# Parte 2
+	sw $9 20($8)
+	sw $9 24($8)
+	sw $9 36($8)
+	sw $9 40($8)
+	
+	addi $8 $8 1028	
+	addi $10 $10 1
+    	j Skull_Draw_For
+	
+Skull_Draw_9th_For:
+	# Parte 1
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 8($8)
+	sw $9 12($8)
+	sw $9 16($8)
+	
+	
+	
+	# Parte 2
+	sw $9 20($8)
+	sw $9 24($8)
+	sw $9 28($8)
+	sw $9 32($8)
+	
+
+	addi $8 $8 1020	
+	addi $10 $10 1
+    	j Skull_Draw_For
+
+Skull_Draw_10th_For:
+	# Parte 1
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 8($8)
+	sw $9 12($8)
+	sw $9 16($8)
+		
+	# Parte 2
+	sw $9 20($8)
+	sw $9 24($8)
+	sw $9 28($8)
+	sw $9 32($8)
+	sw $9 36($8)
+	sw $9 40($8)
+	
+	addi $8 $8 1028	
+	addi $10 $10 1
+    	j Skull_Draw_For
+
+Skull_Draw_11th_For:
+	# Parte 1
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 8($8)
+	sw $9 12($8)
+	sw $9 16($8)
+	
+	
+	
+	# Parte 2
+	sw $9 20($8)
+	sw $9 24($8)
+	sw $9 28($8)
+	sw $9 32($8)
+	
+
+	addi $8 $8 1032
+	addi $10 $10 1
+    	j Skull_Draw_For
+
+Skull_Draw_12th_For:
+	# Parte 1
+	sw $9 0($8)
+	sw $9 1024($8)
+	
+	
+	addi $8 $8 8
+	
+	sw $9 0($8)
+	sw $9 1024($8)
+	
+	
+	addi $8 $8 8
+	
+	sw $9 0($8)
+	sw $9 1024($8)
+	
+
+	addi $8 $8 1024	
+	addi $10 $10 1
+    	j Skull_Draw_For
+    
+end_Skull_Draw_For:
+	lw $31 -4($29)
+	jr $31
+
+	
