@@ -56,27 +56,51 @@ fim_Cenário_Praia:
 
 # addi $2 $0 50  -> $2  Posição do Eixo X na tela
 # addi $3 $0 190 -> $3  Posição do Eixo Y na tela
-# jal	Mokey -> Desenha o Macaco NPC
+# jal	Monkey -> Desenha o Macaco NPC
 
 
 	
 
 
 # ========================================================
-# **** Macaco ****
+# **** Monkey ( Desenhar Macaco - * NPC *) ****
 
 # INPUT_Reg: $2 -> Posição X
-	#    $3 -> Posição Y	
+	    #    $3 -> Posição Y
+
 # OUTPUT_Reg: None
-# Reg_Usados:
+
+# Reg_Usados: # $2  -> Largura X do pixel
+              # $3  -> Altura Y do Pixel
+              # $4  -> Posição Lagura eixo X da Tela (onde inicia o Pixel)
+              # $5  -> Posição Altura eixo Y da Tela (onde inicia o Pixel)
+              # $9  -> Cor do Pixel
+              # $15 -> Base do Início da Tela, Eixo X (referencia para aonde comeã a gerar o NPC)
+              # $16 -> Base do Início da Tela, Eixo X (referencia para aonde comeã a gerar o NPC)
+              # $29 -> Endereço de PILHA
+              # $31 -> Return do JAL
+
+
 Monkey:
+
+    # =============================
     # EMPILHAR
+    # =============================
+
 	sw $31 0($29)
-   	 addi $29 $29 -4
+    addi $29 $29 -4
+
+    # =============================
     
+    # =============================
+    # SEGUIR DE BASE
+    # =============================
+
 	add $15 $2 $0
 	add $16 $3 $0
 	
+    # =============================
+
 	addi $2 $0 2	
 	addi $3 $0 1
 	addi $4 $15 5
@@ -235,8 +259,12 @@ Monkey:
 	addi $9 $0 0
 	ori $9 0xB4461B
 	jal Monkey_Draw_Pixel
+
+
 	# =============================
 	# PERNA ESQUERDA
+	# =============================
+
 	addi $2 $0 20	
 	addi $3 $0 1
 	addi $4 $15 7
@@ -293,8 +321,12 @@ Monkey:
 	addi $9 $0 0
 	ori $9 0xE1A068
 	jal Monkey_Draw_Pixel
+
+
 	# =============================
 	# PERNA ESQUERDA
+	# =============================
+
 	addi $2 $0 8	
 	addi $3 $0 1
 	addi $4 $15 20 
@@ -408,6 +440,8 @@ Monkey:
 	
 	# =======================
 	# ROSTO
+	# =======================
+
 	addi $2 $0 4	
 	addi $3 $0 1
 	add  $4 $0 $15
@@ -457,8 +491,12 @@ Monkey:
 	addi $9 $0 0
 	ori $9 0xFEC482
 	jal Monkey_Draw_Pixel
+
+
 	# =======================
 	# OLHOS
+	# =======================
+
 	addi $2 $0 1	
 	addi $3 $0 3
 	addi $4 $15 3
@@ -474,8 +512,12 @@ Monkey:
 	addi $9 $0 0
 	ori $9 0x030004
 	jal Monkey_Draw_Pixel
+
+
 	# ===========================
 	# ROSTO 2
+	# ===========================
+
 	addi $2 $0 11	
 	addi $3 $0 1
 	addi $4 $15 0
@@ -525,8 +567,11 @@ Monkey:
 	addi $9 $0 0
 	ori $9 0xE2A162
 	jal Monkey_Draw_Pixel
+
 	# ===================== 
 	# NARIZ
+	# ===================== 
+
 	addi $2 $0 4
 	addi $3 $0 3
 	addi $4 $15 4
@@ -535,10 +580,13 @@ Monkey:
 	ori $9 0x000000
 	jal Monkey_Draw_Pixel
 	
+
 	# ====================
 	
 	# ===================== 
-	# BRAÇo ESQUERDO
+	# BRAÇO ESQUERDO
+	# =====================
+ 
 	addi $2 $0 5	
 	addi $3 $0 1
 	addi $4 $15 1
@@ -610,7 +658,9 @@ Monkey:
 	# ====================
 	
 	# ===================== 
-	# BRAÇo DIREITO
+	# BRAÇO DIREITO
+	# ===================== 
+
 	addi $2 $0 1	
 	addi $3 $0 5
 	addi $4 $15 12
@@ -661,10 +711,12 @@ Monkey:
 	jal Monkey_Draw_Pixel
 	
 	
-	# ====================
 	
 
+	# ====================
     # DESEMPILHAR    
+	# ====================
+
     addi $29 $29 4
 	lw $31 0($29)
 	jr $31
@@ -682,7 +734,10 @@ Monkey:
 # Reg_Usados:
 
 Monkey_Draw_Pixel:
+	# ====================
     # EMPILHAR
+	# ====================
+
 	sw $31 0($29)
     addi $29 $29 -4
 
@@ -723,20 +778,34 @@ End_Monkey_Draw_Pixel:
 
 
 
+
 # ~~~~~~~~~~~~~~~ Cenário De Praia ~~~~~~~~~~~~~~~
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ================================================================
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ~~~~~~~~~~~~~~~ Cenário De Praia ~~~~~~~~~~~~~~~
 
+# ========================================================
+# **** Sky_Draw (Desenhar o Céu com Gradiente Azul) ****
 
-# **** Desenhar Céu ****
+# INPUT_Reg: None	    
 
-# INPUT_Reg: None	
 # OUTPUT_Reg: None
-# Reg_Usados:  
+
+# Reg_Usados: # $7  -> Varivél SEGUNDÁRIA para definir Altura de Iniciar o PIXEL
+              # $8  -> Endereço de Memória 
+              # $9  -> Cor do Pixel
+              # $10 -> Contador (Conta para saber o momento de iniciar outro Comando)
+              # $11 -> Contador SECUNDARIO (AJuda na Altura de Pixel)
+              # $29 -> Endereço de PILHA
+              # $31 -> Return do JAL
+
+
 Sky_Draw:
+	# ====================
     # EMPILHAR
+	# ====================
+
     sw $31 0($29)
     addi $29 $29 -4
 
@@ -751,6 +820,15 @@ Skye_First_For:
     sw $9 1024($8)
     sw $9 2048($8)
     sw $9 3072($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    sw $9 264192($8) # 3
+    sw $9 265216($8) # 4
     addi $8 $8 4
     addi $10 $10 1
     j Skye_First_For
@@ -769,7 +847,14 @@ Skye_2th_For:
     beq $10 256 end_Skye_2th_For
     sw $9 0($8)
     sw $9 1024($8)
-    
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+
     addi $8 $8 4
     addi $10 $10 1
     j Skye_2th_For
@@ -789,7 +874,14 @@ Skye_3th_For:
     beq $10 256 end_Skye_3th_For
     sw $9 0($8)
     sw $9 1024($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
     
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+
     addi $8 $8 4
     addi $10 $10 1
     j Skye_3th_For
@@ -810,6 +902,15 @@ Skye_4th_For:
     sw $9 0($8)
     sw $9 1024($8)
     sw $9 2048($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+    
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    sw $9 264192($8) # 3
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_4th_For
@@ -828,6 +929,13 @@ end_Skye_4th_For:
 Skye_5th_For:
     beq $10 256 end_Skye_5th_For
     sw $9 0($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+   
 
     addi $10 $10 1
     addi $8 $8 4
@@ -850,6 +958,16 @@ Skye_6th_For:
     sw $9 1024($8)
     sw $9 2048($8)
     sw $9 3072($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    sw $9 264192($8) # 3
+    sw $9 265216($8) # 4
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_6th_For
@@ -869,6 +987,15 @@ Skye_7th_For:
     beq $10 256 end_Skye_7th_For
     sw $9 0($8)
     sw $9 1024($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_7th_For
@@ -887,6 +1014,14 @@ end_Skye_7th_For:
 Skye_8th_For:
     beq $10 256 end_Skye_8th_For
     sw $9 0($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_8th_For
@@ -906,6 +1041,14 @@ Skye_9th_For:
     beq $10 256 end_Skye_9th_For
     sw $9 0($8)
     sw $9 1024($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_9th_For
@@ -924,6 +1067,14 @@ end_Skye_9th_For:
 Skye_10th_For:
     beq $10 256 end_Skye_10th_For
     sw $9 0($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_10th_For
@@ -947,6 +1098,19 @@ Skye_11th_For:
     sw $9 3072($8)
     sw $9 4096($8)
     sw $9 5120($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    sw $9 264192($8) # 3
+    sw $9 265216($8) # 4
+    sw $9 266240($8) # 5
+    sw $9 267264($8) # 6
+
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_11th_For
@@ -965,6 +1129,14 @@ end_Skye_11th_For:
 Skye_12th_For:
     beq $10 256 end_Skye_12th_For
     sw $9 0($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_12th_For
@@ -985,7 +1157,16 @@ Skye_13th_For:
     sw $9 0($8)
     sw $9 1024($8)
     sw $9 2048($8)
-    
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    sw $9 264192($8) # 3
+
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_13th_For
@@ -1009,6 +1190,19 @@ Skye_14th_For:
     sw $9 3072($8)
     sw $9 4096($8)
     sw $9 5120($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    sw $9 264192($8) # 3
+    sw $9 265216($8) # 4
+    sw $9 266240($8) # 5
+    sw $9 267264($8) # 6
+
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_14th_For
@@ -1028,6 +1222,15 @@ Skye_15th_For:
     beq $10 256 end_Skye_15th_For
     sw $9 0($8)
     sw $9 1024($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_15th_For
@@ -1046,6 +1249,14 @@ end_Skye_15th_For:
 Skye_16th_For:
     beq $10 256 end_Skye_16th_For
     sw $9 0($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_16th_For
@@ -1068,6 +1279,17 @@ Skye_17th_For:
     sw $9 2048($8)
     sw $9 3072($8)
     sw $9 4096($8)
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    sw $9 264192($8) # 3
+    sw $9 265216($8) # 4
+    sw $9 266240($8) # 5
+
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_17th_For
@@ -1087,6 +1309,15 @@ Skye_18th_For:
     beq $10 256 end_Skye_18th_For
     sw $9 0($8)
     sw $9 1024($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_18th_For
@@ -1109,6 +1340,18 @@ Skye_19th_For:
     sw $9 2048($8)
     sw $9 3072($8)
     sw $9 4096($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    sw $9 264192($8) # 3
+    sw $9 265216($8) # 4
+    sw $9 266240($8) # 5
+    
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_19th_For
@@ -1134,31 +1377,61 @@ Skye_20th_For:
     sw $9 5120($8)
     sw $9 6144($8)
     sw $9 7168($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    sw $9 264192($8) # 3
+    sw $9 265216($8) # 4
+    sw $9 266240($8) # 5
+    sw $9 267264($8) # 6
+    sw $9 268288($8) # 7
+    sw $9 269312($8) # 8
+    #sw $9 267264($8) # 9
+    #sw $9 267264($8) # 10
+
     addi $10 $10 1
     addi $8 $8 4
     j Skye_20th_For
 
 end_Skye_20th_For:
 end_Skye_For:
+    # ====================
     # DESEMPILHAR
+	# ====================
     addi $29 $29 4
 	lw $31 0($29)
+
 	jr $31
 
     
-# ================================================================
-# **** Desenhar Areia ****
+# ========================================================
+# **** Sand_Draw (Desenhar a Areia do Cenário) ****
 
-# INPUT_Reg: None	
+# INPUT_Reg: None	    
+
 # OUTPUT_Reg: None
-# Reg_Usados: 
+
+# Reg_Usados: # $7  -> Varivél SEGUNDÁRIA para definir Altura de Iniciar o PIXEL
+              # $8  -> Endereço de Memória 
+              # $9  -> Cor do Pixel
+              # $10 -> Contador (Conta para saber o momento de iniciar outro Comando)
+              # $11 -> Contador SECUNDARIO (AJuda na Altura de Pixel)
+              # $29 -> Endereço de PILHA
+              # $31 -> Return do JAL
+
 Sand_Draw:
-    #EMPILHAR
+    # ====================
+    # EMPILHAR
+	# ====================
     sw $31 0($29)
     addi $29 $29 -4
 
     addi $7 $0 1024
-    mul $7 $7 170
+    mul $7 $7 170 # -> Inicio linha 170
     lui $8 0x1001
     add $8 $8 $7
     addi $9 $0 0
@@ -1167,8 +1440,8 @@ Sand_Draw:
     addi $11 $0 0 # Contador 2
     
 Sand_Draw_For:
-    beq $11 86 end_Sand_Draw
-    beq $10 256 end_Sand_Draw_For
+    beq $11 86 end_Sand_Draw # -> Tamanho da Area 86 Pixel de Altura
+    beq $10 256 end_Sand_Draw_For 
     sw $9 0($8)
     sw $9 262144($8)
     
@@ -1182,24 +1455,37 @@ end_Sand_Draw_For:
     j Sand_Draw_For
     
 end_Sand_Draw:
+    # ====================
     # DESEMPILHAR
+	# ====================
     addi $29 $29 4
 	lw $31 0($29)
 	jr $31
 
-# ================================================================
-# **** Desenhar Mato ****
+# ========================================================
+# **** Jungle_Draw (Desenhar o Mato do Cenário) ****
 
-# INPUT_Reg: None	
+# INPUT_Reg: None	    
+
 # OUTPUT_Reg: None
-# Reg_Usados:
+
+# Reg_Usados: # $7  -> Varivél SEGUNDÁRIA para definir Altura de Iniciar o PIXEL
+              # $8  -> Endereço de Memória 
+              # $9  -> Cor do Pixel
+              # $10 -> Contador (Conta para saber o momento de iniciar outro Comando)
+              # $11 -> Contador SECUNDARIO (AJuda na Altura de Pixel)
+              # $29 -> Endereço de PILHA
+              # $31 -> Return do JAL
+
 Jungle_Draw:
+    # ====================
     # EMPILHAR
+	# ====================
     sw $31 0($29)
     addi $29 $29 -4
 
     addi $7 $0 1024
-    mul $7 $7 154 # -> Altura
+    mul $7 $7 154 # -> Inicio da Linha 154
     lui $8 0x1001
     add $8 $8 $7
     addi $9 $0 0
@@ -1208,7 +1494,7 @@ Jungle_Draw:
     addi $11 $0 0 # Contador 2
 
 Jungle_Draw_For:
-    beq $11 25 end_Jungle_Draw
+    beq $11 25 end_Jungle_Draw # -> Tamanho do mato 25 Altura
     beq $10 256 end_Jungle_Draw_For
     sw $9 0($8)
     
@@ -1222,23 +1508,35 @@ end_Jungle_Draw_For:
     j Jungle_Draw_For
 
 end_Jungle_Draw:
+    # ====================
     # DESEMPILHAR
+	# ====================
     addi $29 $29 4
 	lw $31 0($29)
+
 	jr $31
 
-# ================================================================
-# **** Desenhar Detalhes ****
+# ========================================================
+# **** Details_Draw (Desenhar o Detalhes do Cenário) ****
 
-# INPUT_Reg: $2 -> Tamanho dos Datalhes
-#            $3 -> Posição X 
-#            $4 -> Posição Y 
-# 	     $9 -> Cor do Detalhe	
+# INPUT_Reg: None	    
+
 # OUTPUT_Reg: None
-# Reg_Usados:
+
+# Reg_Usados: # $2  -> Largura X do pixel
+              # $3  -> Altura Y do Pixel
+              # $4  -> Posição Lagura eixo X da Tela (onde inicia o Pixel)
+              # $5  -> Posição Altura eixo Y da Tela (onde inicia o Pixel)
+              # $9  -> Cor do Pixel
+              # $15 -> Base do Início da Tela, Eixo X (referencia para aonde comeã a gerar o NPC)
+              # $16 -> Base do Início da Tela, Eixo X (referencia para aonde comeã a gerar o NPC)
+              # $29 -> Endereço de PILHA
+              # $31 -> Return do JAL
 
 Details_Draw:
+    # ====================
     # EMPILHAR
+	# ====================
     sw $31 0($29)
     addi $29 $29 -4
 
@@ -1263,9 +1561,12 @@ Details_Draw_For:
     j Details_Draw_For
 
 end_Details_Draw_For:
+    # ====================
     # DESEMPILHAR
+	# ====================
     addi $29 $29 4
 	lw $31 0($29)
+
 	jr $31
 
 
