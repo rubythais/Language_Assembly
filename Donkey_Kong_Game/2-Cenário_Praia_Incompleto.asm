@@ -12,7 +12,7 @@ main:
     addi $3 $0 190
     jal Monkey
    
-   addi $20 $0 40
+   addi $30 $0 5
    jal Monkey_Walk
     
     
@@ -72,7 +72,7 @@ fim_Cenário_Praia:
 Monkey:
     # EMPILHAR
 	sw $31 0($29)
-    addi $29 $29 -4
+   	 addi $29 $29 -4
     
 	add $15 $2 $0
 	add $16 $3 $0
@@ -1955,51 +1955,70 @@ Sunset:
 
 
 Monkey_Walk:
-	lui $8 0x1001
-	addi $4 $0 1024
-	mul $4 $4 $16
-	addi $5 $0 4
-	mul $5 $5 $15
-	add $8 $8 $4
-	add $8 $8 $5
-	addi $8 $8 -5200
+	sw $31 0($29)
+	addi $29 $29 -4
 	
-	add $4 $8 $0
+	lui $8 0x1001
+	mul $9 $16 1024
+	mul $10 $15 4
+	add $8 $8 $9
+	add $8 $8 $10
+	addi $9 $0 0
+	addi $8 $8 -5200
+	addi $10 $8 0
 	addi $5 $0 0
 	addi $6 $0 0
-	addi $7 $0 0
-Monkey_Walk_For:
-	beq $5 $20 fim_Monkey_Walk
-	beq $7 32 New_Mokey_Walk
-	beq $6 60 end_Monkey_Walk_For
-	lw $10 262144($8)
-	sw $10 0($8)
-	
-	addi $8 $8 4
-	addi $6 $6 1
-	j Monkey_Walk_For
-end_Monkey_Walk_For:
-	addi $6 $0 0
-	addi $7 $7 1
-	addi $8 $4 1024
-	addi $4 $4 1024
-	j Monkey_Walk_For
+	addi $27 $0 0
+	jal timer
 
-New_Mokey_Walk:
-	addi $15 $15 5
-	addi $2 $15 0
-    	addi $3 $16 0
-    	jal Monkey
-    	jal timer
-    	addi $6 $0 0
-	addi $7 $7 0
+Monkey_Walk_For:
+	beq $27 $30 End_Monkey_Walk
+	beq $5 64 Other_Line_Monkey_Walk_For
+	beq $6 32 New_Monkey_Walk_For
+	lw $9 262144($8)
+	sw $9 0($8)
+	addi $8 $8 4
 	addi $5 $5 1
 	j Monkey_Walk_For
-fim_Monkey_Walk:
-	# DESEMPILHAR
+Other_Line_Monkey_Walk_For:
+	addi $6 $6 1
+	addi $5 $0 0
+	addi $8 $10 1024
+	addi $10 $10 1024
+	j Monkey_Walk_For
+	
+	
+New_Monkey_Walk_For:
+	
+	addi $2 $15 -5
+	add $3 $0 $16
+	jal Monkey
+	
+	addi $27 $27 1
+	
+	addi $15 $15 -5
+	addi $16 $0 190
+	
+	lui $8 0x1001
+	mul $9 $16 1024
+	mul $10 $15 4
+	add $8 $8 $9
+	add $8 $8 $10
+	addi $9 $0 0
+	addi $8 $8 -5200
+	addi $10 $8 0
+	addi $5 $0 0
+	addi $6 $0 0
+	jal timer
+	j Monkey_Walk_For
+	
+	
+End_Monkey_Walk:
+	
     	addi $29 $29 4
 	lw $31 0($29)
 	jr $31
+
 
 
 timer: 
