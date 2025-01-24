@@ -1,23 +1,29 @@
-.text
+	.text
 
 main:
 
 	jal Mario_Dark_Sky
-	jal Mario_Dark_Floor_Draw
+	
+	
+	addi $2 $0 200
+	addi $3 $0 26
+	addi $4 $0 0
+	addi $5 $0 230
+	jal Floor_Mario_Draw
 	#jal andar
 	
 	
 	
-	addi $2 $0 20 # Posição X
-	addi $3 $0 250 # Posição Y
+	addi $2 $0 20 # PosiÃ§Ã£o X
+	addi $3 $0 250 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
-	addi $2 $0 68 # Posição X
-	addi $3 $0 222 # Posição Y
+	addi $2 $0 68 # PosiÃ§Ã£o X
+	addi $3 $0 222 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
-	addi $2 $0 160 # Posição X
-	addi $3 $0 196 # Posição Y
+	addi $2 $0 160 # PosiÃ§Ã£o X
+	addi $3 $0 196 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 
 
@@ -28,9 +34,9 @@ fim:
 	
 
 # ================================================================
-# **** Desenhar Céu Degrade ****
+# **** Desenhar CÃ©u Degrade ****
 
-# INPUT_Reg: $3 -> Posição Y 
+# INPUT_Reg: $3 -> PosiÃ§Ã£o Y 
 # 	     $9 -> Cor 	
 # OUTPUT_Reg: None
 # Reg_Usados:
@@ -723,7 +729,7 @@ end_Mario_Dark_Sky:
 # **** Desenhar Detalhes ****
 
 # INPUT_Reg: $2 -> Tamanho dos Datalhes
-#            $3 -> Posição Y 
+#            $3 -> PosiÃ§Ã£o Y 
 # 	     $9 -> Cor 	
 # OUTPUT_Reg: None
 # Reg_Usados:
@@ -767,159 +773,98 @@ for: beq $10, $0, fim
       j for
 
 
-Mario_Dark_Floor_Draw:
-	sw $31 -4($29)
-	lui $8 0x1001 #Endereço de Memória
-	addi $5 $0 1024 # Posição Y
-	mul $5 $5 168
-	add $8 $8 $5
-	addi $9 $0 0
-	ori $9 0x6F3D10 # COR -> #9D6634
-	addi $5 $0 0 # Contador 1
-	addi $6 $0 0 # Contador 2
+
+# ========================================================
+# **** Floor_Mario_Draw 
+# (Desenhar o chão do mário) ****
+
+# INPUT_Reg: None	    
+
+# OUTPUT_Reg: None
+
+# Reg_Usados: # $2  -> Lagura do Pixel
+	      # $3  -> Altura do Pixel
+	      # $4  -> Posição X da Tela
+	      # $5  -> Posição Y da Tela
+	      # $6  -> Contador 1
+	      # $7  -> Contador 2
+              # $8  -> EndereÃ§o de MemÃ³ria 
+              # $9  -> Cor do Pixel
+              
+              # $29 -> EndereÃ§o de PILHA
+              # $31 -> Return do JAL
+
+Floor_Mario_Draw:
+	# ============
+	# EMPILHAR
+	# ============
+	sw $31 0($29)
+	addi $29 $29 -4
 	
-Mario_Dark_Floor_Draw_For:
-	beq $6 88 end_Mario_Dark_Floor_Draw
-	beq $5 256 end_Mario_Dark_Floor_Draw_For
+	lui $8  0x1001
+	addi $6 $0 1024 
+	mul $6 $6 $5
+    	mul $4 $4 4
+    	add $6 $6 $4
+    	add $8 $8 $6
+    	addi $6 $0 0
+    	addi $7 $0 0
+    	addi $10 $0 0
+    	add $10 $10 $8 
+
+	addi $9 $0 0
+	
+	ori $9 0x552E08 # Cor -> #552E08
+
+Floor_Mario_Draw_For:
+	beq $6 $3 Floor_Mario_Draw_Details
+	beq $7 $2 Floor_Mario_Draw_new_Line
 	sw $9 0($8)
 	sw $9 262144($8)
-	addi $5 $5 1
+	addi $7 $7 1
 	addi $8 $8 4
-	j Mario_Dark_Floor_Draw_For
+	j Floor_Mario_Draw_For
 	
-end_Mario_Dark_Floor_Draw_For:
-	addi $5 $0 0
+Floor_Mario_Draw_new_Line:
+	addi $7 $0 0
 	addi $6 $6 1
-	j Mario_Dark_Floor_Draw_For
+	addi $8 $10 1024
+	addi $10 $10 1024
+	j Floor_Mario_Draw_For
+
+Floor_Mario_Draw_Details:
+	beq $4 0 init_Floor_Mario_Draw_Details
+
+init_Floor_Mario_Draw_Details:
+	addi $10 $5 -18
+	
+	lui $8 0x1001
+	addi $6 $0 1024
+	mul $10 $10 $6 
+	mul $4 $4 4
+	add $10 $10 $4
+	add $8 $8 $10
 	
 	
 
-end_Mario_Dark_Floor_Draw:
-	jal Floor_Dark_Draw
-	lw $31 -4($29)
-	jr $31
+End_Floor_Mario_Draw:
+	# ============
+	# DESEMPILHAR
+	# ============
 
-Floor_Dark_Draw:
-	lui $8 0x1001 #Endereço de Memória
-	addi $5 $0 1024 # Posição Y
-	mul $5 $5 167
-	add $8 $8 $5
-	addi $9 $0 0
-	ori $9 0x40433D # COR -> #40433D
-	addi $5 $0 0 # Contador 1
-	addi $6 $0 0 # Contador 2
-	addi $7 $0 17 # Contador 3
-	addi $10 $0 0 # Contador Final
-	
-Floor_Dark_Draw_For_1:
-	beq $6 $7 end_end_Floor_Dark_Draw_For_1
-	beq $5 256 end_Floor_Dark_Draw_For_1
-	sw $9  0($8)
-	addi $8 $8 4
-	addi $5 $5 1
-	j Floor_Dark_Draw_For_1
-
-end_Floor_Dark_Draw_For_1:
-	addi $6 $6 1
-	addi $5 $0 0
-	j Floor_Dark_Draw_For_1
-	
-end_end_Floor_Dark_Draw_For_1:
-	lui $8 0x1001 #Endereço de Memória
-	addi $5 $0 1024 # Posição Y
-	mul $5 $5 185
-	add $8 $8 $5
-	addi $9 $0 0
-	ori $9 0x402207 # COR -> #9D6634
-	addi $5 $0 0 # Contador 1
-	addi $6 $0 0 # Contador 2
-	addi $7 $0 0 # Contador 3
-	addi $10 $0 0 # Contador Final
-
-
-	
-Floor_Dark_Draw_For:
-	beq $7 127 end_Floor_Dark_Draw
-	beq $5 1 Floor_Dark_1th_Draw
-	beq $6 1 Floor_Dark_2th_Draw
-	
-	j Floor_Dark_init_Draw
-Floor_Dark_init_Draw:
-	addi $8 $8 -1024
-	sw $9 8($8)
-	sw $9 12($8)
-	sw $9 1032($8)
-	sw $9 1036($8)
-	
-	addi $8 $8 1024
-	sw $9 1024($8)
-	sw $9 1028($8)
-	sw $9 2048($8)
-	sw $9 2052($8)
-	addi $5 $5 1
-	addi $7 $7 2
-	addi $8 $8 -3072
-	addi $8 $8 16
-	j Floor_Dark_Draw_For
-Floor_Dark_1th_Draw:
-	# BASE SUPERIOR 1
-	sw $9 0($8)
-	sw $9 4($8)
-	sw $9 1024($8)
-	sw $9 1028($8)
-	# BASE SUPERIOR 2
-	sw $9 16($8)
-	sw $9 20($8)
-	sw $9 1040($8)
-	sw $9 1044($8)
-	# BASE INFERIOR 
-	sw $9 2056($8)
-	sw $9 2060($8)
-	sw $9 3080($8)
-	sw $9 3084($8)
-	
-	addi $5 $0 0
-	addi $6 $6 1
-	addi $8 $8 20
-	addi $7 $7 3
-	j Floor_Dark_Draw_For
-Floor_Dark_2th_Draw:
-	addi $8 $8 2052
-	sw $9 0($8)
-	sw $9 4($8)
-	sw $9 8($8)
-	sw $9 12($8)
-	sw $9 1024($8)
-	sw $9 1028($8)
-	sw $9 1032($8)
-	sw $9 1036($8)
-	addi $8 $8 -2052
-	addi $8 $8 20
-	addi $7 $7 2
-	addi $6 $0 0 # Zerar o Contador 2
-	addi $5 $5 1
-	j Floor_Dark_Draw_For
-	
-end_Floor_Dark_Draw:
-	# BASE SUPERIOR 1
-	sw $9 0($8)
-	sw $9 4($8)
-	sw $9 1024($8)
-	sw $9 1028($8)
-	jr $31
 
 # ================================================================
 # **** Desenhar Caveira ****
 
-# INPUT_Reg: $2 -> Posição X
-#            $3 -> Posição Y 
+# INPUT_Reg: $2 -> PosiÃ§Ã£o X
+#            $3 -> PosiÃ§Ã£o Y 
 # OUTPUT_Reg: None
 # Reg_Usados:
 Skull_Draw:
 	sw $31 -4($29)
 	lui $8 0x1001
 	addi $4 $0 1024
-	mul $4 $4 $3 # Posição Y
+	mul $4 $4 $3 # PosiÃ§Ã£o Y
 	mul $2 $2 4
 	add $4 $4 $2	
 	add $8 $8 $4
