@@ -1,31 +1,32 @@
-	.text
+.text
 
 main:
 
 	jal Mario_Dark_Sky
-	
-	
-	addi $2 $0 200
-	addi $3 $0 26
-	addi $4 $0 0
-	addi $5 $0 230
-	jal Floor_Mario_Draw
+	jal Mario_Dark_Floor_Draw
 	#jal andar
 	
 	
 	
-	addi $2 $0 20 # PosiÃ§Ã£o X
-	addi $3 $0 250 # PosiÃ§Ã£o Y
+	
+	addi $2 $0 20 # Posição X
+	addi $3 $0 250 # Posição Y
 	jal Skull_Draw
 	
-	addi $2 $0 68 # PosiÃ§Ã£o X
-	addi $3 $0 222 # PosiÃ§Ã£o Y
+	addi $2 $0 68 # Posição X
+	addi $3 $0 222 # Posição Y
 	jal Skull_Draw
 	
-	addi $2 $0 160 # PosiÃ§Ã£o X
-	addi $3 $0 196 # PosiÃ§Ã£o Y
+	addi $2 $0 160 # Posição X
+	addi $3 $0 196 # Posição Y
 	jal Skull_Draw
 
+	addi $2 $0 100
+	addi $3 $0 123
+	jal Wizard
+	
+	addi $30 $0 5
+	jal Wizard_Walk
 
 
 fim:
@@ -34,15 +35,16 @@ fim:
 	
 
 # ================================================================
-# **** Desenhar CÃ©u Degrade ****
+# **** Desenhar Céu Degrade ****
 
-# INPUT_Reg: $3 -> PosiÃ§Ã£o Y 
+# INPUT_Reg: $3 -> Posição Y 
 # 	     $9 -> Cor 	
 # OUTPUT_Reg: None
 # Reg_Usados:
 
 Mario_Dark_Sky:
 	sw $31 0($29)
+	addi $29 $29 -4
 	
 	addi $3 $0 0 
         addi $9 $0 0 
@@ -721,6 +723,7 @@ Mario_Dark_Sky:
 	
 	
 end_Mario_Dark_Sky:
+	addi $29 $29 4
 	lw $31 0($29)
 	jr $31
 
@@ -729,12 +732,13 @@ end_Mario_Dark_Sky:
 # **** Desenhar Detalhes ****
 
 # INPUT_Reg: $2 -> Tamanho dos Datalhes
-#            $3 -> PosiÃ§Ã£o Y 
+#            $3 -> Posição Y 
 # 	     $9 -> Cor 	
 # OUTPUT_Reg: None
 # Reg_Usados:
 Mario_Dark_Sky_Draw:
-	sw $31 -4($29)
+	sw $31 0($29)
+	addi $29 $29 -4
 	lui $8 0x1001
 	addi $4 $0 1024
 	mul $4 $4 $3
@@ -750,7 +754,8 @@ Mario_Dark_Sky_Draw_For:
 	j Mario_Dark_Sky_Draw_For
 
 fim_Mario_Dark_Sky_Draw:
-	lw $31 -4($29)
+	add $29 $29 4
+	lw $31 ($29)
 	jr $31
 	
 	
@@ -773,98 +778,163 @@ for: beq $10, $0, fim
       j for
 
 
-
-# ========================================================
-# **** Floor_Mario_Draw 
-# (Desenhar o chão do mário) ****
-
-# INPUT_Reg: None	    
-
-# OUTPUT_Reg: None
-
-# Reg_Usados: # $2  -> Lagura do Pixel
-	      # $3  -> Altura do Pixel
-	      # $4  -> Posição X da Tela
-	      # $5  -> Posição Y da Tela
-	      # $6  -> Contador 1
-	      # $7  -> Contador 2
-              # $8  -> EndereÃ§o de MemÃ³ria 
-              # $9  -> Cor do Pixel
-              
-              # $29 -> EndereÃ§o de PILHA
-              # $31 -> Return do JAL
-
-Floor_Mario_Draw:
-	# ============
-	# EMPILHAR
-	# ============
-	sw $31 0($29)
-	addi $29 $29 -4
-	
-	lui $8  0x1001
-	addi $6 $0 1024 
-	mul $6 $6 $5
-    	mul $4 $4 4
-    	add $6 $6 $4
-    	add $8 $8 $6
-    	addi $6 $0 0
-    	addi $7 $0 0
-    	addi $10 $0 0
-    	add $10 $10 $8 
-
+Mario_Dark_Floor_Draw:
+	sw $31 -4($29)
+	lui $8 0x1001 #Endereço de Memória
+	addi $5 $0 1024 # Posição Y
+	mul $5 $5 168
+	add $8 $8 $5
 	addi $9 $0 0
+	ori $9 0x6F3D10 # COR -> #9D6634
+	addi $5 $0 0 # Contador 1
+	addi $6 $0 0 # Contador 2
 	
-	ori $9 0x552E08 # Cor -> #552E08
-
-Floor_Mario_Draw_For:
-	beq $6 $3 Floor_Mario_Draw_Details
-	beq $7 $2 Floor_Mario_Draw_new_Line
+Mario_Dark_Floor_Draw_For:
+	beq $6 88 end_Mario_Dark_Floor_Draw
+	beq $5 256 end_Mario_Dark_Floor_Draw_For
 	sw $9 0($8)
 	sw $9 262144($8)
-	addi $7 $7 1
+	addi $5 $5 1
 	addi $8 $8 4
-	j Floor_Mario_Draw_For
+	j Mario_Dark_Floor_Draw_For
 	
-Floor_Mario_Draw_new_Line:
-	addi $7 $0 0
+end_Mario_Dark_Floor_Draw_For:
+	addi $5 $0 0
 	addi $6 $6 1
-	addi $8 $10 1024
-	addi $10 $10 1024
-	j Floor_Mario_Draw_For
-
-Floor_Mario_Draw_Details:
-	beq $4 0 init_Floor_Mario_Draw_Details
-
-init_Floor_Mario_Draw_Details:
-	addi $10 $5 -18
-	
-	lui $8 0x1001
-	addi $6 $0 1024
-	mul $10 $10 $6 
-	mul $4 $4 4
-	add $10 $10 $4
-	add $8 $8 $10
+	j Mario_Dark_Floor_Draw_For
 	
 	
 
-End_Floor_Mario_Draw:
-	# ============
-	# DESEMPILHAR
-	# ============
+end_Mario_Dark_Floor_Draw:
+	jal Floor_Dark_Draw
+	lw $31 -4($29)
+	jr $31
 
+Floor_Dark_Draw:
+	lui $8 0x1001 #Endereço de Memória
+	addi $5 $0 1024 # Posição Y
+	mul $5 $5 167
+	add $8 $8 $5
+	addi $9 $0 0
+	ori $9 0x40433D # COR -> #40433D
+	addi $5 $0 0 # Contador 1
+	addi $6 $0 0 # Contador 2
+	addi $7 $0 17 # Contador 3
+	addi $10 $0 0 # Contador Final
+	
+Floor_Dark_Draw_For_1:
+	beq $6 $7 end_end_Floor_Dark_Draw_For_1
+	beq $5 256 end_Floor_Dark_Draw_For_1
+	sw $9  0($8)
+	sw $9 262144($8)
+	addi $8 $8 4
+	addi $5 $5 1
+	j Floor_Dark_Draw_For_1
+
+end_Floor_Dark_Draw_For_1:
+	addi $6 $6 1
+	addi $5 $0 0
+	j Floor_Dark_Draw_For_1
+	
+end_end_Floor_Dark_Draw_For_1:
+	lui $8 0x1001 #Endereço de Memória
+	addi $5 $0 1024 # Posição Y
+	mul $5 $5 185
+	add $8 $8 $5
+	addi $9 $0 0
+	ori $9 0x402207 # COR -> #9D6634
+	addi $5 $0 0 # Contador 1
+	addi $6 $0 0 # Contador 2
+	addi $7 $0 0 # Contador 3
+	addi $10 $0 0 # Contador Final
+
+
+	
+Floor_Dark_Draw_For:
+	beq $7 127 end_Floor_Dark_Draw
+	beq $5 1 Floor_Dark_1th_Draw
+	beq $6 1 Floor_Dark_2th_Draw
+	
+	j Floor_Dark_init_Draw
+Floor_Dark_init_Draw:
+	addi $8 $8 -1024
+	sw $9 8($8)
+	sw $9 12($8)
+	sw $9 1032($8)
+	sw $9 1036($8)
+	
+	 
+    	
+	
+	addi $8 $8 1024
+	sw $9 1024($8)
+	sw $9 1028($8)
+	sw $9 2048($8)
+	sw $9 2052($8)
+	addi $5 $5 1
+	addi $7 $7 2
+	addi $8 $8 -3072
+	addi $8 $8 16
+	j Floor_Dark_Draw_For
+Floor_Dark_1th_Draw:
+	# BASE SUPERIOR 1
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 1024($8)
+	sw $9 1028($8)
+	# BASE SUPERIOR 2
+	sw $9 16($8)
+	sw $9 20($8)
+	sw $9 1040($8)
+	sw $9 1044($8)
+	# BASE INFERIOR 
+	sw $9 2056($8)
+	sw $9 2060($8)
+	sw $9 3080($8)
+	sw $9 3084($8)
+	
+	addi $5 $0 0
+	addi $6 $6 1
+	addi $8 $8 20
+	addi $7 $7 3
+	j Floor_Dark_Draw_For
+Floor_Dark_2th_Draw:
+	addi $8 $8 2052
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 8($8)
+	sw $9 12($8)
+	sw $9 1024($8)
+	sw $9 1028($8)
+	sw $9 1032($8)
+	sw $9 1036($8)
+	addi $8 $8 -2052
+	addi $8 $8 20
+	addi $7 $7 2
+	addi $6 $0 0 # Zerar o Contador 2
+	addi $5 $5 1
+	j Floor_Dark_Draw_For
+	
+end_Floor_Dark_Draw:
+	# BASE SUPERIOR 1
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 1024($8)
+	sw $9 1028($8)
+	jr $31
 
 # ================================================================
 # **** Desenhar Caveira ****
 
-# INPUT_Reg: $2 -> PosiÃ§Ã£o X
-#            $3 -> PosiÃ§Ã£o Y 
+# INPUT_Reg: $2 -> Posição X
+#            $3 -> Posição Y 
 # OUTPUT_Reg: None
 # Reg_Usados:
 Skull_Draw:
 	sw $31 -4($29)
 	lui $8 0x1001
 	addi $4 $0 1024
-	mul $4 $4 $3 # PosiÃ§Ã£o Y
+	mul $4 $4 $3 # Posição Y
 	mul $2 $2 4
 	add $4 $4 $2	
 	add $8 $8 $4
@@ -1100,4 +1170,388 @@ end_Skull_Draw_For:
 	lw $31 -4($29)
 	jr $31
 
+	# =====================================
+
 	
+# ========================================================
+# **** Wizard ( Desenhar Mago - * NPC *) ****
+
+# INPUT_Reg: $2 -> Posição X
+	  #  $3 -> Posição Y
+
+# OUTPUT_Reg: None
+
+# Reg_Usados: # $2  -> Largura X do pixel
+              # $3  -> Altura Y do Pixel
+              # $4  -> Posição Lagura eixo X da Tela (onde inicia o Pixel)
+              # $5  -> Posição Altura eixo Y da Tela (onde inicia o Pixel)
+              # $9  -> Cor do Pixel
+              # $15 -> Base do Início da Tela, Eixo X (referencia para aonde comeã a gerar o NPC)
+              # $16 -> Base do Início da Tela, Eixo X (referencia para aonde comeã a gerar o NPC)
+              # $29 -> Endereço de PILHA
+              # $31 -> Return do JAL
+Wizard:
+	# =============================
+    	# EMPILHAR
+    	# =============================
+	sw $31 0($29)
+	addi $29 $29 -4
+	
+	# =============================
+    	# SEGUIR DE BASE
+    	# =============================
+    	
+	add $15 $0 $2
+	add $16 $0 $3
+	
+	# =============================
+    	# Roupa
+    	# =============================
+    	
+	addi $2 $0 6	
+	addi $3 $0 2
+	addi $4 $15 0
+	addi $5 $16 0
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 10
+	addi $3 $0 2
+	addi $4 $15 -2
+	addi $5 $16 2
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 12
+	addi $3 $0 2
+	addi $4 $15 -2
+	addi $5 $16 4
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 14
+	addi $3 $0 2
+	addi $4 $15 -4
+	addi $5 $16 6
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 10
+	addi $3 $0 6
+	addi $4 $15 -6
+	addi $5 $16 8
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 18
+	addi $3 $0 6
+	addi $4 $15 -12
+	addi $5 $16 14
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	
+	addi $2 $0 20
+	addi $3 $0 6
+	addi $4 $15 -12
+	addi $5 $16 20
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 -12
+	addi $5 $16 26
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 -12
+	addi $5 $16 28
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	# =============================
+    	# ROUPA SEGUNDA PARTE
+    	# =============================
+	addi $2 $0 14
+	addi $3 $0 6
+	addi $4 $15 -6
+	addi $5 $16 26
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 16
+	addi $3 $0 4
+	addi $4 $15 -6
+	addi $5 $16 32
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 18
+	addi $3 $0 4
+	addi $4 $15 -6
+	addi $5 $16 36
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 20
+	addi $3 $0 2
+	addi $4 $15 -6
+	addi $5 $16 40
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 26
+	addi $3 $0 2
+	addi $4 $15 -6
+	addi $5 $16 42
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	# =============================
+    	# DETALHES ROUPA MANGA
+    	# =============================
+	
+	addi $2 $0 3
+	addi $3 $0 10
+	addi $4 $15 -12
+	addi $5 $16 16
+	addi $9 $0 0
+	ori $9 0x4F1472
+	jal Wizard_Draw_Pixel
+	
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 -12
+	addi $5 $16 26
+	addi $9 $0 0
+	ori $9 0x4F1472
+	jal Wizard_Draw_Pixel
+	
+	# =============================
+    	# ROSTO
+    	# =============================
+    	
+	addi $2 $0 6
+	addi $3 $0 6
+	addi $4 $15 -4
+	addi $5 $16 8
+	addi $9 $0 0
+	ori $9 0x231725
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 -2
+	addi $5 $16 14
+	addi $9 $0 0
+	ori $9 0x231725
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 3
+	addi $4 $15 -4
+	addi $5 $16 8
+	addi $9 $0 0
+	ori $9 0xFB11DF
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 3
+	addi $4 $15 0
+	addi $5 $16 8
+	addi $9 $0 0
+	ori $9 0xFB11DF
+	jal Wizard_Draw_Pixel
+	
+	
+	# =============================
+    	# GORRO
+    	# =============================
+    	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 6
+	addi $5 $16 8
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 4
+	addi $4 $15 8
+	addi $5 $16 10
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 3
+	addi $3 $0 3
+	addi $4 $15 10
+	addi $5 $16 14
+	addi $9 $0 0
+	ori $9 0x75239F
+	jal Wizard_Draw_Pixel
+
+	# =============================
+    	# MÃO
+    	# =============================
+	
+	addi $2 $0 4
+	addi $3 $0 4
+	addi $4 $15 -14
+	addi $5 $16 14
+	addi $9 $0 0
+	ori $9 0xECE9D7
+	jal Wizard_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 -14
+	addi $5 $16 14
+	addi $9 $0 0
+	ori $9 0xF9F7E9
+	jal Wizard_Draw_Pixel
+	
+	
+	
+	# =============================
+    	# DESEMPILHAR
+    	# =============================
+	addi $29 $29 4
+	lw $31 0($29)
+	
+	jr $31 
+
+Wizard_Draw_Pixel:
+	sw $31 0($29)
+	addi $29 $29 -4
+	
+	lui $8 0x1001 # Memoria
+	addi $6 $0 1024
+	mul $6 $6 $5 #Posição Y
+	mul $7 $4 4 # Posição X
+	add $8 $8 $6
+	add $8 $8 $7
+	addi $5 $0 0 # Contador 1
+	addi $6 $0 0 # Contador 2
+	add $7 $8 $0
+
+Wizard_Draw_Pixel_For:
+	beq $6 $3 End_Wizard_Draw_Pixel
+	beq $5 $2 Wizard_Draw_Pixel_Mext_Line
+	sw $9 0($8)
+	addi $5 $5 1
+	addi $8 $8 4
+	j Wizard_Draw_Pixel_For
+	
+Wizard_Draw_Pixel_Mext_Line:
+	addi $5 $0 0 # Zerar Contador X
+	addi $6 $6 1
+	add $8 $7 $0
+	addi $8 $8 1024
+	addi $7 $7 1024
+	j Wizard_Draw_Pixel_For
+
+End_Wizard_Draw_Pixel:
+	addi $29 $29 4
+	lw $31 0($29)
+	jr $31
+	
+	
+	
+Wizard_Walk:
+	sw $31 0($29)
+	addi $29 $29 -4
+	
+	lui $8 0x1001
+	mul $9 $16 1024
+	mul $10 $15 4
+	add $8 $8 $9
+	add $8 $8 $10
+	addi $9 $0 0
+	addi $8 $8 -11264
+	addi $10 $8 0
+	addi $5 $0 0
+	addi $6 $0 0
+	addi $27 $0 0
+	jal timer
+
+Wizard_Walk_For:
+	beq $27 $30 End_Wizard_Walk
+	beq $5 64 Other_Line_Wizard_Walk_For
+	beq $6 60 New_Wizard_Walk_For
+	lw $9 262144($8)
+	sw $9 0($8)
+	addi $8 $8 4
+	addi $5 $5 1
+	j Wizard_Walk_For
+Other_Line_Wizard_Walk_For:
+	addi $6 $6 1
+	addi $5 $0 0
+	addi $8 $10 1024
+	addi $10 $10 1024
+	j Wizard_Walk_For
+	
+	
+New_Wizard_Walk_For:
+	
+	addi $2 $15 -5
+	add $3 $0 $16
+	jal Wizard
+	
+	addi $27 $27 1
+	
+	addi $15 $15 -5
+	addi $16 $0 123
+	
+	lui $8 0x1001
+	mul $9 $16 1024
+	mul $10 $15 4
+	add $8 $8 $9
+	add $8 $8 $10
+	addi $9 $0 0
+	addi $8 $8 -5200
+	addi $10 $8 0
+	addi $5 $0 0
+	addi $6 $0 0
+	jal timer
+	j Wizard_Walk_For
+	
+	
+End_Wizard_Walk:
+	
+    	addi $29 $29 4
+	lw $31 0($29)
+	jr $31
+	
+timer: 
+	sw $16, 0($29)
+       addi $29, $29, -4
+       addi $16, $0, 100000
+forT:  beq $16, $0, fimT
+       nop
+       nop
+       addi $16, $16, -1      
+       j forT                  
+fimT:  addi $29, $29, 4                                                    
+       lw $16, 0($29)          
+       jr $31
+

@@ -2,10 +2,8 @@
 
 
 main:
-    jal Sky_Draw
-    jal Sunset 
-    jal Jungle_Draw
-    jal Sand_Draw
+	jal Cenario_Praia_Tela1
+    
      
     
     addi $2 $0 180
@@ -14,40 +12,23 @@ main:
    
    addi $30 $0 5
    jal Monkey_Walk
-    
-    
-    addi $2 $0 10
-    addi $3 $0 0
-    addi $4 $0 161
-    addi $9 $0 0x355933
-    jal Details_Draw
-    
-    addi $2 $0 10
-    addi $3 $0 0
-    addi $4 $0 162
-    addi $9 $0 0x355933
-    jal Details_Draw
-    
-    addi $2 $0 10
-    addi $3 $0 0
-    addi $4 $0 163
-    addi $9 $0 0x355933
-    jal Details_Draw
-    
-    addi $2 $0 10
-    addi $3 $0 0
-    addi $4 $0 164
-    addi $9 $0 0x355933
-    jal Details_Draw
 
-    addi $2 $0 4
-    addi $3 $0 55
-    addi $4 $0 175
-    addi $9 $0 0xE3E09D
-    jal Details_Draw
+
+    
+    
+    
+    # ==============================
+    
+    
+ 
+ 
+    
+    
+    
 fim_Cenário_Praia:
     addi $2 $0 10
     syscall
+    
 
 # ~~~~~~~~~~~~~~~ PERSONAGENS GLOBAIS ~~~~~~~~~~~~~~~
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -722,6 +703,9 @@ Monkey:
 	jr $31
 
 
+
+	
+
 	
 
 
@@ -784,6 +768,30 @@ End_Monkey_Draw_Pixel:
 # ================================================================
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # ~~~~~~~~~~~~~~~ Cenário De Praia ~~~~~~~~~~~~~~~
+
+
+Cenario_Praia_Tela1:
+	# ================
+	# EMPILHAR
+	# ================
+	sw $31 0($29)
+	addi $29 $29 -4
+	
+    jal Sky_Draw
+    jal Sunset 
+    jal Jungle_Draw
+    jal Sand_Draw
+    jal Details_Draw_Sand
+    jal Details_Draw_Jungle
+    addi $2 $0 0
+    addi $3 $0 0
+    jal Coconut_Tree_Draw
+    
+Cenario_Praia_Tela1_END:
+	addi $29 $29 4
+	lw $31 0($29)
+	
+	jr $31
 
 # ========================================================
 # **** Sky_Draw (Desenhar o Céu com Gradiente Azul) ****
@@ -1398,10 +1406,194 @@ Skye_20th_For:
     j Skye_20th_For
 
 end_Skye_20th_For:
+    addi $10 $0 0 # Reset Contador
+    addi $9 $0 0
+    ori $9 0xD0EDFA # Cor -> #D0EDFA
+    addi $7 $0 1024
+    mul $7 $7 59
+    lui $8 0x1001
+    add $8 $8 $7
+    addi $11 $0 0 # Segundo Contador
+    j Skye_21th_For
+
+
+Skye_21th_For:
+	beq $10 256 end_Skye_21th_For
+    sw $9 0($8)
+    sw $9 1024($8)
+    
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    
+
+    addi $10 $10 1
+    addi $8 $8 4
+    j Skye_21th_For
+
+end_Skye_21th_For:
+    addi $10 $0 0 # Reset Contador
+    addi $9 $0 0
+    ori $9 0xCAEBFC # Cor -> #CAEBFC
+    addi $7 $0 1024
+    mul $7 $7 61
+    lui $8 0x1001
+    add $8 $8 $7
+    addi $11 $0 0 # Segundo Contador
+    j Skye_22th_For
+
+Skye_22th_For:
+    beq $10 256 end_Skye_22th_For
+    sw $9 0($8)
+    sw $9 1024($8)
+    sw $9 2048($8)
+    sw $9 3072($8)
+    sw $9 4096($8)
+    sw $9 5120($8)
+    sw $9 6144($8)
+    sw $9 7168($8)
+    sw $9 8192($8)
+    sw $9 9216($8)
+    sw $9 10240($8)
+    sw $9 11264($8)
+    sw $9 12288($8)
+    sw $9 13312($8)
+    sw $9 14336($8)
+    sw $9 15360($8)
+    sw $9 16384($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    sw $9 264192($8) # 3
+    sw $9 265216($8) # 4
+    sw $9 266240($8) # 5
+    sw $9 267264($8) # 6
+    sw $9 268288($8) # 7
+    sw $9 269312($8) # 8
+    sw $9 267264($8) # 9
+    sw $9 268288($8) # 10
+    sw $9 269312($8) # 11
+    sw $9 270336($8) # 12
+    sw $9 271360($8) # 13
+    sw $9 272384($8) # 14
+    sw $9 273408($8) # 15
+    sw $9 274432($8) # 16
+    sw $9 275456($8) # 17
+
+    addi $10 $10 1
+    addi $8 $8 4
+    j Skye_22th_For
+
+
+end_Skye_22th_For:
+    addi $10 $0 0 # Reset Contador
+    addi $9 $0 0
+    ori $9 0xCEE8F5 # Cor -> #CEE8F5
+    addi $7 $0 1024
+    mul $7 $7 68
+    lui $8 0x1001
+    add $8 $8 $7
+    addi $11 $0 0 # Segundo Contador
+    j Skye_23th_For
+
+
+Skye_23th_For:
+	beq $10 256 end_Skye_23th_For
+    sw $9 0($8)
+    sw $9 1024($8)
+    sw $9 2048($8)
+    sw $9 3072($8)
+    sw $9 4096($8)
+    sw $9 5120($8)
+    
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    sw $9 264192($8) # 3
+    sw $9 265216($8) # 4
+    sw $9 266240($8) # 5
+    sw $9 267264($8) # 6
+    
+    addi $10 $10 1
+    addi $8 $8 4
+    j Skye_23th_For
+
+end_Skye_23th_For:
+    addi $10 $0 0 # Reset Contador
+    addi $9 $0 0
+    ori $9 0xDDF1FC # Cor -> #DDF1FC
+    addi $7 $0 1024
+    mul $7 $7 78
+    lui $8 0x1001
+    add $8 $8 $7
+    addi $11 $0 0 # Segundo Contador
+    j Skye_24th_For
+
+
+Skye_24th_For:
+    beq $10 256 end_Skye_For
+    sw $9 0($8)
+    sw $9 1024($8)
+    sw $9 2048($8)
+    sw $9 3072($8)
+    sw $9 4096($8)
+    sw $9 5120($8)
+    sw $9 6144($8)
+    sw $9 7168($8)
+    sw $9 8192($8)
+    sw $9 9216($8)
+    sw $9 10240($8)
+    sw $9 11264($8)
+    sw $9 12288($8)
+    sw $9 13312($8)
+    sw $9 14336($8)
+    sw $9 15360($8)
+    sw $9 16384($8)
+
+    # ====================
+    # COPIAR TELA
+	# ====================
+
+    sw $9 262144($8) # 1
+    sw $9 263168($8) # 2
+    sw $9 264192($8) # 3
+    sw $9 265216($8) # 4
+    sw $9 266240($8) # 5
+    sw $9 267264($8) # 6
+    sw $9 268288($8) # 7
+    sw $9 269312($8) # 8
+    sw $9 267264($8) # 9
+    sw $9 268288($8) # 10
+    sw $9 269312($8) # 11
+    sw $9 270336($8) # 12
+    sw $9 271360($8) # 13
+    sw $9 272384($8) # 14
+    sw $9 273408($8) # 15
+    sw $9 274432($8) # 16
+    sw $9 275456($8) # 17
+    
+    addi $10 $10 1
+    addi $8 $8 4
+    j Skye_24th_For
+
+
+	
+
 end_Skye_For:
     # ====================
     # DESEMPILHAR
-	# ====================
+    # ====================
     addi $29 $29 4
 	lw $31 0($29)
 
@@ -2322,6 +2514,1174 @@ End_Monkey_Walk:
 
 
 
+Draw_Pixel:
+	# ======================
+	# EMPILHAR
+	# ======================
+	sw $31 0($29)
+	addi $29 $29 -4
+	
+	lui $8 0x1001 # Memoria
+	addi $6 $0 1024
+	mul $6 $6 $5 #Posição Y
+	mul $7 $4 4 # Posição X
+	add $8 $8 $6
+	add $8 $8 $7
+	addi $5 $0 0 # Contador 1
+	addi $6 $0 0 # Contador 2
+	add $7 $8 $0
+
+Draw_Pixel_For:
+	beq $6 $3 End_Draw_Pixel
+	beq $5 $2 Draw_Pixel_Next_Line
+	sw $9 0($8)
+	addi $5 $5 1
+	addi $8 $8 4
+	j Draw_Pixel_For
+	
+Draw_Pixel_Next_Line:
+	addi $5 $0 0 # Zerar Contador X
+	addi $6 $6 1
+	add $8 $7 $0
+	addi $8 $8 1024
+	addi $7 $7 1024
+	j Draw_Pixel_For
+
+End_Draw_Pixel:
+	# ======================
+	# DESEMPILHAR
+	# ======================
+	addi $29 $29 4
+	lw $31 0($29)
+	
+	jr $31
+
+Coconut_Tree_Draw:
+	# ===================
+	# EMPILHAR
+	# ===================
+	sw $31 0($29)
+	addi $29 $29 -4
+	
+	add $15 $2 $0
+	addi $16 $3 0
+    	# =======================
+    	addi $2 $0 18
+	addi $3 $0 2
+	addi $4 $15 18
+	addi $5 $16 180
+	addi $9 $0 0
+	ori $9 0x6F511F # COR -> #6F511F
+	jal Draw_Pixel
+				
+	addi $2 $0 16
+	addi $3 $0 2
+	addi $4 $15 20
+	addi $5 $16 180
+	addi $9 $0 0
+	ori $9 0x4A3108 # COR -> #4A3108
+	jal Draw_Pixel
+	
+	
+	addi $2 $0 14
+	addi $3 $0 3
+	addi $4 $15 20
+	addi $5 $16 177
+	addi $9 $0 0
+	ori $9 0x71521C # COR -> #71521C
+	jal Draw_Pixel
+	
+	# ==================
+	# TRONCO
+	# ==================
+	addi $2 $0 10
+	addi $3 $0 13
+	addi $4 $15 22
+	addi $5 $16 164
+	addi $9 $0 0
+	ori $9 0x43320E # COR -> #43320E
+	jal Draw_Pixel
+		
+	addi $2 $0 10
+	addi $3 $0 10
+	addi $4 $15 24
+	addi $5 $16 154
+	addi $9 $0 0
+	ori $9 0x43320E # COR -> #43320E
+	jal Draw_Pixel
+	# ==================
+	
+	
+	# ==================
+	# DETALHES TRONCO
+	# ==================
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 22
+	addi $5 $16 164
+	addi $9 $0 0
+	ori $9 0x533708 # COR -> #533708
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 24
+	addi $5 $16 166
+	addi $9 $0 0
+	ori $9 0x533708 # COR -> #533708
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 26
+	addi $5 $16 168
+	addi $9 $0 0
+	ori $9 0x533708 # COR -> #533708
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 24
+	addi $5 $16 170
+	addi $9 $0 0
+	ori $9 0x533708 # COR -> #533708
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 3
+	addi $4 $15 30
+	addi $5 $16 172
+	addi $9 $0 0
+	ori $9 0x533708 # COR -> #533708
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 8
+	addi $4 $15 30
+	addi $5 $16 158
+	addi $9 $0 0
+	ori $9 0x533708 # COR -> #533708
+	jal Draw_Pixel
+	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 30
+	addi $5 $16 160
+	addi $9 $0 0
+	ori $9 0x533708 # COR -> #533708
+	jal Draw_Pixel
+	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 28
+	addi $5 $16 162
+	addi $9 $0 0
+	ori $9 0x533708 # COR -> #533708
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 6
+	addi $4 $15 24
+	addi $5 $16 154
+	addi $9 $0 0
+	ori $9 0x533708 # COR -> #533708
+	jal Draw_Pixel
+	# ==================
+	
+	# ==================
+	# FOLHAS
+	# ==================
+	addi $2 $0 10
+	addi $3 $0 8
+	addi $4 $15 24
+	addi $5 $16 146
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 4
+	addi $3 $0 10
+	addi $4 $15 28
+	addi $5 $16 134
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	
+	addi $2 $0 10
+	addi $3 $0 6
+	addi $4 $15 18
+	addi $5 $16 130
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 22
+	addi $5 $16 128
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+		
+	addi $2 $0 2
+	addi $3 $0 6
+	addi $4 $15 16
+	addi $5 $16 132
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 8
+	addi $3 $0 2
+	addi $4 $15 8
+	addi $5 $16 136
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 6
+	addi $3 $0 2
+	addi $4 $15 8
+	addi $5 $16 138
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	
+	
+	addi $2 $0 16
+	addi $3 $0 2
+	addi $4 $15 16
+	addi $5 $16 144
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 6
+	addi $3 $0 2
+	addi $4 $15 20
+	addi $5 $16 142
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 22
+	addi $5 $16 140
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 8
+	addi $3 $0 2
+	addi $4 $15 12
+	addi $5 $16 146
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 14
+	addi $5 $16 148
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	#
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 32
+	addi $5 $16 138
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 32
+	addi $5 $16 136
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 14
+	addi $3 $0 2
+	addi $4 $15 32
+	addi $5 $16 134
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 8
+	addi $3 $0 2
+	addi $4 $15 36
+	addi $5 $16 132
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 38
+	addi $5 $16 130
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 8
+	addi $3 $0 2
+	addi $4 $15 46
+	addi $5 $16 136
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 6
+	addi $3 $0 2
+	addi $4 $15 48
+	addi $5 $16 138
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	
+	addi $2 $0 6
+	addi $3 $0 2
+	addi $4 $15 32
+	addi $5 $16 146
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 6
+	addi $3 $0 2
+	addi $4 $15 34
+	addi $5 $16 144
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 32
+	addi $5 $16 142
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 12
+	addi $3 $0 2
+	addi $4 $15 36
+	addi $5 $16 142
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 8
+	addi $3 $0 2
+	addi $4 $15 38
+	addi $5 $16 140
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 40
+	addi $5 $16 138
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 48
+	addi $5 $16 144
+	addi $9 $0 0
+	ori $9 0x217618 # COR -> #217618
+	jal Draw_Pixel
+	
+	
+	# DETALHE 
+	addi $2 $0 2
+	addi $3 $0 8
+	addi $4 $15 22
+	addi $5 $16 146
+	addi $9 $0 0
+	ori $9 0x1A4C19# COR -> #1A4C19
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 18
+	addi $5 $16 142
+	addi $9 $0 0
+	ori $9 0x1A4C19# COR -> #1A4C19
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 20
+	addi $5 $16 140
+	addi $9 $0 0
+	ori $9 0x1A4C19# COR -> #1A4C19
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 24
+	addi $5 $16 140
+	addi $9 $0 0
+	ori $9 0x1A4C19# COR -> #1A4C19
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 26
+	addi $5 $16 142
+	addi $9 $0 0
+	ori $9 0x1A4C19# COR -> #1A4C19
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 10
+	addi $5 $16 146
+	addi $9 $0 0
+	ori $9 0x1A4C19# COR -> #1A4C19
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 12
+	addi $5 $16 148
+	addi $9 $0 0
+	ori $9 0x1A4C19# COR -> #1A4C19
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 16
+	addi $5 $16 148
+	addi $9 $0 0
+	ori $9 0x1A4C19# COR -> #1A4C19
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 20
+	addi $5 $16 128
+	addi $9 $0 0
+	ori $9 0x1A4C19# COR -> #1A4C19
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 24
+	addi $5 $16 128
+	addi $9 $0 0
+	ori $9 0x1A4C19# COR -> #1A4C19
+	jal Draw_Pixel
+	
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 8
+	addi $5 $16 136
+	addi $9 $0 0
+	ori $9 0x3A5333 # COR -> #3A5333
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 10
+	addi $5 $16 136
+	addi $9 $0 0
+	ori $9 0x1C4C18# COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 14
+	addi $5 $16 134
+	addi $9 $0 0
+	ori $9 0x1C4C18# COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 34
+	addi $5 $16 138
+	addi $9 $0 0
+	ori $9 0x1C4C18# COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 36
+	addi $5 $16 136
+	addi $9 $0 0
+	ori $9 0x1C4C18# COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 52
+	addi $5 $16 138
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 50
+	addi $5 $16 136
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 44
+	addi $5 $16 136
+	addi $9 $0 0
+	ori $9 0x355234 # COR -> #355234
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 46
+	addi $5 $16 134
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 44
+	addi $5 $16 132
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 32
+	addi $5 $16 132
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 36
+	addi $5 $16 130
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 38
+	addi $5 $16 128
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 36
+	addi $5 $16 140
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 38
+	addi $5 $16 138
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 42
+	addi $5 $16 138
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 44
+	addi $5 $16 140
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 46
+	addi $5 $16 144
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 40
+	addi $5 $16 142
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 38
+	addi $5 $16 146
+	addi $9 $0 0
+	ori $9 0x1C4C18 # COR -> #1C4C18
+	jal Draw_Pixel
+	
+	
+	# ==================
+	
+	# ==================
+	# COCO 1
+	# ==================
+	addi $2 $0 8
+	addi $3 $0 8
+	addi $4 $15 30
+	addi $5 $16 148
+	addi $9 $0 0
+	ori $9 0x6D531E # COR -> #6D531E
+	jal Draw_Pixel
+	
+		
+	# COCO 2 DETALHE
+	addi $2 $0 2
+	addi $3 $0 4
+	addi $4 $15 36
+	addi $5 $16 150
+	addi $9 $0 0
+	ori $9 0x4C3708# COR -> #4C3708
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 26
+	addi $5 $16 138
+	addi $9 $0 0
+	ori $9 0x1A791B # COR -> #1A791B
+	jal Draw_Pixel
+	# ==================
+	
+	
+	
+	# ==================
+	# COCO 2
+	# ==================
+	addi $2 $0 4
+	addi $3 $0 6
+	addi $4 $15 22
+	addi $5 $16 134
+	addi $9 $0 0
+	ori $9 0x6D531E # COR -> #6D531E
+	jal Draw_Pixel
+	
+	addi $2 $0 8
+	addi $3 $0 2
+	addi $4 $15 20
+	addi $5 $16 136
+	addi $9 $0 0
+	ori $9 0x6D531E # COR -> #6D531E
+	jal Draw_Pixel
+	
+	# COCO 2 DETALHE
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 24
+	addi $5 $16 136
+	addi $9 $0 0
+	ori $9 0x4C3708# COR -> #4C3708
+	jal Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 26
+	addi $5 $16 138
+	addi $9 $0 0
+	ori $9 0x1A791B # COR -> #1A791B
+	jal Draw_Pixel
+	# ==================
+	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 20
+	addi $5 $16 175
+	addi $9 $0 0
+	ori $9 0x63471F# COR -> #63471F
+	jal Draw_Pixel
+	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 30
+	addi $5 $16 175
+	addi $9 $0 0
+	ori $9 0x63471F# COR -> #63471F
+	jal Draw_Pixel
+	
+Coconut_Tree_Draw_END:
+	# ===================
+	# DESEMPILHAR
+	# ===================
+	addi $29 $29 4
+	lw $31 0($29)
+	
+	jr $31
+    # =======================
+
+
+Details_Draw_Sand:
+	# ==================
+	# EMPILHAR
+	# ==================
+	sw $31 0($29)
+	addi $29 $29 -4
+	
+	    # ==============================
+    # DETALHES NA AREIA
+    # ==============================
+    addi $2 $0 2
+    addi $3 $0 0
+    addi $4 $0 180
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 4
+    addi $4 $0 182
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    addi $2 $0 2
+    addi $3 $0 8
+    addi $4 $0 175
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 45
+    addi $4 $0 170
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 40
+    addi $4 $0 172
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 92
+    addi $4 $0 170
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 94
+    addi $4 $0 172
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 98
+    addi $4 $0 170
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 160
+    addi $4 $0 170
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 162
+    addi $4 $0 172
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 158
+    addi $4 $0 174
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 172
+    addi $4 $0 170
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+        
+    
+    addi $2 $0 1
+    addi $3 $0 168
+    addi $4 $0 174
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 2
+    addi $4 $0 196
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 0
+    addi $4 $0 198
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 0
+    addi $4 $0 200
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 6
+    addi $4 $0 204
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 24
+    addi $4 $0 220
+    addi $9 $0 0xCECD8D # Cor -> #CECD8D
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 18
+    addi $4 $0 216
+    addi $9 $0 0xCECD8D # Cor -> #CECD8D
+    jal Details_Draw
+    
+    
+    
+    addi $2 $0 1
+    addi $3 $0 12
+    addi $4 $0 224
+    addi $9 $0 0xCECD8D # Cor -> #CECD8D
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 0
+    addi $4 $0 236
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    addi $2 $0 2
+    addi $3 $0 0
+    addi $4 $0 238
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 2
+    addi $4 $0 242
+    addi $9 $0 0xCECD8D # Cor -> #CECD8D
+    jal Details_Draw
+    
+    
+    addi $2 $0 3
+    addi $3 $0 12
+    addi $4 $0 244
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 50
+    addi $4 $0 236
+    addi $9 $0 0xCECD8D # Cor -> #CECD8D
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 52
+    addi $4 $0 234
+    addi $9 $0 0xCECD8D # Cor -> #CECD8D
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 54
+    addi $4 $0 232
+    addi $9 $0 0xCECD8D # Cor -> #CECD8D
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 56
+    addi $4 $0 234
+    addi $9 $0 0xCECD8D # Cor -> #CECD8D
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 54
+    addi $4 $0 234
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    addi $2 $0 2
+    addi $3 $0 54
+    addi $4 $0 236
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    
+    addi $2 $0 2
+    addi $3 $0 84
+    addi $4 $0 248
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    addi $2 $0 2
+    addi $3 $0 86
+    addi $4 $0 250
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    addi $2 $0 2
+    addi $3 $0 90
+    addi $4 $0 252
+    addi $9 $0 0xE2DE97 # Cor -> #E2DE97
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 60
+    addi $4 $0 178
+    addi $9 $0 0xE0DD98 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 62
+    addi $4 $0 176
+    addi $9 $0 0xCECD8D # Cor -> #CECD8D
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 64
+    addi $4 $0 178
+    addi $9 $0 0xCECD8D # Cor -> #CECD8D
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 66
+    addi $4 $0 176
+    addi $9 $0 0xE0DD98 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 80
+    addi $4 $0 180
+    addi $9 $0 0xCECD8D # Cor -> #CECD8D
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 82
+    addi $4 $0 182
+    addi $9 $0 0xE0DD98 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    
+    addi $2 $0 2
+    addi $3 $0 130
+    addi $4 $0 176
+    addi $9 $0 0xE0DD98 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    
+    addi $2 $0 2
+    addi $3 $0 128
+    addi $4 $0 178
+    addi $9 $0 0xE0DD98 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 130
+    addi $4 $0 180
+    addi $9 $0 0xE0DD98 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 120
+    addi $4 $0 220
+    addi $9 $0 0xE0DD98 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 124
+    addi $4 $0 222
+    addi $9 $0 0xE0DD98 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    
+    addi $2 $0 1
+    addi $3 $0 128
+    addi $4 $0 224
+    addi $9 $0 0xE0DD98 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 124
+    addi $4 $0 226
+    addi $9 $0 0xE0DD98 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 160
+    addi $4 $0 248
+    addi $9 $0 0xE0DD98 # Cor -> #E0DD98
+    jal Details_Draw
+    
+Details_Draw_Sand_END:
+	# ==============
+	# DESEMPILHAR
+	# ===============
+	addi $29 $29 4
+	lw $31 0($29)
+	
+	jr $31
+	
+Details_Draw_Jungle:
+	# ===================
+	# EMPILHAR
+	# ===================
+	sw $31 0($29)
+	addi $29 $29 -4
+	
+	# ==============================
+    # DETALHES NO MATO
+    # ==============================
+    addi $2 $0 8
+    addi $3 $0 0
+    addi $4 $0 160
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 30
+    addi $3 $0 0
+    addi $4 $0 162
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 4
+    addi $3 $0 0
+    addi $4 $0 164
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 26
+    addi $3 $0 10
+    addi $4 $0 164
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 6
+    addi $3 $0 4
+    addi $4 $0 166
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    
+    
+    addi $2 $0 2
+    addi $3 $0 18
+    addi $4 $0 166
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 2
+    addi $3 $0 20
+    addi $4 $0 168
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    
+    addi $2 $0 8
+    addi $3 $0 42
+    addi $4 $0 160
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 7
+    addi $3 $0 44
+    addi $4 $0 166
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 7
+    addi $3 $0 44
+    addi $4 $0 168
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    
+    addi $2 $0 14
+    addi $3 $0 62
+    addi $4 $0 160
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 9
+    addi $3 $0 68
+    addi $4 $0 162
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+    addi $2 $0 1
+    addi $3 $0 80
+    addi $4 $0 164
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+    
+     addi $2 $0 3
+    addi $3 $0 76
+    addi $4 $0 166
+    addi $9 $0 0x355933 # Cor -> #E0DD98
+    jal Details_Draw
+	
+Details_Draw_Jungle_END:
+	# ===================
+	# DESEMPILHAR
+	# ===================
+	addi $29 $29 4
+	lw $31 0($29)
+	
+	jr $31
 timer: 
 	sw $16, 0($29)
        addi $29, $29, -4
