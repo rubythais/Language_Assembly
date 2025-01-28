@@ -4,11 +4,12 @@ main:
 
 	jal Mario_Dark_Sky
 	
-	addi $2 $0 50
-	addi $3 $0 80
+	addi $2 $0 100
+	addi $3 $0 26
 	addi $4 $0 0
-	addi $5 $0 170
+	
 	jal Draw_Plataform_Mario
+	
 	jal Draw_Floor_Mario
 	
 	
@@ -781,54 +782,88 @@ fim_Mario_Dark_Sky_Draw:
               # $31 -> Return do JAL
 
 Draw_Plataform_Mario:
-	# ==================
+	# =====================
 	# EMPILHAR
-	# ==================
+	# ======================
 	sw $31 0($29)
 	addi $29 $29 -4
 	
 	lui $8 0x1001
-	addi $7 $0 1024
-	mul $7 $7 $5 # Posiçao Altura * Ir Altura
-	addi $9 $0 4
-	mul $9 $9 $4
-	add $7 $7 $9
-	add $8 $8 $7
-	
-	addi $9 $0 0
-	addi $7 $0 0
-	ori $9 0x820000
+	addi $5 $5 186
+	sub $5 $5 $3
+ 	mul $5 $5 1024
+	mul $6 $4 4
+	add $5 $5 $6
+	add $8 $8 $5
 	addi $10 $8 0
-
-Draw_Plataform_Mario_For:
-	beq $6 $3 Draw_Plataform_Mario_For_END
-	beq $7 $2 Draw_Plataform_Mario_Next_Linha
+	addi $7 $3 2
+	
+	addi $5 $0 0
+	addi $6 $0 0
+	
+Draw_Plataform_Mario_Line:
+	beq $5 $2 Draw_Plataform_Mario_Right_Line
 	sw $9 0($8)
+	sw $9 1024($8)
+	
 	sw $9 262144($8)
-	addi $7 $7 1
+	sw $9 263168($8)
+	
+	addi $5 $5 1
 	addi $8 $8 4
-	j Draw_Plataform_Mario_For
-	
-Draw_Plataform_Mario_Next_Linha:
-	addi $7 $0 0
+	j Draw_Plataform_Mario_Line
+Draw_Plataform_Mario_Right_Line:
+	beq $6 $7  Draw_Plataform_Mario_Details
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 262144($8)
+	sw $9 262148($8)
 	addi $6 $6 1
-	addi $8 $10 1024
-	addi $10 $10 1024
-	j Draw_Plataform_Mario_For
+	addi $8 $8 1024
+	j Draw_Plataform_Mario_Right_Line
 	
-Draw_Plataform_Mario_For_END:
-	# ========================
-	# DESEMPILHAR
-	# ========================
+Draw_Plataform_Mario_Details:
+	
 	addi $29 $29 4
 	lw $31 0($29)
-	
+
 	jr $31
 	
 Draw_Floor_Mario:
 	sw $31 0($29)
 	addi $29 $29 -4
 	
+	lui $8 0x1001
+	addi $7 $0 1024
+	mul $7 $7 188 # Posiçao Altura * Ir Altura
+	add $8 $8 $7
+	
+	addi $9 $0 0
+	addi $7 $0 0
+	ori $9 0x240D01
+	addi $10 $8 0
+	addi $5 $0 0
+	addi $6 $0 0
+	addi $7 $0 0
+	
+Draw_Floor_Mario_For:
+	beq $5 $0  Draw_Floor_Mario_Details
+	beq $6 66 Draw_Floor_Mario_For_END
+	beq $7 256 Draw_Floor_Mario_Next_Linha
+	sw $9 0($8)
+	sw $9 262144($8)
+	addi $7 $7 1
+	addi $8 $8 4
+	j Draw_Floor_Mario_For
+Draw_Floor_Mario_Details:
+	beq $5 512 Draw_Floor_Mario_Details_END
+	sw $9 0($8)
+	sw $9 262144($8)
+	addi $5 $5 1
+	addi $8 $8 4
+	j Draw_Floor_Mario_Details
+Draw_Floor_Mario_Details_END:
+
 	lui $8 0x1001
 	addi $7 $0 1024
 	mul $7 $7 190 # Posiçao Altura * Ir Altura
@@ -838,15 +873,8 @@ Draw_Floor_Mario:
 	addi $7 $0 0
 	ori $9 0x2F0F00
 	addi $10 $8 0
-	
-Draw_Floor_Mario_For:
-	beq $6 66 Draw_Floor_Mario_For_END
-	beq $7 256 Draw_Floor_Mario_Next_Linha
-	sw $9 0($8)
-	sw $9 262144($8)
-	addi $7 $7 1
-	addi $8 $8 4
 	j Draw_Floor_Mario_For
+	
 Draw_Floor_Mario_Next_Linha:
 	addi $7 $0 0
 	addi $6 $6 1

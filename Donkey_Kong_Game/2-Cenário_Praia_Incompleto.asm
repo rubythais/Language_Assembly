@@ -25,7 +25,7 @@ main:
     
     
     
-fim_Cenário_Praia:
+
     addi $2 $0 10
     syscall
     
@@ -800,7 +800,7 @@ Cenario_Praia_Tela1_END:
 
 # OUTPUT_Reg: None
 
-# Reg_Usados: # $7  -> Varivél SEGUNDÁRIA para definir Altura de Iniciar o PIXEL
+# Reg_Usados: # $7  -> Varivél SEGUND�?RIA para definir Altura de Iniciar o PIXEL
               # $8  -> Endereço de Memória 
               # $9  -> Cor do Pixel
               # $10 -> Contador (Conta para saber o momento de iniciar outro Comando)
@@ -1607,7 +1607,7 @@ end_Skye_For:
 
 # OUTPUT_Reg: None
 
-# Reg_Usados: # $7  -> Varivél SEGUNDÁRIA para definir Altura de Iniciar o PIXEL
+# Reg_Usados: # $7  -> Varivél SEGUND�?RIA para definir Altura de Iniciar o PIXEL
               # $8  -> Endereço de Memória 
               # $9  -> Cor do Pixel
               # $10 -> Contador (Conta para saber o momento de iniciar outro Comando)
@@ -1661,7 +1661,7 @@ end_Sand_Draw:
 
 # OUTPUT_Reg: None
 
-# Reg_Usados: # $7  -> Varivél SEGUNDÁRIA para definir Altura de Iniciar o PIXEL
+# Reg_Usados: # $7  -> Varivél SEGUND�?RIA para definir Altura de Iniciar o PIXEL
               # $8  -> Endereço de Memória 
               # $9  -> Cor do Pixel
               # $10 -> Contador (Conta para saber o momento de iniciar outro Comando)
@@ -3685,7 +3685,7 @@ Details_Draw_Jungle_END:
 timer: 
 	sw $16, 0($29)
        addi $29, $29, -4
-       addi $16, $0, 100000
+       addi $16, $0, 1000000
 forT:  beq $16, $0, fimT
        nop
        nop
