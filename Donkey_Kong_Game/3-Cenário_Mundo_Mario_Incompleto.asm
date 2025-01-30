@@ -1,30 +1,7 @@
 .text
 
 main:
-
-	jal Mario_Dark_Sky
-	
-	addi $2 $0 160
-	addi $3 $0 26
-	addi $4 $0 0
-	
-	jal Draw_Plataform_Mario
-	
-	jal Draw_Floor_Mario
-	
-	
-	
-	#addi $2 $0 20 # PosiÃ§Ã£o X
-	#addi $3 $0 250 # PosiÃ§Ã£o Y
-	#jal Skull_Draw
-	
-	#addi $2 $0 68 # PosiÃ§Ã£o X
-	#addi $3 $0 222 # PosiÃ§Ã£o Y
-	#jal Skull_Draw
-	
-	#addi $2 $0 160 # PosiÃ§Ã£o X
-	#addi $3 $0 196 # PosiÃ§Ã£o Y
-	#jal Skull_Draw
+	jal cenario_mario_1
 
 	#addi $2 $0 100
 	#addi $3 $0 123
@@ -38,16 +15,63 @@ fim:
 	addi $2 $0 10
 	syscall
 	
-
+# ========================= CENARIOS ==================
+cenario_mario_1:
+	# ==============
+	# EMPILHAR
+	# ==============
+	sw $31 0($29)
+	addi $29 $29 -4
+	
+	jal Mario_Dark_Sky
+	
+	addi $2 $0 100
+	addi $3 $0 26
+	addi $4 $0 0
+	
+	jal Draw_Plataform_Mario
+	
+	
+	addi $2 $0 100
+	addi $3 $0 46
+	addi $4 $0 154
+	
+	jal Draw_Plataform_Mario
+	
+	jal Draw_Floor_Mario
+	
+	
+	
+	addi $2 $0 20 # Posição X
+	addi $3 $0 250 # Posição Y
+	jal Skull_Draw
+	
+	addi $2 $0 68 # Posição X
+	addi $3 $0 222 # Posição Y
+	jal Skull_Draw
+	
+	addi $2 $0 160 # Posição X
+	addi $3 $0 196 # Posição Y
+	jal Skull_Draw
+	# ============
+	# DESEMPILHAR
+	# ===========
+	addi $29 $29 4
+	lw $31 0($29)
+	
+	jr $31
 # ================================================================
-# **** Desenhar CÃ©u Degrade ****
+# **** Desenhar Céu Degrade ****
 
-# INPUT_Reg: $3 -> PosiÃ§Ã£o Y 
+# INPUT_Reg: $3 -> Posição Y 
 # 	     $9 -> Cor 	
 # OUTPUT_Reg: None
 # Reg_Usados:
 
 Mario_Dark_Sky:
+    # ======================
+    # EMPILHAR
+    # ======================
 	sw $31 0($29)
 	addi $29 $29 -4
 	
@@ -728,22 +752,30 @@ Mario_Dark_Sky:
 	
 	
 end_Mario_Dark_Sky:
+    # ======================
+    # DESEMPILHAR
+    # ======================
 	addi $29 $29 4
 	lw $31 0($29)
+
 	jr $31
 
 
 # ================================================================
-# **** Desenhar Detalhes ****
+# **** Desenhar Céu Pixel ****
 
 # INPUT_Reg: $2 -> Tamanho dos Datalhes
-#            $3 -> PosiÃ§Ã£o Y 
-# 	     $9 -> Cor 	
+#            $3 -> Posição Y
+# 	         $9 -> Cor 	
 # OUTPUT_Reg: None
 # Reg_Usados:
 Mario_Dark_Sky_Draw:
+    # ======================
+    # EMPILHAR
+    # ======================
 	sw $31 0($29)
 	addi $29 $29 -4
+
 	lui $8 0x1001
 	addi $4 $0 1024
 	mul $4 $4 $3
@@ -759,22 +791,26 @@ Mario_Dark_Sky_Draw_For:
 	j Mario_Dark_Sky_Draw_For
 
 fim_Mario_Dark_Sky_Draw:
+    # ======================
+    # DESEMPILHAR
+    # ======================
 	add $29 $29 4
 	lw $31 ($29)
+
 	jr $31
 	
 # ========================================================
 # **** Plataform ( Desenhar Plataformas Mario) ****
 
-# INPUT_Reg: $2 -> PosiÃ§Ã£o X
-	    #$3 -> PosiÃ§Ã£o Y
+# INPUT_Reg: $2 -> Posição X
+	      #  $3 -> Posição Y
 
 # OUTPUT_Reg: None
 
 # Reg_Usados: # $2  -> Largura X do pixel
               # $3  -> Altura Y do Pixel
-              # $4  -> PosiÃ§Ã£o Lagura eixo X da Tela (onde inicia o Pixel)
-              # $5  -> PosiÃ§Ã£o Altura eixo Y da Tela (onde inicia o Pixel)
+              # $4  -> Posição Lagura eixo X da Tela (onde inicia o Pixel)
+              # $5  -> Posição Altura eixo Y da Tela (onde inicia o Pixel)
               # $9  -> Cor do Pixel
               # $15 -> Base do InÃ­cio da Tela, Eixo X (referencia para aonde comeÃ£ a gerar o NPC)
               # $16 -> Base do InÃ­cio da Tela, Eixo X (referencia para aonde comeÃ£ a gerar o NPC)
@@ -787,20 +823,78 @@ Draw_Plataform_Mario:
 	# ======================
 	sw $31 0($29)
 	addi $29 $29 -4
-	
+
+	# PARTE MEMORIA
 	lui $8 0x1001
-	addi $5 $5 186
+	addi $5 $5 186 # TAMANHO MAXIMO
 	sub $5 $5 $3
  	mul $5 $5 1024
 	mul $6 $4 4
 	add $5 $5 $6
 	add $8 $8 $5
-	addi $10 $8 0
+	addi $10 $8 0 # ENDEREÇO COPIA 1
+	addi $12 $10 0 # ENDEREÇO COPIA 2
+	addi $13 $3 2
 	addi $7 $3 2
 	
+    # RESETAR RREGISTRADORES
+	addi $5 $0 0
+	addi $6 $0 0
+	addi $9 $0 0
+
+    # COR BACKGROUND PLATAFORMA
+	ori $9 0x383838
+
+# ============= BACKGROUND PLATAFORMA ====================
+Draw_Plataform_Mario_Floor_For:
+	beq $5 $13 Draw_Plataform_Mario_Floor_END
+	beq $6 $2 Draw_Plataform_Mario_Floor_For_END
+	sw $9 0($8)
+	
+	sw $9 262144($8)
+	addi $6 $6 1
+	addi $8 $8 4
+	j Draw_Plataform_Mario_Floor_For
+	
+Draw_Plataform_Mario_Floor_For_END:
+	addi $6 $0 0
+	addi $5 $5 1
+	addi $8 $10 1024
+	addi $10 $10 1024
+	j Draw_Plataform_Mario_Floor_For
+
+Draw_Plataform_Mario_Floor_END:
+	beq $4 $0 Draw_Plataform_Mario_Init
+	j Draw_Plataform_Mario_NOT_Init
+	
+Draw_Plataform_Mario_NOT_Init:
+	addi $8 $12 -8
+	
+	addi $9 $0 0
+	ori $9 0x2F2F2F
 	addi $5 $0 0
 	addi $6 $0 0
 	
+Draw_Plataform_Mario_Left_Line:
+	beq $6 $7  Draw_Plataform_Mario_Init
+	sw $9 0($8)
+	sw $9 4($8)
+	sw $9 262144($8)
+	sw $9 262148($8)
+	addi $6 $6 1
+	addi $8 $8 1024
+	j Draw_Plataform_Mario_Left_Line
+
+# ============= END - BACKGROUND PLATAFORMA ====================
+
+# ============= LINHA SUPERIOR PLATAFORMA ====================
+Draw_Plataform_Mario_Init:
+	addi $8 $12 0
+	addi $10 $12 0
+	addi $9 $0 0
+	ori $9 0x2F2F2F
+	addi $5 $0 0
+	addi $6 $0 0
 Draw_Plataform_Mario_Line:
 	beq $5 $2 Draw_Plataform_Mario_Right_Line
 	sw $9 0($8)
@@ -812,6 +906,10 @@ Draw_Plataform_Mario_Line:
 	addi $5 $5 1
 	addi $8 $8 4
 	j Draw_Plataform_Mario_Line
+# ============= END - LINHA SUPERIOR PLATAFORMA ====================
+
+# ============= LINHA DIREITA PLATAFORMA ====================
+
 Draw_Plataform_Mario_Right_Line:
 	beq $6 $7  Draw_Plataform_Mario_Details
 	sw $9 0($8)
@@ -821,12 +919,15 @@ Draw_Plataform_Mario_Right_Line:
 	addi $6 $6 1
 	addi $8 $8 1024
 	j Draw_Plataform_Mario_Right_Line
-	
+# =============  END - LINHA SUPERIOR PLATAFORMA ====================
+
+# ============= DETALHE 1 PLATAFORMA ====================
+
 Draw_Plataform_Mario_Details:
 	addi $10 $10 2048
 	addi $8 $10 0
 	addi $9 $0 0
-	ori $9 0x431A09
+	ori $9 0x414141
 	addi $5 $0 0
 	addi $6 $0 0
 	addi $7 $0 0
@@ -859,23 +960,33 @@ Draw_Plataform_Mario_Details_For_END:
 	addi $8 $10 0
 	addi $11 $9 0
 	addi $9 $0 0
-	ori $9 0x783417
+	ori $9 0x4E4C4C
 	addi $6 $0 0
+# ============= END - DETALHE 1 PLATAFORMA ====================
+
 	
+# ============= DETALHE 2 PLATAFORMA ====================
 	
 Draw_Plataform_Mario_Details_For_next_Color:
 	beq $6 $2 Draw_Plataform_Mario_Details_For_next_Color_END
 	sw $9 0($8)
 	sw $9 1024($8)
+	sw $9 2048($8)
+	
 	
 	
 	sw $9 262144($8)
 	sw $9 263168($8)
-	
+	sw $9 264192($8)
+		
 	
 	addi $6 $6 1
 	addi $8 $8 4
 	j Draw_Plataform_Mario_Details_For_next_Color
+# ============= END - DETALHE 2 PLATAFORMA ====================
+
+# ============= DETALHE 1 REPICADO PLATAFORMA ====================
+
 Draw_Plataform_Mario_Details_For_next_Color_END:
 	addi $8 $10 0
 	addi $6 $0 0
@@ -888,23 +999,63 @@ Draw_Plataform_Mario_Details_For_next_Color_END:
 	
 
 Draw_Plataform_Mario_Details_For2:
-	beq $6 $7 Draw_Plataform_Mario_END
+	beq $6 $7 Draw_Plataform_Mario_Details_For3_Reset
 	beq $5 5 Draw_Plataform_Mario_Details_For2_END
 	sw $9 0($8)
 	sw $9 1024($8)
+	sw $9 2048($8)
+	
 	
 	
 	sw $9 262144($8)
 	sw $9 263168($8)
+	sw $9 264192($8)
+	
 	
 	addi $8 $8 4
 	addi $5 $5 1
 	j Draw_Plataform_Mario_Details_For2
+# ============= END - DETALHE 1 REPICADO PLATAFORMA ====================
+
+# ============= DETALHE 2 REPICADO PLATAFORMA ====================
+
 Draw_Plataform_Mario_Details_For2_END:
 	addi $5 $0 0
 	addi $6 $6 1
 	addi $8 $8 20
 	j Draw_Plataform_Mario_Details_For2
+Draw_Plataform_Mario_Details_For3_Reset:
+	addi $10 $10 3072
+	addi $8 $10 0
+	addi $9 $0 0
+	ori $9 0x4E4C4C
+	addi $6 $0 0
+	addi $5 $0 0
+Draw_Plataform_Mario_Details_For3:
+	beq $6 $7 Draw_Plataform_Mario_END
+	beq $5 5 Draw_Plataform_Mario_Details_For3_END
+	sw $9 0($8)
+	sw $9 1024($8)
+	sw $9 2048($8)
+	
+	
+	
+	sw $9 262144($8)
+	sw $9 263168($8)
+	sw $9 264192($8)
+	
+	
+	addi $8 $8 4
+	addi $5 $5 1
+	j Draw_Plataform_Mario_Details_For3
+
+Draw_Plataform_Mario_Details_For3_END:
+	addi $5 $0 0
+	addi $6 $6 1
+	addi $8 $8 20
+	j Draw_Plataform_Mario_Details_For3
+# ============= END - DETALHE 2 REPICADO PLATAFORMA ====================
+
 Draw_Plataform_Mario_END:
 	# =================	
 	# DESEMPILHAR	
@@ -913,8 +1064,31 @@ Draw_Plataform_Mario_END:
 	lw $31 0($29)
 
 	jr $31
+
+
 # =========================================================	
+# ========================================================
+# **** Draw_Floor_Mario ( Desenhar  chão Mario) ****
+
+# INPUT_Reg: $2 -> Posição X
+	      #  $3 -> Posição Y
+
+# OUTPUT_Reg: None
+
+# Reg_Usados: # $2  -> Largura X do pixel
+              # $3  -> Altura Y do Pixel
+              # $4  -> Posição Lagura eixo X da Tela (onde inicia o Pixel)
+              # $5  -> Posição Altura eixo Y da Tela (onde inicia o Pixel)
+              # $9  -> Cor do Pixel
+              # $15 -> Base do InÃ­cio da Tela, Eixo X (referencia para aonde comeÃ£ a gerar o NPC)
+              # $16 -> Base do InÃ­cio da Tela, Eixo X (referencia para aonde comeÃ£ a gerar o NPC)
+              # $29 -> EndereÃ§o de PILHA
+              # $31 -> Return do JAL
+
 Draw_Floor_Mario:
+    # ====================
+    # EMPILHAR
+    # ====================
 	sw $31 0($29)
 	addi $29 $29 -4
 	
@@ -981,15 +1155,15 @@ Draw_Floor_Mario_For_END:
 # ================================================================
 # **** Desenhar Caveira ****
 
-# INPUT_Reg: $2 -> PosiÃ§Ã£o X
-#            $3 -> PosiÃ§Ã£o Y 
+# INPUT_Reg: $2 -> Posição X
+#            $3 -> Posição Y 
 # OUTPUT_Reg: None
 # Reg_Usados:
 Skull_Draw:
 	sw $31 -4($29)
 	lui $8 0x1001
 	addi $4 $0 1024
-	mul $4 $4 $3 # PosiÃ§Ã£o Y
+	mul $4 $4 $3 # Posição Y
 	mul $2 $2 4
 	add $4 $4 $2	
 	add $8 $8 $4
@@ -1231,15 +1405,15 @@ end_Skull_Draw_For:
 # ========================================================
 # **** Wizard ( Desenhar Mago - * NPC *) ****
 
-# INPUT_Reg: $2 -> PosiÃ§Ã£o X
-	  #  $3 -> PosiÃ§Ã£o Y
+# INPUT_Reg: $2 -> Posição X
+	  #  $3 -> Posição Y
 
 # OUTPUT_Reg: None
 
 # Reg_Usados: # $2  -> Largura X do pixel
               # $3  -> Altura Y do Pixel
-              # $4  -> PosiÃ§Ã£o Lagura eixo X da Tela (onde inicia o Pixel)
-              # $5  -> PosiÃ§Ã£o Altura eixo Y da Tela (onde inicia o Pixel)
+              # $4  -> Posição Lagura eixo X da Tela (onde inicia o Pixel)
+              # $5  -> Posição Altura eixo Y da Tela (onde inicia o Pixel)
               # $9  -> Cor do Pixel
               # $15 -> Base do InÃ­cio da Tela, Eixo X (referencia para aonde comeÃ£ a gerar o NPC)
               # $16 -> Base do InÃ­cio da Tela, Eixo X (referencia para aonde comeÃ£ a gerar o NPC)
@@ -1501,8 +1675,8 @@ Wizard_Draw_Pixel:
 	
 	lui $8 0x1001 # Memoria
 	addi $6 $0 1024
-	mul $6 $6 $5 #PosiÃ§Ã£o Y
-	mul $7 $4 4 # PosiÃ§Ã£o X
+	mul $6 $6 $5 #Posição Y
+	mul $7 $4 4 # Posição X
 	add $8 $8 $6
 	add $8 $8 $7
 	addi $5 $0 0 # Contador 1
