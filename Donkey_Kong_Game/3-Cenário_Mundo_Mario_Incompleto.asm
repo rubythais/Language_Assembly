@@ -4,7 +4,7 @@ main:
 
 	jal Mario_Dark_Sky
 	
-	addi $2 $0 100
+	addi $2 $0 160
 	addi $3 $0 26
 	addi $4 $0 0
 	
@@ -823,12 +823,97 @@ Draw_Plataform_Mario_Right_Line:
 	j Draw_Plataform_Mario_Right_Line
 	
 Draw_Plataform_Mario_Details:
+	addi $10 $10 2048
+	addi $8 $10 0
+	addi $9 $0 0
+	ori $9 0x431A09
+	addi $5 $0 0
+	addi $6 $0 0
+	addi $7 $0 0
 	
+Draw_Plataform_Mario_Details_For:
+	
+	beq $6 $2 Draw_Plataform_Mario_Details_For_END
+	sw $9 0($8)
+	sw $9 1024($8)
+	sw $9 2048($8)
+	sw $9 3072($8)
+	sw $9 4096($8)
+	sw $9 5120($8)
+	
+	
+	sw $9 262144($8)
+	sw $9 263168($8)
+	sw $9 264192($8)
+	sw $9 265216($8)
+	sw $9 266240($8)
+	sw $9 267264($8)
+	
+	
+	addi $6 $6 1
+	addi $8 $8 4
+	j Draw_Plataform_Mario_Details_For
+
+Draw_Plataform_Mario_Details_For_END:
+	addi $10 $10 6144
+	addi $8 $10 0
+	addi $11 $9 0
+	addi $9 $0 0
+	ori $9 0x783417
+	addi $6 $0 0
+	
+	
+Draw_Plataform_Mario_Details_For_next_Color:
+	beq $6 $2 Draw_Plataform_Mario_Details_For_next_Color_END
+	sw $9 0($8)
+	sw $9 1024($8)
+	
+	
+	sw $9 262144($8)
+	sw $9 263168($8)
+	
+	
+	addi $6 $6 1
+	addi $8 $8 4
+	j Draw_Plataform_Mario_Details_For_next_Color
+Draw_Plataform_Mario_Details_For_next_Color_END:
+	addi $8 $10 0
+	addi $6 $0 0
+	div $7 $2 5
+	mflo $7
+	div $7 $7 2
+	mflo $7
+	
+	addi $9 $11 0
+	
+
+Draw_Plataform_Mario_Details_For2:
+	beq $6 $7 Draw_Plataform_Mario_END
+	beq $5 5 Draw_Plataform_Mario_Details_For2_END
+	sw $9 0($8)
+	sw $9 1024($8)
+	
+	
+	sw $9 262144($8)
+	sw $9 263168($8)
+	
+	addi $8 $8 4
+	addi $5 $5 1
+	j Draw_Plataform_Mario_Details_For2
+Draw_Plataform_Mario_Details_For2_END:
+	addi $5 $0 0
+	addi $6 $6 1
+	addi $8 $8 20
+	j Draw_Plataform_Mario_Details_For2
+Draw_Plataform_Mario_END:
+	# =================	
+	# DESEMPILHAR	
+	# =================
 	addi $29 $29 4
 	lw $31 0($29)
 
 	jr $31
-	
+# =========================================================	
 Draw_Floor_Mario:
 	sw $31 0($29)
 	addi $29 $29 -4
