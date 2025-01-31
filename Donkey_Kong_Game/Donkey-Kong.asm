@@ -21,21 +21,13 @@ Donkey_Kong:
 	
 	addi $2 $0 8	
 	addi $3 $0 2
-	addi $4 $15 54
-	addi $5 $16 0 
-	addi $9 $0 0
-	ori $9 0x9E4000
-	jal Donkey_Kong_Draw_Pixel
-	
-	addi $2 $0 12	
-	addi $3 $0 2
-	addi $4 $15 48
+	addi $4 $15 50
 	addi $5 $16 2
 	addi $9 $0 0
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 14	
+	addi $2 $0 12	
 	addi $3 $0 2
 	addi $4 $15 44
 	addi $5 $16 4
@@ -43,26 +35,34 @@ Donkey_Kong:
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
+	addi $2 $0 14	
+	addi $3 $0 2
+	addi $4 $15 40
+	addi $5 $16 6
+	addi $9 $0 0
+	ori $9 0x9E4000
+	jal Donkey_Kong_Draw_Pixel
+	
 	addi $2 $0 16
 	addi $3 $0 2
-	addi $4 $15 42
-	addi $5 $16 6
+	addi $4 $15 38
+	addi $5 $16 8
 	addi $9 $0 0
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
 	addi $2 $0 10
 	addi $3 $0 2
-	addi $4 $15 40
-	addi $5 $16 8
+	addi $4 $15 36
+	addi $5 $16 10
 	addi $9 $0 0
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
 	addi $2 $0 24
 	addi $3 $0 2
-	addi $4 $15 26
-	addi $5 $16 10
+	addi $4 $15 22
+	addi $5 $16 12
 	addi $9 $0 0
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
@@ -73,9 +73,9 @@ Donkey_Kong:
 	addi $5 $16 12
 	addi $9 $0 0
 	ori $9 0x9E4000
-	jal Donkey_Kong_Draw_Pixel
+	#jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 22
+	addi $2 $0 20
 	addi $3 $0 2
 	addi $4 $15 20
 	addi $5 $16 14
@@ -83,7 +83,7 @@ Donkey_Kong:
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 24
+	addi $2 $0 20
 	addi $3 $0 2
 	addi $4 $15 18
 	addi $5 $16 16
@@ -91,7 +91,7 @@ Donkey_Kong:
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 26
+	addi $2 $0 22
 	addi $3 $0 2
 	addi $4 $15 16
 	addi $5 $16 18
@@ -99,7 +99,7 @@ Donkey_Kong:
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 32
+	addi $2 $0 24
 	addi $3 $0 2
 	addi $4 $15 14
 	addi $5 $16 20
@@ -107,7 +107,7 @@ Donkey_Kong:
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 32
+	addi $2 $0 30
 	addi $3 $0 2
 	addi $4 $15 12
 	addi $5 $16 22
@@ -115,15 +115,23 @@ Donkey_Kong:
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 32
-	addi $3 $0 4
+	addi $2 $0 30
+	addi $3 $0 2
 	addi $4 $15 10
 	addi $5 $16 24
 	addi $9 $0 0
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 36
+	addi $2 $0 28
+	addi $3 $0 2
+	addi $4 $15 10
+	addi $5 $16 26
+	addi $9 $0 0
+	ori $9 0x9E4000
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 30
 	addi $3 $0 2
 	addi $4 $15 8
 	addi $5 $16 28
@@ -131,7 +139,7 @@ Donkey_Kong:
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 38
+	addi $2 $0 32
 	addi $3 $0 2
 	addi $4 $15 8
 	addi $5 $16 30
@@ -139,7 +147,7 @@ Donkey_Kong:
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 40
+	addi $2 $0 34
 	addi $3 $0 2
 	addi $4 $15 8
 	addi $5 $16 32
@@ -147,7 +155,7 @@ Donkey_Kong:
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 44
+	addi $2 $0 36
 	addi $3 $0 2
 	addi $4 $15 8
 	addi $5 $16 34
@@ -155,7 +163,7 @@ Donkey_Kong:
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 42
+	addi $2 $0 38
 	addi $3 $0 2
 	addi $4 $15 10
 	addi $5 $16 36
@@ -163,7 +171,7 @@ Donkey_Kong:
 	ori $9 0x9E4000
 	jal Donkey_Kong_Draw_Pixel
 	
-	addi $2 $0 40
+	addi $2 $0 36
 	addi $3 $0 2
 	addi $4 $15 12
 	addi $5 $16 38
@@ -229,7 +237,24 @@ Donkey_Kong:
 	jal Donkey_Kong_Draw_Pixel
 	
 	# PERNA DIANTEIRA MARROM
-	addi $2 $0 14
+	
+	addi $2 $0 16
+	addi $3 $0 4
+	addi $4 $15 32
+	addi $5 $16 40
+	addi $9 $0 0
+	ori $9 0x9E4000
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 18
+	addi $3 $0 4
+	addi $4 $15 34
+	addi $5 $16 44
+	addi $9 $0 0
+	ori $9 0x9E4000
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 22
 	addi $3 $0 4
 	addi $4 $15 30
 	addi $5 $16 48
@@ -240,6 +265,14 @@ Donkey_Kong:
 	addi $2 $0 10
 	addi $3 $0 2
 	addi $4 $15 32
+	addi $5 $16 52
+	addi $9 $0 0
+	ori $9 0x9E4000
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 6
+	addi $3 $0 2
+	addi $4 $15 44
 	addi $5 $16 52
 	addi $9 $0 0
 	ori $9 0x9E4000
@@ -271,7 +304,17 @@ Donkey_Kong:
 	ori $9 0xF6CE9B
 	jal Donkey_Kong_Draw_Pixel
 	
+	
+	
 	# OUTRA PERNA
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 46
+	addi $5 $16 44
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
 	addi $2 $0 6
 	addi $3 $0 6
 	addi $4 $15 44
@@ -279,6 +322,8 @@ Donkey_Kong:
 	addi $9 $0 0
 	ori $9 0xF6CE9B
 	jal Donkey_Kong_Draw_Pixel
+	
+	
 	
 	
 	# PERNA TRAZEIRO
@@ -468,6 +513,243 @@ Donkey_Kong:
 	addi $5 $16 44
 	addi $9 $0 0
 	ori $9 0x531B02
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 4
+	addi $4 $15 42
+	addi $5 $16 42
+	addi $9 $0 0
+	ori $9 0x531B02
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 6
+	addi $3 $0 2
+	addi $4 $15 40
+	addi $5 $16 42
+	addi $9 $0 0
+	ori $9 0x531B02
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 8
+	addi $3 $0 4
+	addi $4 $15 40
+	addi $5 $16 38
+	addi $9 $0 0
+	ori $9 0x531B02
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 40
+	addi $5 $16 36
+	addi $9 $0 0
+	ori $9 0x531B02
+	jal Donkey_Kong_Draw_Pixel
+	
+		
+	addi $2 $0 2
+	addi $3 $0 6
+	addi $4 $15 38
+	addi $5 $16 30
+	addi $9 $0 0
+	ori $9 0x531B02
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 6
+	addi $4 $15 36
+	addi $5 $16 26
+	addi $9 $0 0
+	ori $9 0x531B02
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 6
+	addi $4 $15 34
+	addi $5 $16 22
+	addi $9 $0 0
+	ori $9 0x531B02
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 6
+	addi $4 $15 32
+	addi $5 $16 16
+	addi $9 $0 0
+	ori $9 0x531B02
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 6
+	addi $3 $0 2
+	addi $4 $15 28
+	addi $5 $16 14
+	addi $9 $0 0
+	ori $9 0x531B02
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 34
+	addi $5 $16 12
+	addi $9 $0 0
+	ori $9 0x531B02
+	jal Donkey_Kong_Draw_Pixel
+	# GRAVATA 9D2445
+	
+	addi $2 $0 2
+	addi $3 $0 8
+	addi $4 $15 34
+	addi $5 $16 14
+	addi $9 $0 0
+	ori $9 0x9D2445
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 4
+	addi $4 $15 36
+	addi $5 $16 22
+	addi $9 $0 0
+	ori $9 0x9D2445
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 36
+	addi $5 $16 22
+	addi $9 $0 0
+	ori $9 0x9D2445
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 6
+	addi $4 $15 42
+	addi $5 $16 36
+	addi $9 $0 0
+	ori $9 0x9D2445
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 40
+	addi $5 $16 34
+	addi $9 $0 0
+	ori $9 0x9D2445
+	jal Donkey_Kong_Draw_Pixel
+	
+	# DETALHES PRETO
+	addi $2 $0 2
+	addi $3 $0 4
+	addi $4 $15 44
+	addi $5 $16 38
+	addi $9 $0 0
+	ori $9 0x00000
+	jal Donkey_Kong_Draw_Pixel
+	
+	# ================== ROSTO ===============
+	#F6CE9B
+	addi $2 $0 8
+	addi $3 $0 10
+	addi $4 $15 46
+	addi $5 $16 12
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 6
+	addi $3 $0 2
+	addi $4 $15 46
+	addi $5 $16 10
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 4
+	addi $3 $0 2
+	addi $4 $15 40
+	addi $5 $16 14
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 6
+	addi $3 $0 6
+	addi $4 $15 38
+	addi $5 $16 16
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 10
+	addi $3 $0 2
+	addi $4 $15 38
+	addi $5 $16 20
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 14
+	addi $3 $0 2
+	addi $4 $15 42
+	addi $5 $16 22
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 18
+	addi $3 $0 2
+	addi $4 $15 40
+	addi $5 $16 24
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 22
+	addi $3 $0 2
+	addi $4 $15 38
+	addi $5 $16 26
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 24
+	addi $3 $0 2
+	addi $4 $15 38
+	addi $5 $16 28
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 22
+	addi $3 $0 2
+	addi $4 $15 40
+	addi $5 $16 30
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 18
+	addi $3 $0 2
+	addi $4 $15 42
+	addi $5 $16 32
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 14
+	addi $3 $0 2
+	addi $4 $15 44
+	addi $5 $16 34
+	addi $9 $0 0
+	ori $9 0xF6CE9B
+	jal Donkey_Kong_Draw_Pixel
+	
+	addi $2 $0 8
+	addi $3 $0 2
+	addi $4 $15 48
+	addi $5 $16 36
+	addi $9 $0 0
+	ori $9 0xF6CE9B
 	jal Donkey_Kong_Draw_Pixel
 	####
 	addi $2 $0 6
