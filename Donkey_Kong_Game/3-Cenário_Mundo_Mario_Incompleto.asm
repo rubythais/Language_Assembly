@@ -1,7 +1,161 @@
 .text
 
 main:
+	      	 
 	jal cenario_mario_1
+	# TECLADO 
+	lui $21 0xffff
+      	addi $25 $0 32
+      	addi $10 $0 4
+      	addi $11 $0 'a'
+      	addi $12 $0 'd'
+      	addi $13 $0 's'
+      	addi $14 $0 'w'
+      	
+      	# posição inicial Donkey Kong
+      	addi $2 $0 -5 # -1 
+	addi $3 $0 106 # 106
+	jal Donkey_Kong
+	
+	addi $18 $0 186 # Limite para morrer Chão
+	addi $19 $0 95 # Limite para mudar os parametros X 
+	addi $30 $27 0 # Limite para controlar que os players não podem ir mais pra baixo do que o limite da plataforma
+	addi $17 $0 0 # Contador
+	
+	
+	
+
+		
+walk_cenario_mario1:
+	     	
+    	
+      	# função tempo
+	jal timer
+	# buscar o comando do teclado
+      	lw $23 4($21)
+      	beq $23 $11 esq
+      	beq $23 $12 dir
+      	beq $23 $13 baixo
+      	beq $23 $14 cima
+	
+	addi $17 $17 1
+	j walk_cenario_mario1
+min_altura_mario_cen1:
+	addi $30 $0 86
+	j walk_cenario_mario1
+esq:
+	addi $2 $26 0
+	addi $3 $27 0
+	jal Donkey_Kong_Erased
+	
+	addi $2 $26 -5
+	addi $3 $27 0
+	jal Donkey_Kong
+	addi $23 $0 'p'
+	sw $23 4($21)
+	
+	j walk_cenario_mario1
+dir:
+	addi $2 $26 0
+	addi $3 $27 0
+	jal Donkey_Kong_Erased
+	
+	addi $2 $26 5
+	addi $3 $27 0
+	jal Donkey_Kong
+	addi $23 $0 'p'
+	sw $23 4($21)
+	beq $26 $19 mud_param_cenario_Mario1
+	j walk_cenario_mario1
+mud_param_cenario_Mario1:
+	#===================
+	# EMPILHAR
+	# ==================
+	sw $31 0($29)
+	addi $29 $29 -4
+	
+	beq $27 95 cair
+	beq $27 200 mud_cenario_mario2
+	addi $30 $0 86
+	addi $19 $0 200
+	#===================
+	# DESEMPILHAR
+	# ==================
+	addi $29 $29 4
+	lw $31 0($29)
+	
+	jr $31
+
+cima:
+	
+	addi $2 $26 0
+	addi $3 $27 0
+	jal Donkey_Kong_Erased
+	
+	addi $2 $26 0
+	addi $3 $27 -20
+	jal Donkey_Kong
+	addi $23 $0 'p'
+	sw $23 4($21)
+	
+	j walk_cenario_mario1
+
+	
+baixo:
+	
+	beq $27 $30 walk_cenario_mario1
+	addi $2 $26 0
+	addi $3 $27 0
+	jal Donkey_Kong_Erased
+	
+	addi $2 $26 0
+	addi $3 $27 20
+	jal Donkey_Kong
+	addi $23 $0 'p'
+	sw $23 4($21)
+	addi $17 $0 0 # Contador
+	j walk_cenario_mario1
+cair:
+
+	beq $27 $18 game_over
+	addi $2 $26 0
+	addi $3 $27 0
+	jal Donkey_Kong_Erased
+	
+	addi $2 $26 0
+	addi $3 $27 10
+	jal Donkey_Kong
+	addi $23 $0 'p'
+	sw $23 4($21)
+	jal timer
+	j cair
+	
+game_over:
+
+	jal timer
+	addi $2 $26 0
+	addi $3 $27 0
+	jal Donkey_Kong_Erased
+	
+	
+	addi $2 $26 25 # PosiÃ§Ã£o X
+	addi $3 $27 10 # PosiÃ§Ã£o Y
+	jal Skull_Draw
+	
+	addi $2 $0 10
+	syscall	
+
+	#addi $2 $0 100
+	#addi $3 $0 123
+	#jal Wizard
+	
+	#addi $30 $0 5
+	#jal Wizard_Walk
+
+
+fim:
+	addi $2 $0 10
+	syscall
 	jal timer
 	jal timer
 	jal timer
@@ -16,29 +170,9 @@ main:
 	jal timer
 	jal timer
 	jal cenario_mario_4
-	
-	#jal cenario_mario_3
-	
-	#addi $2 $0 -5
-	#addi $3 $0 106
-	#jal Donkey_Kong
-	
-	#addi $2 $15 0
-	#addi $3 $16 0
-	#jal Donkey_Kong_Erased
-
-	#addi $2 $0 100
-	#addi $3 $0 123
-	#jal Wizard
-	
-	#addi $30 $0 5
-	#jal Wizard_Walk
-
-
-fim:
-	addi $2 $0 10
-	syscall
-	
+	# 
+mud_cenario_mario2:
+	jal cenario_mario_2	
 # ========================= CENARIOS ==================
 cenario_mario_1:
 	# ==============
@@ -66,16 +200,16 @@ cenario_mario_1:
 	
 	
 	
-	addi $2 $0 20 # Posição X
-	addi $3 $0 250 # Posição Y
+	addi $2 $0 20 # PosiÃ§Ã£o X
+	addi $3 $0 250 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
-	addi $2 $0 68 # Posição X
-	addi $3 $0 222 # Posição Y
+	addi $2 $0 68 # PosiÃ§Ã£o X
+	addi $3 $0 222 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
-	addi $2 $0 160 # Posição X
-	addi $3 $0 196 # Posição Y
+	addi $2 $0 160 # PosiÃ§Ã£o X
+	addi $3 $0 196 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	# ============
 	# DESEMPILHAR
@@ -86,7 +220,7 @@ cenario_mario_1:
 	jr $31
 	
 # =========================================
-# CENÁRIO 2 MARIO
+# CENÃ?RIO 2 MARIO
 cenario_mario_2:
 	# ==============
 	# EMPILHAR
@@ -118,18 +252,18 @@ cenario_mario_2:
 	
 	jal Draw_Floor_Mario
 	
-	addi $2 $0 70 # Posição X
-	addi $3 $0 180 # Posição Y
+	addi $2 $0 70 # PosiÃ§Ã£o X
+	addi $3 $0 180 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
-	addi $2 $0 140 # Posição X
-	addi $3 $0 200 # Posição Y
+	addi $2 $0 140 # PosiÃ§Ã£o X
+	addi $3 $0 200 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
 	
 	
-	addi $2 $0 250 # Posição X
-	addi $3 $0 240 # Posição Y
+	addi $2 $0 250 # PosiÃ§Ã£o X
+	addi $3 $0 240 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
 	
@@ -144,7 +278,7 @@ cenario_mario_2:
 	jr $31
 	
 # =========================================
-# CENÁRIO 3 MARIO
+# CENÃ?RIO 3 MARIO
 cenario_mario_3:
 	# ==============
 	# EMPILHAR
@@ -176,46 +310,46 @@ cenario_mario_3:
 	
 	jal Draw_Floor_Mario
 	
-	addi $2 $0 30 # Posição X
-	addi $3 $0 190 # Posição Y
+	addi $2 $0 30 # PosiÃ§Ã£o X
+	addi $3 $0 190 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
-	addi $2 $0 50 # Posição X
-	addi $3 $0 210 # Posição Y
+	addi $2 $0 50 # PosiÃ§Ã£o X
+	addi $3 $0 210 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 		
-	addi $2 $0 65 # Posição X
-	addi $3 $0 190 # Posição Y
+	addi $2 $0 65 # PosiÃ§Ã£o X
+	addi $3 $0 190 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
 	
-	addi $2 $0 85 # Posição X
-	addi $3 $0 210 # Posição Y
+	addi $2 $0 85 # PosiÃ§Ã£o X
+	addi $3 $0 210 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
-	addi $2 $0 100 # Posição X
-	addi $3 $0 190 # Posição Y
+	addi $2 $0 100 # PosiÃ§Ã£o X
+	addi $3 $0 190 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
 	
-	addi $2 $0 120 # Posição X
-	addi $3 $0 210 # Posição Y
+	addi $2 $0 120 # PosiÃ§Ã£o X
+	addi $3 $0 210 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
-	addi $2 $0 135 # Posição X
-	addi $3 $0 190 # Posição Y
+	addi $2 $0 135 # PosiÃ§Ã£o X
+	addi $3 $0 190 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
-	addi $2 $0 150 # Posição X
-	addi $3 $0 210 # Posição Y
+	addi $2 $0 150 # PosiÃ§Ã£o X
+	addi $3 $0 210 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
-	addi $2 $0 165 # Posição X
-	addi $3 $0 190 # Posição Y
+	addi $2 $0 165 # PosiÃ§Ã£o X
+	addi $3 $0 190 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
-	addi $2 $0 180 # Posição X
-	addi $3 $0 210 # Posição Y
+	addi $2 $0 180 # PosiÃ§Ã£o X
+	addi $3 $0 210 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
 	
@@ -230,7 +364,7 @@ cenario_mario_3:
 	jr $31
 	
 # =========================================
-# CENÁRIO 4 MARIO
+# CENÃ?RIO 4 MARIO
 cenario_mario_4:
 	# ==============
 	# EMPILHAR
@@ -262,8 +396,8 @@ cenario_mario_4:
 	jal Draw_Floor_Mario
 	
 		
-	addi $2 $0 50 # Posição X
-	addi $3 $0 200 # Posição Y
+	addi $2 $0 50 # PosiÃ§Ã£o X
+	addi $3 $0 200 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
 	
@@ -277,9 +411,9 @@ cenario_mario_4:
 	
 	jr $31
 # ================================================================
-# **** Desenhar Céu Degrade ****
+# **** Desenhar CÃ©u Degrade ****
 
-# INPUT_Reg: $3 -> Posição Y 
+# INPUT_Reg: $3 -> PosiÃ§Ã£o Y 
 # 	     $9 -> Cor 	
 # OUTPUT_Reg: None
 # Reg_Usados:
@@ -978,10 +1112,10 @@ end_Mario_Dark_Sky:
 
 
 # ================================================================
-# **** Desenhar Céu Pixel ****
+# **** Desenhar CÃ©u Pixel ****
 
 # INPUT_Reg: $2 -> Tamanho dos Datalhes
-#            $3 -> Posição Y
+#            $3 -> PosiÃ§Ã£o Y
 # 	         $9 -> Cor 	
 # OUTPUT_Reg: None
 # Reg_Usados:
@@ -1018,19 +1152,19 @@ fim_Mario_Dark_Sky_Draw:
 # ========================================================
 # **** Plataform ( Desenhar Plataformas Mario) ****
 
-# INPUT_Reg: $2 -> Posição X
-	      #  $3 -> Posição Y
+# INPUT_Reg: $2 -> PosiÃ§Ã£o X
+	      #  $3 -> PosiÃ§Ã£o Y
 
 # OUTPUT_Reg: None
 
 # Reg_Usados: # $2  -> Largura X do pixel
               # $3  -> Altura Y do Pixel
-              # $4  -> Posição Lagura eixo X da Tela (onde inicia o Pixel)
-              # $5  -> Posição Altura eixo Y da Tela (onde inicia o Pixel)
+              # $4  -> PosiÃ§Ã£o Lagura eixo X da Tela (onde inicia o Pixel)
+              # $5  -> PosiÃ§Ã£o Altura eixo Y da Tela (onde inicia o Pixel)
               # $9  -> Cor do Pixel
-              # $15 -> Base do InÃ­cio da Tela, Eixo X (referencia para aonde comeÃ£ a gerar o NPC)
-              # $16 -> Base do InÃ­cio da Tela, Eixo X (referencia para aonde comeÃ£ a gerar o NPC)
-              # $29 -> EndereÃ§o de PILHA
+              # $15 -> Base do InÃƒÂ­cio da Tela, Eixo X (referencia para aonde comeÃƒÂ£ a gerar o NPC)
+              # $16 -> Base do InÃƒÂ­cio da Tela, Eixo X (referencia para aonde comeÃƒÂ£ a gerar o NPC)
+              # $29 -> EndereÃƒÂ§o de PILHA
               # $31 -> Return do JAL
 
 Draw_Plataform_Mario:
@@ -1048,8 +1182,8 @@ Draw_Plataform_Mario:
 	mul $6 $4 4
 	add $5 $5 $6
 	add $8 $8 $5
-	addi $10 $8 0 # ENDEREÇO COPIA 1
-	addi $12 $10 0 # ENDEREÇO COPIA 2
+	addi $10 $8 0 # ENDEREÃ‡O COPIA 1
+	addi $12 $10 0 # ENDEREÃ‡O COPIA 2
 	addi $13 $3 2
 	addi $7 $3 2
 	
@@ -1284,21 +1418,21 @@ Draw_Plataform_Mario_END:
 
 # =========================================================	
 # ========================================================
-# **** Draw_Floor_Mario ( Desenhar  chão Mario) ****
+# **** Draw_Floor_Mario ( Desenhar  chÃ£o Mario) ****
 
-# INPUT_Reg: $2 -> Posição X
-	      #  $3 -> Posição Y
+# INPUT_Reg: $2 -> PosiÃ§Ã£o X
+	      #  $3 -> PosiÃ§Ã£o Y
 
 # OUTPUT_Reg: None
 
 # Reg_Usados: # $2  -> Largura X do pixel
               # $3  -> Altura Y do Pixel
-              # $4  -> Posição Lagura eixo X da Tela (onde inicia o Pixel)
-              # $5  -> Posição Altura eixo Y da Tela (onde inicia o Pixel)
+              # $4  -> PosiÃ§Ã£o Lagura eixo X da Tela (onde inicia o Pixel)
+              # $5  -> PosiÃ§Ã£o Altura eixo Y da Tela (onde inicia o Pixel)
               # $9  -> Cor do Pixel
-              # $15 -> Base do InÃ­cio da Tela, Eixo X (referencia para aonde comeÃ£ a gerar o NPC)
-              # $16 -> Base do InÃ­cio da Tela, Eixo X (referencia para aonde comeÃ£ a gerar o NPC)
-              # $29 -> EndereÃ§o de PILHA
+              # $15 -> Base do InÃƒÂ­cio da Tela, Eixo X (referencia para aonde comeÃƒÂ£ a gerar o NPC)
+              # $16 -> Base do InÃƒÂ­cio da Tela, Eixo X (referencia para aonde comeÃƒÂ£ a gerar o NPC)
+              # $29 -> EndereÃƒÂ§o de PILHA
               # $31 -> Return do JAL
 
 Draw_Floor_Mario:
@@ -1310,7 +1444,7 @@ Draw_Floor_Mario:
 	
 	lui $8 0x1001
 	addi $7 $0 1024
-	mul $7 $7 188 # Posiçao Altura * Ir Altura
+	mul $7 $7 188 # PosiÃ§ao Altura * Ir Altura
 	add $8 $8 $7
 	
 	addi $9 $0 0
@@ -1341,7 +1475,7 @@ Draw_Floor_Mario_Details_END:
 
 	lui $8 0x1001
 	addi $7 $0 1024
-	mul $7 $7 190 # Posiçao Altura * Ir Altura
+	mul $7 $7 190 # PosiÃ§ao Altura * Ir Altura
 	add $8 $8 $7
 	
 	addi $9 $0 0
@@ -1371,15 +1505,15 @@ Draw_Floor_Mario_For_END:
 # ================================================================
 # **** Desenhar Caveira ****
 
-# INPUT_Reg: $2 -> Posição X
-#            $3 -> Posição Y 
+# INPUT_Reg: $2 -> PosiÃ§Ã£o X
+#            $3 -> PosiÃ§Ã£o Y 
 # OUTPUT_Reg: None
 # Reg_Usados:
 Skull_Draw:
 	sw $31 -4($29)
 	lui $8 0x1001
 	addi $4 $0 1024
-	mul $4 $4 $3 # Posição Y
+	mul $4 $4 $3 # PosiÃ§Ã£o Y
 	mul $2 $2 4
 	add $4 $4 $2	
 	add $8 $8 $4
@@ -1621,19 +1755,19 @@ end_Skull_Draw_For:
 # ========================================================
 # **** Wizard ( Desenhar Mago - * NPC *) ****
 
-# INPUT_Reg: $2 -> Posição X
-	  #  $3 -> Posição Y
+# INPUT_Reg: $2 -> PosiÃ§Ã£o X
+	  #  $3 -> PosiÃ§Ã£o Y
 
 # OUTPUT_Reg: None
 
 # Reg_Usados: # $2  -> Largura X do pixel
               # $3  -> Altura Y do Pixel
-              # $4  -> Posição Lagura eixo X da Tela (onde inicia o Pixel)
-              # $5  -> Posição Altura eixo Y da Tela (onde inicia o Pixel)
+              # $4  -> PosiÃ§Ã£o Lagura eixo X da Tela (onde inicia o Pixel)
+              # $5  -> PosiÃ§Ã£o Altura eixo Y da Tela (onde inicia o Pixel)
               # $9  -> Cor do Pixel
-              # $15 -> Base do InÃ­cio da Tela, Eixo X (referencia para aonde comeÃ£ a gerar o NPC)
-              # $16 -> Base do InÃ­cio da Tela, Eixo X (referencia para aonde comeÃ£ a gerar o NPC)
-              # $29 -> EndereÃ§o de PILHA
+              # $15 -> Base do InÃƒÂ­cio da Tela, Eixo X (referencia para aonde comeÃƒÂ£ a gerar o NPC)
+              # $16 -> Base do InÃƒÂ­cio da Tela, Eixo X (referencia para aonde comeÃƒÂ£ a gerar o NPC)
+              # $29 -> EndereÃƒÂ§o de PILHA
               # $31 -> Return do JAL
 Wizard:
 	# =============================
@@ -1856,7 +1990,7 @@ Wizard:
 	jal Wizard_Draw_Pixel
 
 	# =============================
-    	# MÃƒO
+    	# MÃƒÆ’O
     	# =============================
 	
 	addi $2 $0 4
@@ -1891,8 +2025,8 @@ Wizard_Draw_Pixel:
 	
 	lui $8 0x1001 # Memoria
 	addi $6 $0 1024
-	mul $6 $6 $5 #Posição Y
-	mul $7 $4 4 # Posição X
+	mul $6 $6 $5 #PosiÃ§Ã£o Y
+	mul $7 $4 4 # PosiÃ§Ã£o X
 	add $8 $8 $6
 	add $8 $8 $7
 	addi $5 $0 0 # Contador 1
@@ -1999,6 +2133,9 @@ Donkey_Kong:
 	
 	add $15 $2 $0
 	add $16 $3 $0
+	
+	addi $26 $2 0 # X
+	addi $27 $3 0 # Y
 	
 	addi $2 $0 8	
 	addi $3 $0 2
@@ -2832,8 +2969,8 @@ Donkey_Kong_Draw_Pixel:
 	
 	lui $8 0x1001 # Memoria
 	addi $6 $0 1024
-	mul $6 $6 $5 #PosiÃ§Ã£o Y
-	mul $7 $4 4 # PosiÃ§Ã£o X
+	mul $6 $6 $5 #PosiÃƒÂ§ÃƒÂ£o Y
+	mul $7 $4 4 # PosiÃƒÂ§ÃƒÂ£o X
 	add $8 $8 $6
 	add $8 $8 $7
 	addi $5 $0 0 # Contador 1
@@ -2873,8 +3010,8 @@ Donkey_Kong_Draw_Pixel_Erased:
 	
 	lui $8 0x1001 # Memoria
 	addi $6 $0 1024
-	mul $6 $6 $5 #PosiÃ§Ã£o Y
-	mul $7 $4 4 # PosiÃ§Ã£o X
+	mul $6 $6 $5 #PosiÃƒÂ§ÃƒÂ£o Y
+	mul $7 $4 4 # PosiÃƒÂ§ÃƒÂ£o X
 	add $8 $8 $6
 	add $8 $8 $7
 	addi $5 $0 0 # Contador 1
@@ -3566,14 +3703,14 @@ Donkey_Kong_Erased:
 
 timer: 
 	sw $16, 0($29)
-       addi $29, $29, -4
-       addi $16, $0, 100000
-forT:  beq $16, $0, fimT
-       nop
-       nop
-       addi $16, $16, -1      
-       j forT                  
-fimT:  addi $29, $29, 4                                                    
-       lw $16, 0($29)          
-       jr $31
+       	addi $29, $29, -4
+       	addi $16, $0, 100000
+forT:  	beq $16, $0, fimT
+       	nop
+       	nop
+       	addi $16, $16, -1      
+       	j forT                  
+fimT:  	addi $29, $29, 4                                                    
+       	lw $16, 0($29)          
+       	jr $31
 
