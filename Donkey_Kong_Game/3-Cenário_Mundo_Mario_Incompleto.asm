@@ -1,8 +1,10 @@
 .text
 
 main:
-	      	 
-	jal cenario_mario_1
+
+
+
+   	 jal cenario_mario_1
 	# TECLADO 
 	lui $21 0xffff
       	addi $25 $0 32
@@ -15,52 +17,86 @@ main:
       	# posição inicial Donkey Kong
       	addi $2 $0 -1 # -1 
 	addi $3 $0 106 # 106
+	addi $4 $0 0 
+	ori $4 0x2F2F2F
 	jal Donkey_Kong
 	
-	addi $18 $0 186 # Limite para morrer Chão
+	addi $18 $0 0 # Limite para morrer Chão
 	addi $19 $0 0 # Limite para mudar os parametros X 
 	ori $19 0x2F2F2F
-	addi $30 $27 0 # Limite para controlar que os players não podem ir mais pra baixo do que o limite da plataforma
-	addi $17 $0 0 # Contador
 	
 	
 	
+	
+# ========================================================
+# ****  walk_cenario_mario1 (Faz o Donkey andar no cenário 1 do mario) ****
 
+# INPUT_Reg: None
+
+# OUTPUT_Reg: None
+
+# Reg_Usados: 
+			  # $2 -> Posicao X Donkey Kong
+			  # $3 -> Posicao Y Donkey Kong
+
+              
+              # $9  -> Cor do Pixel
+
+              # $11 -> Var -> 'a' (ESQUERDA)
+              # $12 -> Var -> 'd' (DIREITA)
+              # $13 -> Var -> 's' (BAIXO)
+              # $14 -> Var -> 'w' (PULAR)
+			  
+			# VARIVEL DE CONTROLE
+			  # $18 -> Controla os pulos do boneco
+
+
+              # $19 -> Cor base para Boneco andar (CHAO)
+
+              # $21 -> Endereco para memoria TECLADO
+              # $23 -> Varivel que recebe a memoria do TECLADO
+
+			  
+
+              # $29 -> EndereÃƒÂ§o de PILHA
+              # $31 -> Return do JAL
 		
 walk_cenario_mario1:
-	     	
+	    	
     	
       	# função tempo
-	jal timer
-	# buscar o comando do teclado
+		jal timer
+		# buscar o comando do teclado
       	lw $23 4($21)
       	beq $23 $11 esq
       	beq $23 $12 dir
       	beq $23 $13 baixo
       	beq $23 $14 cima
 	
-	j baixo
+		j baixo
 
 esq:
-	addi $2 $26 0
-	addi $3 $27 0
+	addi $2 $2 0
+	addi $3 $3 0
 	jal Donkey_Kong_Erased
 	
-	addi $2 $26 -10
-	addi $3 $27 0
+	addi $2 $2 -10
+	addi $3 $3 0
 	jal Donkey_Kong
 	addi $23 $0 'p'
 	sw $23 4($21)
 	addi $17 $0 0
 	j baixo
 dir:
-	addi $2 $26 0
-	addi $3 $27 0
+	addi $2 $2 0
+	addi $3 $3 0
 	jal Donkey_Kong_Erased
 	
-	addi $2 $26 10
-	addi $3 $27 0
+	addi $2 $2 10
+	addi $3 $3 0
 	jal Donkey_Kong
+	
+	beq $2 189 cenario_mario_2
 	addi $23 $0 'p'
 	sw $23 4($21)
 	
@@ -68,34 +104,32 @@ dir:
 	j baixo
 
 cima:
-	beq $17 1 baixo
-	addi $2 $26 0
-	addi $3 $27 0
+	beq $18 1 baixo
+	addi $2 $2 0
+	addi $3 $3 0
 	jal Donkey_Kong_Erased
 	
-	addi $2 $26 0
-	addi $3 $27 -80
+	addi $2 $2 0
+	addi $3 $3 -80
 	jal Donkey_Kong
 	addi $23 $0 'p'
 	sw $23 4($21)
-	addi $17 $17 1
+	addi $18 $18 1
 	j baixo
 
 tocou_no_chao:
-	addi $17 $0 0
+	addi $18 $0 0
 	j walk_cenario_mario1
 baixo:
 	
 	beq $9 $19 tocou_no_chao
-	beq $27 186 cair
-	beq $23 $11 esq
-      	beq $23 $12 dir
-     	addi $2 $26 0
-	addi $3 $27 0
+	beq $3 186 cair
+	addi $2 $2 0
+	addi $3 $3 0
 	jal Donkey_Kong_Erased
 	
-	addi $2 $26 0
-	addi $3 $27 10
+	addi $2 $2 0
+	addi $3 $3 10
 	jal Donkey_Kong
 	addi $23 $0 'p'
 	sw $23 4($21)
@@ -103,13 +137,13 @@ baixo:
 	j walk_cenario_mario1
 cair:
 
-	beq $27 $18 game_over
-	addi $2 $26 0
-	addi $3 $27 0
+	beq $3 186 game_over
+	addi $2 $2 0
+	addi $3 $3 0
 	jal Donkey_Kong_Erased
 	
-	addi $2 $26 0
-	addi $3 $27 10
+	addi $2 $2 0
+	addi $3 $3 10
 	jal Donkey_Kong
 	addi $23 $0 'p'
 	sw $23 4($21)
@@ -119,13 +153,13 @@ cair:
 game_over:
 
 	jal timer
-	addi $2 $26 0
-	addi $3 $27 0
+	addi $2 $2 0
+	addi $3 $3 0
 	jal Donkey_Kong_Erased
 	
 	
-	addi $2 $26 25 # PosiÃ§Ã£o X
-	addi $3 $27 10 # PosiÃ§Ã£o Y
+	addi $2 $2 25 # PosiÃ§Ã£o X
+	addi $3 $3 10 # PosiÃ§Ã£o Y
 	jal Skull_Draw
 	
 	addi $2 $0 10
@@ -150,16 +184,24 @@ fim:
 	jal timer
 	jal timer
 	jal timer
-	jal cenario_mario_3
-	
-	jal timer
-	jal timer
-	jal timer
-	jal cenario_mario_4
-	# 
-mud_cenario_mario2:
-	jal cenario_mario_2	
-# ========================= CENARIOS ==================
+
+# =========================================
+# ========================================================
+# ****  cenario_mario_1 (Desenha o cenário do Mario Invertido- TELA 1) ****
+
+# INPUT_Reg: None
+
+# OUTPUT_Reg: None
+
+# Reg_Usados: 
+			  # $2 -> Lagura das Plataformas do Mario Invertido
+			  # $3 -> Altura das Plataformas do Mario Invertido
+			  # $4 -> Inicio na - POSICAO X -  das Plataformas do Mario Invertido
+			  
+               
+
+              # $29 -> EndereÃƒÂ§o de PILHA
+              # $31 -> Return do JAL
 cenario_mario_1:
 	# ==============
 	# EMPILHAR
@@ -206,7 +248,23 @@ cenario_mario_1:
 	jr $31
 	
 # =========================================
-# CENÃ?RIO 2 MARIO
+# ========================================================
+# ****  cenario_mario_2 (Desenha o cenário do Mario Invertido- TELA 2) ****
+
+# INPUT_Reg: None
+
+# OUTPUT_Reg: None
+
+# Reg_Usados: 
+			  # $2 -> Lagura das Plataformas do Mario Invertido
+			  # $3 -> Altura das Plataformas do Mario Invertido
+			  # $4 -> Inicio na - POSICAO X -  das Plataformas do Mario Invertido
+			  
+               
+
+              # $29 -> EndereÃƒÂ§o de PILHA
+              # $31 -> Return do JAL# $31 -> Return do JAL
+
 cenario_mario_2:
 	# ==============
 	# EMPILHAR
@@ -261,10 +319,26 @@ cenario_mario_2:
 	addi $29 $29 4
 	lw $31 0($29)
 	
-	jr $31
+	j walk_cenario_mario1
 	
 # =========================================
-# CENÃ?RIO 3 MARIO
+# ========================================================
+# ****  cenario_mario_3 (Desenha o cenário do Mario Invertido- TELA 2) ****3
+
+# INPUT_Reg: None
+
+# OUTPUT_Reg: None
+
+# Reg_Usados: 
+			  # $2 -> Lagura das Plataformas do Mario Invertido
+			  # $3 -> Altura das Plataformas do Mario Invertido
+			  # $4 -> Inicio na - POSICAO X -  das Plataformas do Mario Invertido
+			  
+               
+
+              # $29 -> EndereÃƒÂ§o de PILHA
+              # $31 -> Return do JAL# $31 -> Return do JAL
+
 cenario_mario_3:
 	# ==============
 	# EMPILHAR
@@ -350,7 +424,22 @@ cenario_mario_3:
 	jr $31
 	
 # =========================================
-# CENÃ?RIO 4 MARIO
+# ========================================================
+# ****  cenario_mario_4 (Desenha o cenário do Mario Invertido- TELA 4) ****
+
+# INPUT_Reg: None
+
+# OUTPUT_Reg: None
+
+# Reg_Usados: 
+			  # $2 -> Lagura das Plataformas do Mario Invertido
+			  # $3 -> Altura das Plataformas do Mario Invertido
+			  # $4 -> Inicio na - POSICAO X -  das Plataformas do Mario Invertido
+			  
+               
+
+              # $29 -> EndereÃƒÂ§o de PILHA
+              # $31 -> Return do JAL# $31 -> Return do JAL
 cenario_mario_4:
 	# ==============
 	# EMPILHAR
@@ -2116,9 +2205,19 @@ Donkey_Kong:
 	# ===============
 	sw $31 0($29)
 	addi $29 $29 -4
+
+	sw $3 0($29)
+	addi $29 $29 -4
+
+	sw $2 0($29)
+	addi $29 $29 -4
+
+	sw $4 0($29)
+	addi $29 $29 -4
 	
 	add $15 $2 $0
 	add $16 $3 $0
+	add $17 $4 $0
 	
 	addi $26 $2 0 # X
 	addi $27 $3 0 # Y
@@ -2938,6 +3037,7 @@ Donkey_Kong:
 	addi $4 $15 8
 	addi $5 $16 54
 	addi $9 $0 1
+	
 	jal Donkey_Kong_Draw_Pixel
 
 	
@@ -2946,6 +3046,16 @@ Donkey_Kong_End:
 	# ===============
 	# DESEMPILHAR
 	# ===============
+
+	addi $29 $29 4
+	lw $4 0($29)
+	
+	addi $29 $29 4
+	lw $2 0($29)
+	
+	addi $29 $29 4
+	lw $3 0($29)
+	
 	addi $29 $29 4
 	lw $31 0($29)
 	
@@ -2964,6 +3074,7 @@ Donkey_Kong_Draw_Pixel:
 	addi $5 $0 0 # Contador 1
 	addi $6 $0 0 # Contador 2
 	add $7 $8 $0
+	addi $10 $0 0
 	beq $9 1 color_verification_Donkey_Kong
 	
 Donkey_Kong_Draw_Pixel_For:
@@ -2983,8 +3094,16 @@ Donkey_Kong_Draw_Pixel_Next_Line:
 	j Donkey_Kong_Draw_Pixel_For
 
 color_verification_Donkey_Kong:
+	beq $9 $17 color_find_Donkey_Kong
+	beq $10 42 Donkey_Kong_Draw_Pixel_END
 	lw $9 262144($8)
 
+	addi $10 $10 1
+	addi $8 $8 4
+	j color_verification_Donkey_Kong
+	
+color_find_Donkey_Kong:
+	j Donkey_Kong_Draw_Pixel_END
 Donkey_Kong_Draw_Pixel_END:
 	# ===============
 	# DESEMPILHAR
@@ -3066,6 +3185,15 @@ Donkey_Kong_Erased:
 	# EMPILHAR
 	# ===============
 	sw $31 0($29)
+	addi $29 $29 -4
+
+	sw $3 0($29)
+	addi $29 $29 -4
+
+	sw $2 0($29)
+	addi $29 $29 -4
+
+	sw $4 0($29)
 	addi $29 $29 -4
 	
 	add $15 $2 $0
@@ -3685,13 +3813,24 @@ Donkey_Kong_Erased:
 	jal Donkey_Kong_Draw_Pixel_Erased
 
 
+
 	# ===============
 	# DESEMPILHAR
 	# ===============
+	
+	addi $29 $29 4
+	lw $4 0($29)
+
+	addi $29 $29 4
+	lw $2 0($29)
+	
+	addi $29 $29 4
+	lw $3 0($29)
+	
 	addi $29 $29 4
 	lw $31 0($29)
-
-    	jr $31 
+	
+	jr $31
 
 timer: 
 	sw $16, 0($29)
