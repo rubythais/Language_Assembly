@@ -13,12 +13,13 @@ main:
       	addi $14 $0 'w'
       	
       	# posição inicial Donkey Kong
-      	addi $2 $0 -5 # -1 
+      	addi $2 $0 -1 # -1 
 	addi $3 $0 106 # 106
 	jal Donkey_Kong
 	
 	addi $18 $0 186 # Limite para morrer Chão
-	addi $19 $0 95 # Limite para mudar os parametros X 
+	addi $19 $0 0 # Limite para mudar os parametros X 
+	ori $19 0x2F2F2F
 	addi $30 $27 0 # Limite para controlar que os players não podem ir mais pra baixo do que o limite da plataforma
 	addi $17 $0 0 # Contador
 	
@@ -38,82 +39,67 @@ walk_cenario_mario1:
       	beq $23 $13 baixo
       	beq $23 $14 cima
 	
-	addi $17 $17 1
-	j walk_cenario_mario1
-min_altura_mario_cen1:
-	addi $30 $0 86
-	j walk_cenario_mario1
+	j baixo
+
 esq:
 	addi $2 $26 0
 	addi $3 $27 0
 	jal Donkey_Kong_Erased
 	
-	addi $2 $26 -5
+	addi $2 $26 -10
 	addi $3 $27 0
 	jal Donkey_Kong
 	addi $23 $0 'p'
 	sw $23 4($21)
-	
-	j walk_cenario_mario1
+	addi $17 $0 0
+	j baixo
 dir:
 	addi $2 $26 0
 	addi $3 $27 0
 	jal Donkey_Kong_Erased
 	
-	addi $2 $26 5
+	addi $2 $26 10
 	addi $3 $27 0
 	jal Donkey_Kong
 	addi $23 $0 'p'
 	sw $23 4($21)
-	beq $26 $19 mud_param_cenario_Mario1
-	j walk_cenario_mario1
-mud_param_cenario_Mario1:
-	#===================
-	# EMPILHAR
-	# ==================
-	sw $31 0($29)
-	addi $29 $29 -4
 	
-	beq $27 95 cair
-	beq $27 200 mud_cenario_mario2
-	addi $30 $0 86
-	addi $19 $0 200
-	#===================
-	# DESEMPILHAR
-	# ==================
-	addi $29 $29 4
-	lw $31 0($29)
-	
-	jr $31
+
+	j baixo
 
 cima:
-	
+	beq $17 1 baixo
 	addi $2 $26 0
 	addi $3 $27 0
 	jal Donkey_Kong_Erased
 	
 	addi $2 $26 0
-	addi $3 $27 -20
+	addi $3 $27 -80
 	jal Donkey_Kong
 	addi $23 $0 'p'
 	sw $23 4($21)
-	
-	j walk_cenario_mario1
+	addi $17 $17 1
+	j baixo
 
-	
+tocou_no_chao:
+	addi $17 $0 0
+	j walk_cenario_mario1
 baixo:
 	
-	beq $27 $30 walk_cenario_mario1
-	addi $2 $26 0
+	beq $9 $19 tocou_no_chao
+	beq $27 186 cair
+	beq $23 $11 esq
+      	beq $23 $12 dir
+     	addi $2 $26 0
 	addi $3 $27 0
 	jal Donkey_Kong_Erased
 	
 	addi $2 $26 0
-	addi $3 $27 20
+	addi $3 $27 10
 	jal Donkey_Kong
 	addi $23 $0 'p'
 	sw $23 4($21)
-	addi $17 $0 0 # Contador
+	
 	j walk_cenario_mario1
 cair:
 
@@ -2946,6 +2932,13 @@ Donkey_Kong:
 	ori $9 0x9F4000
 	jal Donkey_Kong_Draw_Pixel
 	
+	# VERIFICAR COR
+	addi $2 $0 2
+	addi $3 $0 2
+	addi $4 $15 8
+	addi $5 $16 54
+	addi $9 $0 1
+	jal Donkey_Kong_Draw_Pixel
 
 	
 	
@@ -2957,11 +2950,6 @@ Donkey_Kong_End:
 	lw $31 0($29)
 	
 	jr $31
-
-
-
-
-	
 
 Donkey_Kong_Draw_Pixel:
 	sw $31 0($29)
@@ -2976,7 +2964,8 @@ Donkey_Kong_Draw_Pixel:
 	addi $5 $0 0 # Contador 1
 	addi $6 $0 0 # Contador 2
 	add $7 $8 $0
-
+	beq $9 1 color_verification_Donkey_Kong
+	
 Donkey_Kong_Draw_Pixel_For:
 	beq $6 $3 Donkey_Kong_Draw_Pixel_END
 	beq $5 $2 Donkey_Kong_Draw_Pixel_Next_Line
@@ -2992,6 +2981,9 @@ Donkey_Kong_Draw_Pixel_Next_Line:
 	addi $8 $8 1024
 	addi $7 $7 1024
 	j Donkey_Kong_Draw_Pixel_For
+
+color_verification_Donkey_Kong:
+	lw $9 262144($8)
 
 Donkey_Kong_Draw_Pixel_END:
 	# ===============
