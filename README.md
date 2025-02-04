@@ -1,6 +1,6 @@
 # Donkey Kong (assembly mips)
 ## Descrição:
-' Matéria: Arquitetura de computadores '
+- Matéria: Arquitetura de computadores 
 - Sobre: Versão da série de jogos eletrônicos da Nintendo, criada por Shigeru Miyamoto que gira em torno do personagem Donkey Kong
 - Codado em: Assembly mips
 - Visual feito em: Piskel
