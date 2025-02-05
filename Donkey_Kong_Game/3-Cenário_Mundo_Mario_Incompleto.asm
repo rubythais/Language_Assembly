@@ -319,6 +319,13 @@ cenario_mario_2:
 	addi $29 $29 4
 	lw $31 0($29)
 	
+	# posição inicial Donkey Kong
+      	addi $2 $0 -1 # -1 
+	addi $3 $0 86 # 106
+	addi $4 $0 0 
+	ori $4 0x2F2F2F
+	jal Donkey_Kong
+	
 	j walk_cenario_mario1
 	
 # =========================================
