@@ -5,7 +5,14 @@ main:
 
 
    	 jal cenario_mario_1
+   	 # posição inicial Donkey Kong
+      	addi $2 $0 -1 # -1 
+	addi $3 $0 106 # 106
+	addi $4 $0 0 
+	ori $4 0x2F2F2F
+	jal Donkey_Kong
 	# TECLADO 
+wall_base_Donkey_Mario_Cenary:
 	lui $21 0xffff
       	addi $25 $0 32
       	addi $10 $0 4
@@ -14,12 +21,7 @@ main:
       	addi $13 $0 's'
       	addi $14 $0 'w'
       	
-      	# posição inicial Donkey Kong
-      	addi $2 $0 -1 # -1 
-	addi $3 $0 106 # 106
-	addi $4 $0 0 
-	ori $4 0x2F2F2F
-	jal Donkey_Kong
+      	
 	
 	addi $18 $0 0 # Limite para morrer Chão
 	addi $19 $0 0 # Limite para mudar os parametros X 
@@ -283,14 +285,14 @@ cenario_mario_2:
 	
 	addi $2 $0 20
 	addi $3 $0 36
-	addi $4 $0 130
+	addi $4 $0 150
 
 	jal Draw_Plataform_Mario
 	
 	
-	addi $2 $0 54
+	addi $2 $0 10
 	addi $3 $0 36
-	addi $4 $0 200
+	addi $4 $0 246
 
 	jal Draw_Plataform_Mario
 	
@@ -326,7 +328,7 @@ cenario_mario_2:
 	ori $4 0x2F2F2F
 	jal Donkey_Kong
 	
-	j walk_cenario_mario1
+	j wall_base_Donkey_Mario_Cenary
 	
 # =========================================
 # ========================================================

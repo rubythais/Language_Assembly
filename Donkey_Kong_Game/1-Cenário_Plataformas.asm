@@ -15,11 +15,11 @@ main:
       	addi $14 $0 'w'
       	
       	# Controle
-      	addi $15 $0 0
+      	addi $30 $0 0
       	
       	# posição inicial Mario
       	addi $2 $0 30 # 28
-	addi $3 $0 231 # 231
+	addi $3 $0 231# 231
 	addi $4 $0 0 
 	ori $4 0xA61937
 	addi $5 $0 0
@@ -30,8 +30,8 @@ main:
 	ori $19 0xA61937
 	
 walk_Platforms_Mario:
-	jal timer
-	 
+	
+	 jal timer
 	lw $23 4($21)
       	beq $23 $11 walk_left_mario
       	beq $23 $12 walk_right_mario
@@ -40,6 +40,8 @@ walk_Platforms_Mario:
 	
 	j walk_down_mario
 walk_left_mario:
+	
+	beq $20 $19 walk_down_mario
 	addi $2 $2 0
 	addi $3 $3 0
 	jal Mario_Draw_Erased_RIGHT
@@ -57,6 +59,7 @@ walk_left_mario:
 	j walk_down_mario
 	
 walk_right_mario:
+	
 	beq $20 $19 walk_down_mario
 	addi $2 $2 0
 	addi $3 $3 0
@@ -74,8 +77,8 @@ walk_right_mario:
 	addi $17 $0 0
 	j walk_down_mario
 walk_up_mario:
-	addi $27 $0 60
-	
+	beq $18 $19 walk_down_mario
+	beq $30 20 walk_down_mario
 	addi $2 $2 0
 	addi $3 $3 0
 	jal Mario_Draw_Erased_RIGHT
@@ -85,18 +88,20 @@ walk_up_mario:
 	jal Mario_Draw_Erased_LEFT
 	
 	addi $2 $2 0
-	addi $3 $3 -30
+	addi $3 $3 -2
 	jal Mario_Draw_RIGHT
 	
-	addi $23 $0 'p'
-	sw $23 4($21)
-	j walk_down_mario
+	addi $30 $30 1
+	jal timer2
+	j walk_up_mario
 	
 tocou_no_chao_Mario:
 	addi $18 $0 0
+	addi $30 $0 0
 	j walk_Platforms_Mario
+
 walk_down_mario:
-	
+	jal timer2
 	beq $9 $19 tocou_no_chao_Mario
 	beq $3 261 cair_mario
 	addi $2 $2 0
@@ -108,8 +113,12 @@ walk_down_mario:
 	jal Mario_Draw_Erased_LEFT
 	
 	addi $2 $2 0
-	addi $3 $3 10
+	addi $3 $3 2
 	jal Mario_Draw_RIGHT
+	
+	beq $23 $11 walk_left_mario
+      	beq $23 $12 walk_right_mario
+      	
 	addi $23 $0 'p'
 	sw $23 4($21)
 	
@@ -599,7 +608,7 @@ Platform_Draw_For:
 	sw $9 1024($8)
 
    	sw $9 262144($8)
-    	sw $9 263168($8)
+    sw $9 263168($8)
 
 	
 	#beq $10 0 base_initial_Triangle
@@ -625,7 +634,7 @@ base_initial_Triangle:
 	sw $9 8192($8) # 2
 	sw $9 9216($8) # 1
 	
-    	sw $9 269222($8)
+    sw $9 269222($8)
    	sw $9 270246($8)
    	sw $9 271270($8)
 
@@ -642,6 +651,12 @@ base_2th_Triangle:
 	sw $9 7172($11)
 	sw $9 6148($11)
 	
+	sw $9 271364($11)
+	sw $9 270340($11)
+	sw $9 269316($11)
+	sw $9 268292($11)
+
+
 	addi $10 $10 1
 
 	j continue_Platform_Draw
@@ -652,6 +667,10 @@ base_3th_Triangle:
 	sw $9 6152($11)
 	sw $9 7176($11)
 	sw $9 5128($11)
+
+	sw $9 267272($11)
+	sw $9 269320($11)
+	sw $9 268296($11)
 	
 	
 	addi $10 $10 1
@@ -664,6 +683,9 @@ base_4th_Triangle:
 	sw $9 6156($11)
 	sw $9 4108($11)
 	
+	sw $9 267276($11)
+	sw $9 268300($11)
+	sw $9 266252($11)
 	
 	addi $10 $10 1
 
@@ -676,6 +698,8 @@ base_5th_Triangle:
 	sw $9 4112($11)
 	#sw $9 5136($11)
 	
+	sw $9 265232($11)
+	sw $9 266256($11)
 	
 	addi $10 $10 1
 
@@ -688,6 +712,9 @@ base_6th_Triangle:
 	sw $9 3092($11)
 	#sw $9 4116($11)
 	
+	sw $9 264212($11)
+	sw $9 265236($11)
+
 	
 	addi $10 $10 1
 
@@ -699,6 +726,8 @@ base_7th_Triangle:
 	sw $9 2072($11)
 	#sw $9 3096($11)
 	
+	sw $9 264216($11)
+
 	addi $10 $10 1
 
 	j continue_Platform_Draw
@@ -708,6 +737,9 @@ base_8th_Triangle:
 	sw $9 2076($11)
 	sw $9 3100($11)
 	#sw $9 4124($11)
+	
+	sw $9 264220($11)
+	sw $9 265244($11)
 	
 	addi $10 $10 1
 
@@ -720,6 +752,12 @@ base_9th_Triangle:
 	sw $9 4128($11)
 	#sw $9 5152($11)
 	
+	sw $9 265248($11)
+	sw $9 266272($11)
+	#sw $9 267296($11)
+
+
+
 	addi $10 $10 1
 
 	j continue_Platform_Draw
@@ -730,6 +768,11 @@ base_10th_Triangle:
 	sw $9 4132($11)
 	sw $9 5156($11)
 	sw $9 6180($11)
+
+	sw $9 266276($11)
+	sw $9 267300($11)
+	sw $9 268324($11)
+
 	
 	addi $10 $10 1
 
@@ -741,6 +784,11 @@ base_11th_Triangle:
 	sw $9 5160($11)
 	sw $9 6184($11)
 	sw $9 7208($11)
+
+
+	sw $9 267304($11)
+	sw $9 268328($11)
+	sw $9 269352($11)
 	
 	addi $10 $10 1
 
@@ -753,6 +801,13 @@ base_12th_Triangle:
 	sw $9 7212($11)
 	sw $9 8236($11)
 	sw $9 9260($11)
+
+
+	sw $9 268332($11)
+	sw $9 269356($11)
+	sw $9 270380($11)
+	sw $9 271404($11)
+
 	
 	addi $10 $10 1
 
@@ -764,7 +819,12 @@ base_13th_Triangle:
 	sw $9 7216($11)
 	sw $9 8240($11)
 	sw $9 9264($11)
+
 	
+	sw $9 269360($8)
+	sw $9 270384($8)
+	sw $9 271408($8)
+
 	addi $10 $10 1
 
 	j continue_Platform_Draw
@@ -776,6 +836,7 @@ continue_Platform_Draw:
 	
 	sw $9 268288($8)
 	sw $9 269312($8)
+
 	addi $8 $8 4 # Próximo Endereço
 	addi $5 $5 1 # Contador++
 	beq $10 11 restart_Platform_Draw
@@ -798,7 +859,6 @@ fim_Platform_Draw_For:
 	addi $4 $0 0
 	addi $5 $0 0
 	addi $8 $0 0
-	addi $9 $0 0
 	addi $10 $0 0
 	addi $11 $0 0
 	addi $15 $0 0
@@ -1254,6 +1314,14 @@ Mario_Draw_RIGHT:
 	addi $10 $0 1
 	jal Mario_Draw_Pixel
 	
+	addi $2 $0 10	
+	addi $3 $0 1
+	addi $4 $15 2
+	addi $5 $16 -1
+	addi $9 $0 2
+	
+	jal Mario_Draw_Pixel
+	
 	addi $2 $0 24
 	addi $3 $0 1
 	addi $4 $15 -4
@@ -1264,6 +1332,7 @@ Mario_Draw_RIGHT_END:
 	# ===============
 	# DESEMPILHAR
 	# ===============
+	jal reset
     addi $29 $29 4
     lw $5 0($29)
 
@@ -1606,14 +1675,19 @@ Mario_Draw_LEFT:
 	ori $9 0x00000
 	jal Mario_Draw_Pixel
 	
-	
-
-         addi $2 $0 8
+	addi $2 $0 1
 	addi $3 $0 1
-	addi $4 $15 -5
+	addi $4 $15 -6
 	addi $5 $16 16
-        addi $10 $0 1
-        jal Mario_Draw_Pixel
+	addi $10 $0 1
+	jal Mario_Draw_Pixel
+        
+        addi $2 $0 10	
+	addi $3 $0 1
+	addi $4 $15 2
+	addi $5 $16 -1
+	addi $9 $0 2
+	jal Mario_Draw_Pixel
 	
 	addi $2 $0 24
 	addi $3 $0 1
@@ -1626,6 +1700,7 @@ Mario_Draw_LEFT_END:
 	# ===============
 	# DESEMPILHAR
 	# ===============
+	jal reset
     	addi $29 $29 4
 	lw $5 0($29)
 
@@ -1699,6 +1774,7 @@ Mario_Draw_Pixel:
 	addi $6 $0 0 # Contador 2
 	add $7 $8 $0
         addi $22 $0 0
+        beq $9 2 color_verification_Mario_head
         beq $9 1 color_verification_Mario
         beq $10 1 color_verification_Mario_Feet
         
@@ -1717,6 +1793,7 @@ Mario_Draw_Pixel_Next_Line:
 	addi $8 $8 1024
 	addi $7 $7 1024
 	j Mario_Draw_Pixel_For
+
 color_verification_Mario:
 	beq $9 $17 color_find_Mario
 	beq $10 24 Mario_Draw_Pixel_END
@@ -1739,7 +1816,17 @@ color_verification_Mario_Feet:
 color_find_Mario_Feet:
     addi $20 $9 0
     j Mario_Draw_Pixel_END
-	 
+color_verification_Mario_head:
+	beq $9 $17 color_find_Mario_head
+   	beq $10 10 color_find_Mario_head
+   	lw $9 262144($8)
+   	
+   	addi $10 $10 1
+	addi $8 $8 4
+	j color_verification_Mario_head
+color_find_Mario_head:
+	addi $18 $9 0
+    	j Mario_Draw_Pixel_END
 Mario_Draw_Pixel_END:
 	addi $29 $29 4
 	lw $31 0($29)
@@ -2073,6 +2160,7 @@ Mario_Draw_Erased_RIGHT_END:
 	# ===============
 	# DESEMPILHAR
 	# ===============
+	jal reset
     addi $29 $29 4
     lw $5 0($29)
 
@@ -2415,6 +2503,7 @@ Mario_Draw_Erased_LEFT_END:
 	# ===============
 	# DESEMPILHAR
 	# ===============
+	jal reset
     addi $29 $29 4
 	lw $5 0($29)
 
@@ -2511,6 +2600,7 @@ Mario_Draw_Pixel_Erased_END:
 	# ====================
 	# DESEMPILHAR
 	# ====================
+	
 	addi $29 $29 4
 	lw $31 0($29)
 
@@ -2523,25 +2613,36 @@ reset:
 	sw $31 0($29)
 	addi $29 $29 -4
 
-	addi $2 $0 0
-	addi $3 $0 0
-	addi $4 $0 0
-	addi $5 $0 0
+	# addi $2 $0 0 
+	# addi $3 $0 0
+	# addi $4 $0 0
+	# addi $5 $0 0
 	addi $6 $0 0
 	addi $7 $0 0
 	addi $8 $0 0
-	addi $9 $0 0
+	# addi $9 $0 0
 	addi $10 $0 0
-	addi $11 $0 0
-	addi $12 $0 0
-	addi $13 $0 0
-	addi $14 $0 0
-	addi $15 $0 0
+	# addi $11 $0 0 -> tecla 'a'
+	# addi $12 $0 0 -> tecla 'd'
+	# addi $13 $0 0 -> tecla 's'
+	# addi $14 $0 0 -> tecla 'w'
+	# addi $15 $0 0 -> Controle
 	addi $16 $0 0
 	addi $17 $0 0
-	addi $18 $0 0
-	addi $19 $0 0
-	addi $20 $0 0
+	# addi $18 $0 0
+	# addi $19 $0 0 -> Cor de verificação
+	# addi $20 $0 0
+	# addi $21 $0 0 -> Memoria Teclado
+	# addi $22 $0 0
+	# addi $23 $0 0 -> Endereço do teclado
+	addi $24 $0 0
+	addi $25 $0 0
+	addi $26 $0 0
+	addi $27 $0 0
+	# addi $28 $0 0
+	# addi $29 $0 0
+	# addi $30 $0 0
+	# addi $31 $0 0
 
 	# ==============
 	# DESEMPILHAR
@@ -2617,6 +2718,23 @@ forT:  	beq $16, $0, fimT
        	addi $16, $16, -1      
        	j forT                  
 fimT:  	addi $29, $29, 4                                                    
+       	lw $16, 0($29)          
+       	jr $31
+       	
+       	
+       	
+timer2: 
+	sw $16, 0($29)
+       	addi $29, $29, -4
+       	addi $16, $0, 25000
+forT2:  	
+	beq $16, $0, fimT
+       	nop
+       	nop
+       	addi $16, $16, -1      
+       	j forT                  
+fimT2:  
+	addi $29, $29, 4                                                    
        	lw $16, 0($29)          
        	jr $31
 

@@ -298,6 +298,14 @@ Mario_Draw_LEFT:
 	addi $9 $0 0
 	ori $9 0x00000
 	jal Mario_Draw_Pixel
+	
+	addi $2 $0 24
+	addi $3 $0 1
+	addi $4 $15 -4
+	addi $5 $16 17
+	addi $9 $0 0	
+	ori $9 0xfffff
+	jal Mario_Draw_Pixel
 Mario_Draw_LEFT_END:
 	# ===============
 	# DESEMPILHAR
