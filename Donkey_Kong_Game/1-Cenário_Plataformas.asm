@@ -14,8 +14,11 @@ main:
       	addi $13 $0 's'
       	addi $14 $0 'w'
       	
+      	# Controle
+      	addi $15 $0 0
+      	
       	# posição inicial Mario
-      	addi $2 $0 28 # 28
+      	addi $2 $0 30 # 28
 	addi $3 $0 231 # 231
 	addi $4 $0 0 
 	ori $4 0xA61937
@@ -54,6 +57,7 @@ walk_left_mario:
 	j walk_down_mario
 	
 walk_right_mario:
+	beq $20 $19 walk_down_mario
 	addi $2 $2 0
 	addi $3 $3 0
 	jal Mario_Draw_Erased_RIGHT
@@ -70,10 +74,29 @@ walk_right_mario:
 	addi $17 $0 0
 	j walk_down_mario
 walk_up_mario:
-
+	addi $27 $0 60
+	
+	addi $2 $2 0
+	addi $3 $3 0
+	jal Mario_Draw_Erased_RIGHT
+	
+	addi $2 $2 0
+	addi $3 $3 0
+	jal Mario_Draw_Erased_LEFT
+	
+	addi $2 $2 0
+	addi $3 $3 -30
+	jal Mario_Draw_RIGHT
+	
+	addi $23 $0 'p'
+	sw $23 4($21)
+	j walk_down_mario
+	
 tocou_no_chao_Mario:
+	addi $18 $0 0
 	j walk_Platforms_Mario
 walk_down_mario:
+	
 	beq $9 $19 tocou_no_chao_Mario
 	beq $3 261 cair_mario
 	addi $2 $2 0
@@ -1218,18 +1241,20 @@ Mario_Draw_RIGHT:
 	ori $9 0x00000
 	jal Mario_Draw_Pixel
 	
-	addi $2 $0 24
-	addi $3 $0 1
-	addi $4 $15 -4
-	addi $5 $16 17
-	addi $9 $0 1
-	jal Mario_Draw_Pixel
+	
 	
 	addi $2 $0 1
 	addi $3 $0 1
 	addi $4 $15 20
 	addi $5 $16 16
 	addi $10 $0 1
+	jal Mario_Draw_Pixel
+	
+	addi $2 $0 24
+	addi $3 $0 1
+	addi $4 $15 -4
+	addi $5 $16 17
+	addi $9 $0 1
 	jal Mario_Draw_Pixel
 Mario_Draw_RIGHT_END:
 	# ===============
@@ -1298,7 +1323,7 @@ Mario_Draw_LEFT:
 	sw $4 0($29)
 	addi $29 $29 -4
 
-    sw $5 0($29)
+    	sw $5 0($29)
 	addi $29 $29 -4
 	
 	add $15 $2 $0
@@ -1577,25 +1602,27 @@ Mario_Draw_LEFT:
 	ori $9 0x00000
 	jal Mario_Draw_Pixel
 	
+	
+
+         addi $2 $0 8
+	addi $3 $0 1
+	addi $4 $15 -5
+	addi $5 $16 16
+        addi $10 $0 1
+        jal Mario_Draw_Pixel
+	
 	addi $2 $0 24
 	addi $3 $0 1
 	addi $4 $15 -4
 	addi $5 $16 17
-	addi $9 $0 1
-	jal Mario_Draw_Pixel
-
-    addi $2 $0 8
-	addi $3 $0 1
-	addi $4 $15 -5
-	addi $5 $16 16
-    addi $10 $0 1
+	addi $9 $0 1	
 	jal Mario_Draw_Pixel
 	
 Mario_Draw_LEFT_END:
 	# ===============
 	# DESEMPILHAR
 	# ===============
-    addi $29 $29 4
+    	addi $29 $29 4
 	lw $5 0($29)
 
 	addi $29 $29 4
@@ -1667,9 +1694,10 @@ Mario_Draw_Pixel:
 	addi $5 $0 0 # Contador 1
 	addi $6 $0 0 # Contador 2
 	add $7 $8 $0
-    addi $22 $0 0
-	beq $9 1 color_verification_Mario
-    beq $10 1 color_verification_Mario_Feet
+        addi $22 $0 0
+        beq $9 1 color_verification_Mario
+        beq $10 1 color_verification_Mario_Feet
+        
 Mario_Draw_Pixel_For:
 	beq $6 $3 Mario_Draw_Pixel_END
 	beq $5 $2 Mario_Draw_Pixel_Next_Line
@@ -1687,7 +1715,7 @@ Mario_Draw_Pixel_Next_Line:
 	j Mario_Draw_Pixel_For
 color_verification_Mario:
 	beq $9 $17 color_find_Mario
-	beq $10 42 Mario_Draw_Pixel_END
+	beq $10 24 Mario_Draw_Pixel_END
 	lw $9 262144($8)
 
 	addi $10 $10 1
@@ -1697,16 +1725,17 @@ color_verification_Mario:
 color_find_Mario:
 	j Mario_Draw_Pixel_END
 color_verification_Mario_Feet:
-    beq $10 $18 color_find_Mario_Feet
-	beq $22 1 Mario_Draw_Pixel_END
-	lw $10 262144($8)
-
-	addi $22 $22 1
+   	beq $9 $17 color_find_Mario_Feet
+   	beq $10 4 color_find_Mario_Feet
+   	lw $9 262144($8)
+   	
+   	addi $10 $10 1
 	addi $8 $8 4
-	j color_verification_Mario
+	j color_verification_Mario_Feet
 color_find_Mario_Feet:
-    addi $20 $22 0
+    addi $20 $9 0
     j Mario_Draw_Pixel_END
+	 
 Mario_Draw_Pixel_END:
 	addi $29 $29 4
 	lw $31 0($29)
