@@ -2,46 +2,24 @@
 
 main:
 	jal background_black
-	
 	jal cenario_plataform_Mario_VS_Donkey
-	
-	# TECLADO 
-	lui $21 0xffff
-      	addi $25 $0 32
-      	addi $10 $0 4
-      	addi $11 $0 'a'
-      	addi $12 $0 'd'
-      	addi $13 $0 's'
-      	addi $14 $0 'w'
-      	
-      	# Controle
-      	addi $30 $0 0
-      	
-      	# posição inicial Mario
-      	addi $2 $0 30 # 28
-	addi $3 $0 231# 231
-	addi $4 $0 0 
-	ori $4 0xA61937
-	addi $5 $0 0
-	ori $5 0x00000
-	jal Mario_Draw_RIGHT
-	
-	addi $19 $0 0 
-	ori $19 0xA61937
+	jal KeyBoard
+	jal Controles_cenario_plataform1
+
 	
 walk_Platforms_Mario:
 	
-	 jal timer
-	lw $23 4($21)
-      	beq $23 $11 walk_left_mario
-      	beq $23 $12 walk_right_mario
-      	beq $23 $13 walk_down_mario
-      	beq $23 $14 walk_up_mario
+	jal timer
+	lw $26 4($21)
+      	beq $26 $22 walk_left_mario
+      	beq $26 $23 walk_right_mario
+      	beq $26 $24 walk_down_mario
+      	beq $26 $25 walk_up_mario
 	
 	j walk_down_mario
 walk_left_mario:
 	
-	beq $20 $19 walk_down_mario
+	beq $20 0xA61937 walk_down_mario
 	addi $2 $2 0
 	addi $3 $3 0
 	jal Mario_Draw_Erased_RIGHT
@@ -53,14 +31,14 @@ walk_left_mario:
 	addi $2 $2 -5
 	addi $3 $3 0
 	jal Mario_Draw_LEFT
-	addi $23 $0 'p'
-	sw $23 4($21)
+	addi $26 $0 'p'
+	sw $26 4($21)
 	addi $17 $0 0
 	j walk_down_mario
 	
 walk_right_mario:
 	
-	beq $20 $19 walk_down_mario
+	beq $20 0xA61937 walk_down_mario
 	addi $2 $2 0
 	addi $3 $3 0
 	jal Mario_Draw_Erased_RIGHT
@@ -72,25 +50,38 @@ walk_right_mario:
 	addi $2 $2 5
 	addi $3 $3 0
 	jal Mario_Draw_RIGHT
-	addi $23 $0 'p'
-	sw $23 4($21)
+	addi $26 $0 'p'
+	sw $26 4($21)
 	addi $17 $0 0
 	j walk_down_mario
+	
 walk_up_mario:
-	beq $18 $19 walk_down_mario
+	beq $18 0xA61937 walk_down_mario
 	beq $30 20 walk_down_mario
+	beq $6 0 Mario_Right_up
+	beq $6 1 Mario_Left_up
+	j walk_up_mario_continue
+Mario_Right_up:
 	addi $2 $2 0
 	addi $3 $3 0
 	jal Mario_Draw_Erased_RIGHT
 	
 	addi $2 $2 0
-	addi $3 $3 0
-	jal Mario_Draw_Erased_LEFT
-	
-	addi $2 $2 0
 	addi $3 $3 -2
 	jal Mario_Draw_RIGHT
+	j walk_up_mario_continue
+Mario_Left_up:
 	
+	addi $2 $2 0
+	addi $3 $3 0
+	jal Mario_Draw_Erased_LEFT
+		
+	addi $2 $2 0
+	addi $3 $3 -2
+	jal Mario_Draw_LEFT
+	j walk_up_mario_continue
+	
+walk_up_mario_continue:
 	addi $30 $30 1
 	jal timer2
 	j walk_up_mario
@@ -102,25 +93,35 @@ tocou_no_chao_Mario:
 
 walk_down_mario:
 	jal timer2
-	beq $9 $19 tocou_no_chao_Mario
+	beq $9 0xA61937 tocou_no_chao_Mario
 	beq $3 261 cair_mario
+	beq $6 0 Mario_Right_down
+	beq $6 1 Mario_Left_down
+	j walk_down_mario_Continue
+	
+Mario_Right_down:
 	addi $2 $2 0
 	addi $3 $3 0
 	jal Mario_Draw_Erased_RIGHT
 	
+	addi $2 $2 0
+	addi $3 $3 2
+	jal Mario_Draw_RIGHT
+	j walk_down_mario_Continue
+	
+Mario_Left_down:
 	addi $2 $2 0
 	addi $3 $3 0
 	jal Mario_Draw_Erased_LEFT
 	
 	addi $2 $2 0
 	addi $3 $3 2
-	jal Mario_Draw_RIGHT
+	jal Mario_Draw_LEFT
 	
-	beq $23 $11 walk_left_mario
-      	beq $23 $12 walk_right_mario
-      	
-	addi $23 $0 'p'
-	sw $23 4($21)
+	j walk_down_mario_Continue
+walk_down_mario_Continue:      	
+	addi $26 $0 'p'
+	sw $26 4($21)
 	
 	j walk_Platforms_Mario
 cair_mario:
@@ -128,6 +129,59 @@ cair_mario:
 fim:
 	addi $2 $0 10
 	syscall
+	
+	
+	
+KeyBoard:
+# =====================
+	# EMPILHAR
+	# ==================== 
+	sw $31 0($29)
+	addi $29 $29 -4
+	 	
+	lui $21 0xffff
+      	
+      	addi $22 $0 'a'
+      	addi $23 $0 'd'
+      	addi $24 $0 's'
+      	addi $25 $0 'w'
+      	addi $26 $0 0
+      	
+      	# =====================
+	# DESEMPILHAR
+	# ==================== 
+	addi $29 $29 4
+	lw $31 0($29)
+	
+      	jr $31 
+
+# ========================
+Controles_cenario_plataform1:
+	# ==================
+	# EMPILHAR
+	# ==================
+	sw $31 0($29)
+	addi $29 $29 -4
+	
+      	# Controle
+      	addi $30 $0 0
+      	
+      	# posição inicial Mario
+      	addi $2 $0 30  #  28
+	addi $3 $0 231 # 231
+	addi $4 $0 0 
+	ori $4 0xA61937
+	addi $5 $0 0
+	ori $5 0x00000
+	jal Mario_Draw_RIGHT
+		
+	# ==================
+	# DESEMPILHAR
+	# ==================
+	addi $29 $29 4
+	lw $31 0($29)
+	
+	jr $31
 # =========================================
 # =+=+=+=+=+= USE +=+=+=+=+=+=+=+=+ 
 
@@ -1333,6 +1387,8 @@ Mario_Draw_RIGHT_END:
 	# DESEMPILHAR
 	# ===============
 	jal reset
+	addi $6 $0 0
+	
     addi $29 $29 4
     lw $5 0($29)
 
@@ -1701,7 +1757,9 @@ Mario_Draw_LEFT_END:
 	# DESEMPILHAR
 	# ===============
 	jal reset
-    	addi $29 $29 4
+	addi $6 $0 1
+
+    addi $29 $29 4
 	lw $5 0($29)
 
 	addi $29 $29 4
@@ -1773,7 +1831,7 @@ Mario_Draw_Pixel:
 	addi $5 $0 0 # Contador 1
 	addi $6 $0 0 # Contador 2
 	add $7 $8 $0
-        addi $22 $0 0
+        
         beq $9 2 color_verification_Mario_head
         beq $9 1 color_verification_Mario
         beq $10 1 color_verification_Mario_Feet
@@ -2504,6 +2562,8 @@ Mario_Draw_Erased_LEFT_END:
 	# DESEMPILHAR
 	# ===============
 	jal reset
+	
+
     addi $29 $29 4
 	lw $5 0($29)
 
@@ -2635,10 +2695,10 @@ reset:
 	# addi $21 $0 0 -> Memoria Teclado
 	# addi $22 $0 0
 	# addi $23 $0 0 -> Endereço do teclado
-	addi $24 $0 0
-	addi $25 $0 0
-	addi $26 $0 0
-	addi $27 $0 0
+	#addi $24 $0 0
+	#addi $25 $0 0
+	#addi $26 $0 0
+	#addi $27 $0 0
 	# addi $28 $0 0
 	# addi $29 $0 0
 	# addi $30 $0 0
