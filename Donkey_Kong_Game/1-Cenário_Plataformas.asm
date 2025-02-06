@@ -598,8 +598,8 @@ Platform_Draw_For:
 	sw $9 0($8)
 	sw $9 1024($8)
 
-    sw $9 262144($8)
-    sw $9 263168($8)
+   	sw $9 262144($8)
+    	sw $9 263168($8)
 
 	
 	#beq $10 0 base_initial_Triangle
@@ -619,14 +619,15 @@ Platform_Draw_For:
 	j continue_Platform_Draw
 	
 base_initial_Triangle:
+    	
 	beq $5 $2 continue_Platform_Draw
 	sw $9 7168($8) # 3 
 	sw $9 8192($8) # 2
 	sw $9 9216($8) # 1
 	
-    sw $9 269222($8)
-    sw $9 270246($8)
-    sw $9 271270($8)
+    	sw $9 269222($8)
+   	sw $9 270246($8)
+   	sw $9 271270($8)
 
 
 	addi $10 $10 1
@@ -772,6 +773,9 @@ continue_Platform_Draw:
 	
 	sw $9 6144($8) # Desenhar Linha Baixo 1
 	sw $9 7168($8) # Desenhar Linha Baixo 2
+	
+	sw $9 268288($8)
+	sw $9 269312($8)
 	addi $8 $8 4 # Próximo Endereço
 	addi $5 $5 1 # Contador++
 	beq $10 11 restart_Platform_Draw
