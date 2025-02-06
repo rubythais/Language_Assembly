@@ -57,19 +57,19 @@ Platform:
 # ======= Empilhar ========
 	sw $31 -4($29)
 	
-	addi $4 $0 27 # Posição da altura
+	addi $4 $0 27 # Posicao da altura
 	addi $2 $0 50	# Tamanho
-	addi $3 $0 104 # Posição Largura
+	addi $3 $0 104 # Posicao Largura
 	jal Platform_Draw
 	
 	# Plataforma 2
-	addi $4 $0 40 # Posição da altura
+	addi $4 $0 40 # Posicao da altura
 	addi $2 $0 25 # Tamanho
-	addi $3 $0 80 # Posição Largura
+	addi $3 $0 80 # Posicao Largura
 	jal Platform_Draw
 	
 	# Plataforma 3
-	addi $4 $0 64 # Posição da altura
+	addi $4 $0 64 # Posicao da altura
 	addi $2 $0 80	# Tamanho
 	addi $3 $0 25 # Posição Largura
 	jal Platform_Draw
