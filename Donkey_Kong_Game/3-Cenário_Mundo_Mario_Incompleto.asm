@@ -3,6 +3,7 @@
 main:
 
 
+Screen_Mario_1:
 
    	 jal cenario_mario_1
    	 # posição inicial Donkey Kong

@@ -2,9 +2,7 @@
 
 main:
 	jal Castle_Peach_Screen_2
-fim:
-	addi $2 $0 10
-	syscall
+
 
 
 Castle_Peach_Screen_1:
